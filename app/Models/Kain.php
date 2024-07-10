@@ -10,4 +10,8 @@ class Kain extends Model
     use HasFactory;
     protected $table = 'kain';
     protected $guarded = ['id'];
+
+    public function barang() {
+        return $this->hasMany(Barang::class);
+    }
 }

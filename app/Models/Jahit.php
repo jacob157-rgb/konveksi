@@ -10,4 +10,12 @@ class Jahit extends Model
     use HasFactory;
     protected $table = 'jahit';
     protected $guarded = ['id'];
+
+    public function barang(){
+        return $this->hasOne(Barang::class);
+    }
+
+    public function karyawan(){
+        return $this->hasOne(Karyawan::class);
+    }
 }

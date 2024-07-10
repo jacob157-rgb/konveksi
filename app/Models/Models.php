@@ -10,4 +10,8 @@ class Models extends Model
     use HasFactory;
     protected $table = 'model';
     protected $guarded = ['id'];
+
+    public function barang() {
+        return $this->hasMany(Barang::class);
+    }
 }

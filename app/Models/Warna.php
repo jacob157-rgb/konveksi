@@ -11,4 +11,7 @@ class Warna extends Model
     protected $table = 'warna';
     protected $guarded = ['id'];
 
+    public function barang() {
+        return $this->hasMany(Barang::class);
+    }
 }
