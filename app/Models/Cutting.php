@@ -12,10 +12,10 @@ class Cutting extends Model
     protected $guarded = ['id'];
 
     public function barang(){
-        return $this->hasOne(Barang::class);
+        return $this->belongsTo(Barang::class);
     }
 
     public function karyawan(){
-        return $this->hasOne(Karyawan::class);
+        return $this->belongsTo(Karyawan::class, 'karyawan_id');
     }
 }

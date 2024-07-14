@@ -14,6 +14,15 @@ class Barang extends Model
     public function supplyer() {
         return $this->belongsTo(Supplyer::class);
     }
+    public function warna() {
+        return $this->belongsTo(Warna::class);
+    }
+    public function kain() {
+        return $this->belongsTo(Kain::class);
+    }
+    public function model() {
+        return $this->belongsTo(Models::class);
+    }
 
     public function cutting() {
         return $this->hasMany(Cutting::class);

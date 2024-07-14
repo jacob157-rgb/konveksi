@@ -355,6 +355,12 @@
                                     Warna
                                 </a>
                             </li>
+                            <li>
+                                <a class="{{ request()->routeIs('product.index') ? 'flex items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-sm text-neutral-700 bg-gray-100 hover:bg-gray-100 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:text-neutral-300' : 'flex items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-sm text-neutral-700 hover:bg-gray-100 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-300' }}"
+                                    href="/barang">
+                                    Barang
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -391,6 +397,12 @@
                     <div id="users-accordion-child"
                         class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300">
                         <ul class="hs-accordion-group ps-3 pt-2" data-hs-accordion-always-open>
+                            <li>
+                                <a class="{{ request()->routeIs('karyawan.index') ? 'flex items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-sm text-neutral-700 bg-gray-100 hover:bg-gray-100 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:text-neutral-300' : 'flex items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-sm text-neutral-700 hover:bg-gray-100 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-300' }}"
+                                    href="/karyawan">
+                                    Karyawan
+                                </a>
+                            </li>
                             <li>
                                 <a class="{{ request()->routeIs('product.create') ? 'flex items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-sm text-neutral-700 bg-gray-100 hover:bg-gray-100 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:text-neutral-300' : 'flex items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-sm text-neutral-700 hover:bg-gray-100 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-300' }}"
                                     href="/cutting">

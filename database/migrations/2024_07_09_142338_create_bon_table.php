@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('bon', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('karyawan_id');
-            $table->unsignedBigInteger('cutting_id');
-            $table->unsignedBigInteger('jahit_id');
+            $table->unsignedBigInteger('cutting_id')->nullable();
+            $table->unsignedBigInteger('jahit_id')->nullable();
             $table->double("nominal", 15, 2);
             $table->enum("status", ['belumlunas', 'lunas']);
             $table->timestamps();
