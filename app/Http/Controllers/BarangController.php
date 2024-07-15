@@ -60,7 +60,7 @@ class BarangController extends Controller
             "tanggal_jadi" =>  $request->tanggal_jadi
         ]);
 
-        return redirect('/barang')->with('success', 'Barang created successfully.');
+        return redirect('/barang')->with('success', 'Barang Berhasil Ditambahkan.');
     }
 
     public function edit($id)
@@ -116,13 +116,13 @@ class BarangController extends Controller
             "tanggal_jadi" =>  $request->tanggal_jadi
         ]);
 
-        return redirect('/barang')->with('success', 'Barang updated successfully');
+        return redirect('/barang')->with('success', 'Barang Berhasil Diupdate');
     }
 
     public function destroy($id)
     {
         $barang = Barang::find($id);
         $barang->delete();
-        return redirect()->back()->with('success', 'Barang delete successfully.');
+        return redirect()->back()->with('success', 'Barang Dihapus.');
     }
 }

@@ -39,18 +39,18 @@
                 <td>&nbsp; : &nbsp;{{ $barang->warna->nama }}</td>
             </tr>
             <tr>
-                <td class="font-medium">Model</td>
+                <td class="font-medium">Harga Satuan</td>
                 <td>&nbsp; : &nbsp;{{ formatRupiah($barang->harga) }}</td>
             </tr>
             <tr>
                 <td class="font-medium">Tanggal Datang</td>
-                <td>&nbsp;  :
+                <td>&nbsp; :
                     &nbsp;{{ \Carbon\Carbon::parse($barang->tanggal_datang)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
                 </td>
             </tr>
             <tr>
                 <td class="font-medium">Tanggal Selesai</td>
-                <td>&nbsp;  :
+                <td>&nbsp; :
                     &nbsp;{{ \Carbon\Carbon::parse($barang->tanggal_selesai)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
                 </td>
             </tr>
@@ -101,7 +101,7 @@
         </table>
     </div>
     <div class="mx-auto my-4 max-w-[85rem] px-4 sm:my-10 sm:px-6 lg:px-8">
-        <div class="items-center pb-5 mb-5">
+        <div class="items-center pb-5 mb-5 overflow-x-auto">
             <div>
                 <h2 class="text-2xl font-semibold text-gray-800 dark:text-neutral-200">Histori Cutting</h2>
             </div>
@@ -227,7 +227,7 @@
         <hr>
     </div>
     <div class="mx-auto my-4 max-w-[85rem] px-4 sm:my-10 sm:px-6 lg:px-8">
-        <div class="items-center pb-5 mb-5">
+        <div class="items-center pb-5 mb-5 overflow-x-auto">
             <div>
                 <h2 class="text-2xl font-semibold text-gray-800 dark:text-neutral-200">Histori Jahit</h2>
             </div>
@@ -352,20 +352,22 @@
             </table>
         </div>
         <hr>
-        <table>
-            <tr class="font-bold bg-green-400 rounded-lg">
-                <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                    JUMLAH KESELURUHAN :</td>
-                @for ($i = 0; $i < 15; $i++)
-                    <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200"></td>
-                @endfor
-                <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                    ---
-                </td>
-                @for ($i = 0; $i < 5; $i++)
-                    <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200"></td>
-                @endfor
-            </tr>
-        </table>
+        <div class="overflow-x-auto">
+            <table>
+                <tr class="font-bold bg-green-400 rounded-lg">
+                    <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                        JUMLAH KESELURUHAN :</td>
+                    @for ($i = 0; $i < 15; $i++)
+                        <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200"></td>
+                    @endfor
+                    <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                        ---
+                    </td>
+                    @for ($i = 0; $i < 5; $i++)
+                        <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200"></td>
+                    @endfor
+                </tr>
+            </table>
+        </div>
     </div>
 @endsection

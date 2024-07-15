@@ -25,7 +25,7 @@ class KainController extends Controller
         $kain->nama = $request->nama;
         $kain->save();
 
-        return redirect()->back()->with('success', 'kain created successfully.');
+        return redirect()->back()->with('success', 'Kain Berhasil Ditambahkan.');
     }
 
     public function edit($id)
@@ -47,13 +47,13 @@ class KainController extends Controller
         $kain->nama = $request->nama;
         $kain->save();
 
-        return redirect()->back()->with('success', 'kain updated successfully.');
+        return redirect()->back()->with('success', 'Kain Berhasil Diupdate.');
     }
 
     public function destroy($id)
     {
         $supplyer = Kain::find($id);
         $supplyer->delete();
-        return redirect()->back()->with('success', 'kain delete successfully.');
+        return redirect()->back()->with('success', 'Kain Dihapus.');
     }
 }

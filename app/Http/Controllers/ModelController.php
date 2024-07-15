@@ -25,7 +25,7 @@ class ModelController extends Controller
         $model->nama = $request->nama;
         $model->save();
 
-        return redirect()->back()->with('success', 'model created successfully.');
+        return redirect()->back()->with('success', 'Model Berhasil Ditambahkan.');
     }
 
     public function edit($id)
@@ -47,12 +47,12 @@ class ModelController extends Controller
         $model->nama = $request->nama;
         $model->save();
 
-        return redirect()->back()->with('success', 'model updated successfully.');
+        return redirect()->back()->with('success', 'Model Berhasil Diupdate.');
     }
     public function destroy($id)
     {
         $model = Models::find($id);
         $model->delete();
-        return redirect()->back()->with('success', 'model delete successfully.');
+        return redirect()->back()->with('success', 'Model Dihapus.');
     }
 }

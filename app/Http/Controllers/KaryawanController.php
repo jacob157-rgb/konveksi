@@ -26,7 +26,7 @@ class KaryawanController extends Controller
 
         Karyawan::create($request->all());
 
-        return redirect('/karyawan')->with('success', 'Karyawan created successfully.');
+        return redirect('/karyawan')->with('success', 'Karyawan Berhasil Ditambahkan.');
     }
 
     public function edit($id)
@@ -48,13 +48,13 @@ class KaryawanController extends Controller
         $karyawan = Karyawan::findOrFail($request->id);
         $karyawan->update($request->all());
 
-        return redirect()->back()->with('success', 'Karyawan updated successfully');
+        return redirect()->back()->with('success', 'Karyawan Berhasil Diupdate');
     }
 
     public function destroy($id)
     {
         $karyawan = Karyawan::find($id);
         $karyawan->delete();
-        return redirect()->back()->with('success', 'Karyawan delete successfully.');
+        return redirect()->back()->with('success', 'Karyawan Dihapus.');
     }
 }

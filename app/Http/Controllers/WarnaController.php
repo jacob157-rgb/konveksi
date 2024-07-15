@@ -25,7 +25,7 @@ class WarnaController extends Controller
         $warna->nama = $request->nama;
         $warna->save();
 
-        return redirect()->back()->with('success', 'warna created successfully.');
+        return redirect()->back()->with('success', 'Warna Berhasil Ditambahkan.');
     }
 
     public function edit($id)
@@ -47,12 +47,12 @@ class WarnaController extends Controller
         $warna->nama = $request->nama;
         $warna->save();
 
-        return redirect()->back()->with('success', 'warna updated successfully.');
+        return redirect()->back()->with('success', 'Warna Berhasil Diupdate.');
     }
     public function destroy($id)
     {
         $warna = Warna::find($id);
         $warna->delete();
-        return redirect()->back()->with('success', 'warna delete successfully.');
+        return redirect()->back()->with('success', 'Warna Dihapus.');
     }
 }

@@ -25,7 +25,7 @@ class SupplyerController extends Controller
         $supplyer->nama = $request->nama;
         $supplyer->save();
 
-        return redirect()->back()->with('success', 'supplyer created successfully.');
+        return redirect()->back()->with('success', 'Supplyer Berhasil Ditambahkan.');
     }
 
     public function edit($id)
@@ -47,12 +47,12 @@ class SupplyerController extends Controller
         $supplyer->nama = $request->nama;
         $supplyer->save();
 
-        return redirect()->back()->with('success', 'supplyer updated successfully.');
+        return redirect()->back()->with('success', 'Supplyer Berhasil Diupdate.');
     }
     public function destroy($id)
     {
         $supplyer = Supplyer::find($id);
         $supplyer->delete();
-        return redirect()->back()->with('success', 'supplyer delete successfully.');
+        return redirect()->back()->with('success', 'Supplyer Dihapus.');
     }
 }
