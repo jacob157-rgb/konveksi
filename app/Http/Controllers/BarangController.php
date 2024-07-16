@@ -36,6 +36,7 @@ class BarangController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request);
         $request->validate([
             'supplyer_id' => 'required',
             'kain_id' => 'required',
@@ -56,7 +57,7 @@ class BarangController extends Controller
             'jumlah_cutting' => 0,
             'jumlah_jahit' => 0,
             'satuan' => $request->satuan,
-            'harga' => $request->harga,
+            'harga' => str_replace('.', '', $request->harga),
             'tanggal_datang' => $request->tanggal_datang,
             'tanggal_jadi' => null,
         ]);

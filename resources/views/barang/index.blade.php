@@ -76,10 +76,12 @@
                                                 <a href="/barang/show/{{ $row->id }}"
                                                     class="inline-flex items-center text-sm font-semibold text-green-600 border border-transparent rounded-lg show gap-x-2 hover:text-green-800 disabled:pointer-events-none disabled:opacity-50 dark:text-green-500 dark:hover:text-green-400">Detail</a>
                                                 <form action="/barang/delete/{{ $row->id }}" method="post"
-                                                    class="inline-flex">
+                                                    class="inline-flex delete-form">
                                                     @csrf
-                                                    <button type="submit"
-                                                        class="inline-flex items-center text-sm font-semibold text-red-600 border border-transparent rounded-lg gap-x-2 hover:text-red-800 disabled:pointer-events-none disabled:opacity-50 dark:text-red-500 dark:hover:text-red-400">Hapus</button>
+                                                    <button type="button"
+                                                        class="inline-flex items-center text-sm font-semibold text-red-600 border border-transparent rounded-lg delete gap-x-2 hover:text-red-800 disabled:pointer-events-none disabled:opacity-50 dark:text-red-500 dark:hover:text-red-400">
+                                                        Hapus
+                                                    </button>
                                                 </form>
                                             </td>
                                         </tr>

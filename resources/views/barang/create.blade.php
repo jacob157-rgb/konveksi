@@ -87,9 +87,9 @@
                                 <div class="mt-2 space-y-3">
                                     <p>Harga Per Satuan</p>
                                     <div class="relative border rounded-md">
-                                        <input type="text" id="harga"
-                                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-                                        <input type="hidden" name="harga" id="nominal">
+                                        <input type="text" id="harga" name="harga" 
+                                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm price pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                                        <input type="hidden" id="nominal">
                                         <div
                                             class="absolute inset-y-0 z-20 flex items-center pointer-events-none start-0 ps-4">
                                             <span class="text-gray-500 dark:text-neutral-500">Rp.</span>
