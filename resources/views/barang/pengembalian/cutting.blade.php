@@ -37,8 +37,8 @@
                 <td class="font-medium">Tanggal Selesai</td>
                 <td>&nbsp; :
                     &nbsp;
-                    @if ($barang->tanggal_selesai)
-                        {{ \Carbon\Carbon::parse($barang->tanggal_selesai)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
+                    @if ($barang->tanggal_jadi)
+                        {{ \Carbon\Carbon::parse($barang->tanggal_jadi)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
                     @else
                         <button
                             class="inline-flex items-center gap-x-1.5 rounded-full bg-red-400 px-3 py-1.5 text-xs font-medium text-gray-800 dark:bg-white/10 dark:text-white">Belum
@@ -46,6 +46,17 @@
                     @endif
                 </td>
             </tr>
+            @if ($barang->tanggal_jadi)
+                <tr>
+                    <td class="font-medium">Status</td>
+                    <td>&nbsp; :
+                        &nbsp;
+                            <button
+                                class="inline-flex items-center gap-x-1.5 rounded-full bg-green-400 px-3 py-1.5 text-xs font-medium text-gray-800 dark:bg-white/10 dark:text-white">
+                                Selesai</button>
+                    </td>
+                </tr>
+            @endif
         </table>
     </div>
     <div class="mx-auto my-4 max-w-[85rem] px-4 sm:my-10 sm:px-6 lg:px-8">

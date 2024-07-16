@@ -60,6 +60,17 @@
                     @endif
                 </td>
             </tr>
+            @if ($barang->tanggal_jadi)
+                <tr>
+                    <td class="font-medium">Status</td>
+                    <td>&nbsp; :
+                        &nbsp;
+                        <button
+                            class="inline-flex items-center gap-x-1.5 rounded-full bg-green-400 px-3 py-1.5 text-xs font-medium text-gray-800 dark:bg-white/10 dark:text-white">
+                            Selesai</button>
+                    </td>
+                </tr>
+            @endif
         </table>
         <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
             <thead>
