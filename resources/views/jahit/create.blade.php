@@ -82,12 +82,7 @@
                                         class="py-2 px-3 pe-11 border block w-full border-gray-200 shadow-sm text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                         placeholder="Masukan ambil">
                                 </div>
-                                <div class="mt-2 space-y-3">
-                                    <p>Tanggal Kembali</p>
-                                    <input id="af-payment-billing-contact" type="datetime-local" name="tanggal_kembali"
-                                        class="py-2 px-3 pe-11 border block w-full border-gray-200 shadow-sm text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                        placeholder="Masukan kembali">
-                                </div>
+
                             </div>
                             <div class=" flex justify-start gap-x-2">
                                 <button id="bon" type="button"
@@ -136,8 +131,8 @@
                         data-hs-overlay="#hs-large-modal">
                         <span class="sr-only">Close</span>
                         <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
                             <path d="M18 6 6 18"></path>
                             <path d="m6 6 12 12"></path>
                         </svg>
@@ -232,8 +227,8 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $("#bon").click(function(){
+        $("#bon").click(function() {
             $("#nominal-bon").toggle();
-          });
+        });
     </script>
 @endsection

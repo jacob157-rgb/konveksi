@@ -74,6 +74,18 @@ Route::controller(BarangController::class)->group(function () {
     Route::get('/barang/edit/{id}', 'edit');
     Route::get('/barang/show/{id}', 'show');
     Route::post('/barang/update/{id}', 'update');
+
+    Route::post('/barang/selesai/{id}', 'selesai');
+
+    //pengembalian
+    Route::get('/barang/pengembalian/cutting/detail/{id_barang}/{id_cutting}', 'getDetailPengembalianCutting');
+    Route::get('/barang/pengembalian/cutting/{id_barang}/{id_cutting}', 'getPengembalianCutting');
+    Route::post('/barang/pengembalian/cutting/update/{id_barang}/{id_cutting}', 'postPengembalianCutting');
+
+    Route::get('/barang/pengembalian/jahit/detail/{id_barang}/{id_jahit}', 'getDetailPengembalianJahit');
+    Route::get('/barang/pengembalian/jahit/{id_barang}/{id_jahit}', 'getPengembalianJahit');
+    Route::post('/barang/pengembalian/jahit/update/{id_barang}/{id_jahit}', 'postPengembalianJahit');
+
     Route::post('/barang/delete/{id}', 'destroy');
 });
 Route::controller(CuttingController::class)->group(function () {

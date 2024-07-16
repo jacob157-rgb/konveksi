@@ -22,4 +22,11 @@ class Bon extends Model
     public function jahit() {
         return $this->belongsTo(Jahit::class);
     }
+
+    static function getCutting($karyawan, $cutting) {
+        return static::where('karyawan_id', $karyawan)->where('cutting_id', $cutting)->first();
+    }
+    static function getJahit($karyawan, $jahit) {
+        return static::where('karyawan_id', $karyawan)->where('jahit_id', $jahit)->first();
+    }
 }

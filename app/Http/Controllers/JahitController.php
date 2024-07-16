@@ -37,7 +37,6 @@ class JahitController extends Controller
             'satuan' => 'required',
             'ongkos' => 'required',
             'tanggal_ambil' => 'required',
-            'tanggal_kembali' => 'required',
         ]);
 
         $jahit = Jahit::create([
@@ -48,7 +47,7 @@ class JahitController extends Controller
             'satuan' => $request->satuan,
             'ongkos' => $request->ongkos,
             'tanggal_ambil' => $request->tanggal_ambil,
-            'tanggal_kembali' => $request->tanggal_kembali,
+            'tanggal_kembali' => null,
             'status' => 'proses',
         ]);
         if ($request->bon != null) {
@@ -65,6 +64,9 @@ class JahitController extends Controller
     public function destroy($id)
     {
         $jahit = Jahit::find($id);
+        if ($jahit->status == 'jadi' || $jahit->tanggal_kembali || $jahit->jumlah_kembali != 0) {
+            return redirect()->back()->with('error', 'Gagal Menghapus karena barang sudah jadi.');
+        }
         $jahit->delete();
         return redirect()->back()->with('success', 'Jahit delete successfully.');
     }

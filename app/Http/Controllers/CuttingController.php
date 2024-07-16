@@ -35,27 +35,30 @@ class CuttingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            "barang_id" => 'required',
-            "karyawan_id" => 'required',
-            "jumlah_ambil" => 'required',
-            "satuan" => 'required',
-            "ongkos" => 'required',
-            "tanggal_ambil" => 'required',
-            "tanggal_kembali" =>  'required'
+            'barang_id' => 'required',
+            'karyawan_id' => 'required',
+            'jumlah_ambil' => 'required',
+            'satuan' => 'required',
+            'ongkos' => 'required',
+            'tanggal_ambil' => 'required',
         ]);
 
+        $barang = Barang::find($request->barang_id);
+        if ($barang->jumlah_mentah < $request->jumlah_ambil) {
+            return redirect()->back()->with('error', 'Jumlah ambil melebihi jumlah mentah');
+        }
         $cutting = Cutting::create([
-            "barang_id" => $request->barang_id,
-            "karyawan_id" => $request->karyawan_id,
-            "jumlah_ambil" => $request->jumlah_ambil,
-            "jumlah_kembali" => 0,
-            "satuan" => $request->satuan,
-            "ongkos" => $request->ongkos,
-            "tanggal_ambil" => $request->tanggal_ambil,
-            "tanggal_kembali" =>  $request->tanggal_kembali,
-            "status" => 'proses',
+            'barang_id' => $request->barang_id,
+            'karyawan_id' => $request->karyawan_id,
+            'jumlah_ambil' => $request->jumlah_ambil,
+            'jumlah_kembali' => 0,
+            'satuan' => $request->satuan,
+            'ongkos' => $request->ongkos,
+            'tanggal_ambil' => $request->tanggal_ambil,
+            'tanggal_kembali' => null,
+            'status' => 'proses',
         ]);
-        if($request->bon != null) {
+        if ($request->bon != null) {
             Bon::create([
                 'karyawan_id' => $request->karyawan_id,
                 'cutting_id' => $cutting->id,
@@ -69,6 +72,9 @@ class CuttingController extends Controller
     public function destroy($id)
     {
         $cutting = Cutting::find($id);
+        if ($cutting->status == 'jadi' || $cutting->tanggal_kembali || $cutting->jumlah_kembali != 0) {
+            return redirect()->back()->with('error', 'Gagal Menghapus karena barang sudah jadi.');
+        }
         $cutting->delete();
         return redirect()->back()->with('success', 'Cutting delete successfully.');
     }

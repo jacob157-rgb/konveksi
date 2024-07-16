@@ -75,7 +75,7 @@
                                                     class="inline-flex items-center text-sm font-semibold text-blue-600 border border-transparent rounded-lg edit gap-x-2 hover:text-blue-800 disabled:pointer-events-none disabled:opacity-50 dark:text-blue-500 dark:hover:text-blue-400">Edit</a>
                                                 <a href="/barang/show/{{ $row->id }}"
                                                     class="inline-flex items-center text-sm font-semibold text-green-600 border border-transparent rounded-lg show gap-x-2 hover:text-green-800 disabled:pointer-events-none disabled:opacity-50 dark:text-green-500 dark:hover:text-green-400">Detail</a>
-                                                <form action="/kain/delete/{{ $row->id }}" method="post"
+                                                <form action="/barang/delete/{{ $row->id }}" method="post"
                                                     class="inline-flex">
                                                     @csrf
                                                     <button type="submit"

@@ -16,11 +16,12 @@ return new class extends Migration
             $table->unsignedBigInteger("barang_id");
             $table->unsignedBigInteger("karyawan_id");
             $table->integer("jumlah_ambil");
-            $table->integer("jumlah_kembali");
+            $table->integer("jumlah_kembali")->nullable();
             $table->enum("satuan", ['kg', 'koli']);
             $table->double("ongkos", 15, 2);
+            $table->double("bayar_ongkos", 15, 2)->nullable();
             $table->dateTime("tanggal_ambil");
-            $table->dateTime("tanggal_kembali");
+            $table->dateTime("tanggal_kembali")->nullable();
             $table->enum("status", ['proses', 'jadi']);
             $table->timestamps();
 

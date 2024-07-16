@@ -82,12 +82,6 @@
                                         class="py-2 px-3 pe-11 border block w-full border-gray-200 shadow-sm text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                         placeholder="Masukan ambil">
                                 </div>
-                                <div class="mt-2 space-y-3">
-                                    <p>Tanggal Kembali</p>
-                                    <input id="af-payment-billing-contact" type="datetime-local" name="tanggal_kembali"
-                                        class="py-2 px-3 pe-11 border block w-full border-gray-200 shadow-sm text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                        placeholder="Masukan kembali">
-                                </div>
                             </div>
                             <div class=" flex justify-start gap-x-2">
                                 <button id="bon" type="button"

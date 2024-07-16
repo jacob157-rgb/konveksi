@@ -120,11 +120,6 @@
                                     <input type="datetime-local" name="tanggal_datang"
                                         class="block w-full px-3 py-2 text-sm border border-gray-200 rounded-lg shadow-sm pe-11 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
                                 </div>
-                                <div class="mt-2 space-y-3">
-                                    <p>Tanggal jadi</p>
-                                    <input type="datetime-local" name="tanggal_jadi"
-                                        class="block w-full px-3 py-2 text-sm border border-gray-200 rounded-lg shadow-sm pe-11 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-                                </div>
                             </div>
                             <div class="flex justify-end mt-5 gap-x-2">
                                 <button type="button"

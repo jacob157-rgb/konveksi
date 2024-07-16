@@ -51,7 +51,13 @@
             <tr>
                 <td class="font-medium">Tanggal Selesai</td>
                 <td>&nbsp; :
-                    &nbsp;{{ \Carbon\Carbon::parse($barang->tanggal_selesai)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
+                    &nbsp;
+                    @if ($barang->tanggal_jadi)
+                        {{ \Carbon\Carbon::parse($barang->tanggal_jadi)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
+                    @else
+                        <button data-id="{{ $barang->id }}"
+                            class="selesaikan-btn inline-flex items-center gap-x-1.5 rounded-full bg-red-400 px-3 py-1.5 text-xs font-medium text-gray-800 dark:bg-white/10 dark:text-white">Selesaikan</button>
+                    @endif
                 </td>
             </tr>
         </table>
@@ -78,18 +84,14 @@
                     <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
                         {{ $barang->jumlah_jahit }} ({{ $barang->satuan }})</td>
                     <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                        @if ($barang->jumlah_mentah == $barang->jumlah_cutting)
+                        @if ($barang->jumlah_mentah == $barang->jumlah_cutting + $barang->jumlah_jahit)
                             <span
-                                class="inline-flex items-center gap-x-1.5 rounded-full bg-blue-500 px-3 py-1.5 text-xs font-medium text-gray-800 dark:bg-white/10 dark:text-white">proses
-                                cutting selesai</span>
-                        @elseif($barang->jumlah_mentah == $barang->jumlah_jahit)
+                                class="inline-flex items-center gap-x-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-gray-800 dark:bg-white/10 dark:text-white">proses
+                                selesai</span>
+                        @elseif($barang->tanggal_jadi != null)
                             <span
-                                class="inline-flex items-center gap-x-1.5 rounded-full bg-blue-400 px-3 py-1.5 text-xs font-medium text-gray-800 dark:bg-white/10 dark:text-white">proses
-                                jahit selesai</span>
-                        @elseif($barang->jumlah_mentah == $barang->jumlah_jahit && $barang->jumlah_mentah == $barang->jumlah_mentah)
-                            <span
-                                class="inline-flex items-center gap-x-1.5 rounded-full bg-green-400 px-3 py-1.5 text-xs font-medium text-gray-800 dark:bg-white/10 dark:text-white">selesai
-                                semua</span>
+                                class="inline-flex items-center gap-x-1.5 rounded-full bg-green-500 px-3 py-1.5 text-xs font-medium text-gray-800 dark:bg-white/10 dark:text-white">proses
+                                selesai</span>
                         @else
                             <span
                                 class="inline-flex items-center gap-x-1.5 rounded-full bg-red-400 px-3 py-1.5 text-xs font-medium text-gray-800 dark:bg-white/10 dark:text-white">Masih
@@ -141,7 +143,16 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+                    @php
+                        $totalOngkosCutting = 0;
+                        $totalBonCutting = 0;
+                    @endphp
                     @foreach ($cutting as $row)
+                        @php
+                            $bonCutting = \App\Models\Bon::getCutting($row->karyawan_id, $row->id);
+                            $totalOngkosCutting += $row->ongkos;
+                            $totalBonCutting += $bonCutting?->nominal;
+                        @endphp
                         <tr class="text-center">
                             <td class="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap dark:text-neutral-200">
                                 {{ $loop->iteration }}.</td>
@@ -152,22 +163,37 @@
                                 {{ $row->jumlah_ambil }} ({{ $row->satuan }})</td>
 
                             <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                {{ $row->jumlah_kembali }} ({{ $row->satuan }})</td>
+                                @if ($row->jumlah_kembali)
+                                    {{ $row->jumlah_kembali }} ({{ $row->satuan }})
+                                @else
+                                    <span class="text-red-600">Belum selesai</span>
+                                @endif
+                            </td>
                             <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
                                 {{ \Carbon\Carbon::parse($row->tanggal_ambil)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                {{ \Carbon\Carbon::parse($row->tanggal_kembali)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
+                                @if ($row->tanggal_kembali)
+                                    {{ \Carbon\Carbon::parse($row->tanggal_kembali)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
+                                @else
+                                    <span class="text-red-600">Belum selesai</span>
+                                @endif
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
                                 <span
                                     class="{{ $row->status == 'proses' ? 'text-red-600' : 'text-green-500' }} font-bold">{{ $row->status }}</span>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                {{ $row->ongkos }}
+                                {{ formatRupiah($row->ongkos) }}
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                -
+                                @if ($bonCutting?->status == 'lunas')
+                                    <span class="line-through">{{ formatRupiah($bonCutting?->nominal) }}</span><br>
+                                    <span class="text-green-700">Lunas</span>
+                                @else
+                                    <span class="">{{ formatRupiah($bonCutting?->nominal) }}</span>
+                                @endif
+
                             </td>
 
                             <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
@@ -186,21 +212,20 @@
                                     <div class="hs-dropdown-menu duration min-w-60 mt-2 hidden rounded-lg bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] before:absolute before:-top-4 before:start-0 before:h-4 before:w-full after:absolute after:-bottom-4 after:start-0 after:h-4 after:w-full hs-dropdown-open:opacity-100 dark:divide-neutral-700 dark:border dark:border-neutral-700 dark:bg-neutral-800"
                                         aria-labelledby="hs-dropdown-hover-event">
                                         <a class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                            href="#">
-                                            Bayar BON
+                                            href="/barang/pengembalian/cutting/detail/{{ $barang->id }}/{{ $row->id }}">
+                                            Cek Detail
                                         </a>
                                         <a class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                            href="#">
-                                            Bayar Ongkos
-                                        </a>
-                                        <a class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                            href="#">
+                                            href="/barang/pengembalian/cutting/{{ $barang->id }}/{{ $row->id }}">
                                             Pengembalian
                                         </a>
-                                        <a class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                            href="#">
-                                            Hapus
-                                        </a>
+
+                                        <form action="/cutting/delete/{{ $row->id }}" method="post">
+                                            @csrf
+                                            <button
+                                                class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
+                                                type="submit">Hapus</button>
+                                        </form>
                                     </div>
                                 </div>
                             </td>
@@ -216,7 +241,13 @@
                         <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200"></td>
                     @endfor
                     <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                        ---
+                        {{ formatRupiah($totalOngkosCutting) }}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                        {{ formatRupiah($totalBonCutting) }}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                        = {{ formatRupiah($totalOngkosCutting - $totalBonCutting) }}
                     </td>
                     @for ($i = 0; $i < 5; $i++)
                         <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200"></td>
@@ -266,8 +297,17 @@
                             Aksi</th>
                     </tr>
                 </thead>
+                @php
+                    $totalOngkosJahit = 0;
+                    $totalBonJahit = 0;
+                @endphp
                 <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
                     @foreach ($jahit as $row)
+                        @php
+                            $bonJahit = \App\Models\Bon::getJahit($row->karyawan_id, $row->id);
+                            $totalOngkosJahit += $row->ongkos;
+                            $totalBonJahit += $bonJahit?->nominal;
+                        @endphp
                         <tr class="text-center">
                             <td
                                 class="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap dark:text-neutral-200">
@@ -279,22 +319,31 @@
                                 {{ $row->jumlah_ambil }} ({{ $row->satuan }})</td>
 
                             <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                {{ $row->jumlah_kembali }} ({{ $row->satuan }})</td>
+                                @if ($row->jumlah_kembali)
+                                    {{ $row->jumlah_kembali }} ({{ $row->satuan }})
+                                @else
+                                    <span class="text-red-600">Belum selesai</span>
+                                @endif
+                            </td>
                             <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
                                 {{ \Carbon\Carbon::parse($row->tanggal_ambil)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                {{ \Carbon\Carbon::parse($row->tanggal_kembali)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
+                                @if ($row->tanggal_kembali)
+                                    {{ \Carbon\Carbon::parse($row->tanggal_kembali)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
+                                @else
+                                    <span class="text-red-600">Belum selesai</span>
+                                @endif
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
                                 <span
                                     class="{{ $row->status == 'proses' ? 'text-red-600' : 'text-green-500' }} font-bold">{{ $row->status }}</span>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                {{ $row->ongkos }}
+                                {{ formatRupiah($row->ongkos) }}
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                -
+                                {{ formatRupiah($bonJahit?->nominal) }}
                             </td>
 
                             <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
@@ -313,21 +362,20 @@
                                     <div class="hs-dropdown-menu duration min-w-60 mt-2 hidden rounded-lg bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] before:absolute before:-top-4 before:start-0 before:h-4 before:w-full after:absolute after:-bottom-4 after:start-0 after:h-4 after:w-full hs-dropdown-open:opacity-100 dark:divide-neutral-700 dark:border dark:border-neutral-700 dark:bg-neutral-800"
                                         aria-labelledby="hs-dropdown-hover-event">
                                         <a class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                            href="#">
-                                            Bayar BON
+                                            href="/barang/pengembalian/jahit/detail/{{ $barang->id }}/{{ $row->id }}">
+                                            Cek Detail
                                         </a>
                                         <a class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                            href="#">
-                                            Bayar Ongkos
-                                        </a>
-                                        <a class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                            href="#">
+                                            href="/barang/pengembalian/jahit/{{ $barang->id }}/{{ $row->id }}">
                                             Pengembalian
                                         </a>
-                                        <a class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                                            href="#">
-                                            Hapus
-                                        </a>
+
+                                        <form action="/jahit/delete/{{ $row->id }}" method="post">
+                                            @csrf
+                                            <button
+                                                class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
+                                                type="submit">Hapus</button>
+                                        </form>
                                     </div>
                                 </div>
                             </td>
@@ -343,7 +391,13 @@
                         <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200"></td>
                     @endfor
                     <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                        ---
+                        {{ formatRupiah($totalOngkosJahit) }}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                        {{ formatRupiah($totalBonJahit) }}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                        = {{ formatRupiah($totalOngkosJahit - $totalBonJahit) }}
                     </td>
                     @for ($i = 0; $i < 5; $i++)
                         <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200"></td>
@@ -361,7 +415,17 @@
                         <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200"></td>
                     @endfor
                     <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                        ---
+                        {{ formatRupiah($totalOngkosJahit + $totalOngkosCutting) }}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                        {{ formatRupiah($totalBonJahit + $totalBonCutting) }}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                        @php
+                            $ongkos = $totalOngkosJahit + $totalOngkosCutting;
+                            $bon = $totalBonJahit + $totalBonCutting;
+                        @endphp
+                        {{ formatRupiah($ongkos - $bon) }}
                     </td>
                     @for ($i = 0; $i < 5; $i++)
                         <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200"></td>
@@ -370,4 +434,59 @@
             </table>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-blue-100 border border-blue-200 text-gray-800 rounded-lg p-4 dark:bg-blue-800/10 dark:border-blue-900 dark:text-white"
+            role="alert">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="flex-shrink-0 size-4 mt-1" xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 16v-4"></path>
+                        <path d="M12 8h.01"></path>
+                    </svg>
+                </div>
+                <div class="ms-3">
+                    <h3 class="font-semibold">
+                        Informasi
+                    </h3>
+                    <div class="mt-2 text-sm text-gray-600 dark:text-neutral-400">
+                        Apakah anda yaqin akan menyelesaikan ini ? <br>
+                        Jika iya, maka aktifitas dan status selesai.
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex space-x-3">
+                            <button type="button"
+                                class="close-modal inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400">
+                                Tutup
+                            </button>
+                            <form action="/barang/selesai/{{ $barang->id }}" method="post">
+                                @csrf
+                                <button type="submit"
+                                    class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400">
+                                    Ya, selesaikan
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.selesaikan-btn').click(function() {
+                $('#overlay').removeClass('hidden');
+                $('#overlay').data('id', barangId);
+            });
+            $('.close-modal').click(function() {
+                $('#overlay').addClass('hidden');
+            });
+        });
+    </script>
 @endsection

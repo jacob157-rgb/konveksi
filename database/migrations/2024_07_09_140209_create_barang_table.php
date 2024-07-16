@@ -23,7 +23,7 @@ return new class extends Migration
             $table->enum("satuan", ['kg', 'koli']);
             $table->double("harga", 15, 2);
             $table->dateTime("tanggal_datang");
-            $table->dateTime("tanggal_jadi");
+            $table->dateTime("tanggal_jadi")->nullable();
             $table->timestamps();
 
             $table->foreign("supplyer_id")->references("id")->on("supplyer")->onDelete("cascade");
