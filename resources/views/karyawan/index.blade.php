@@ -61,6 +61,8 @@
                                                 <button type="button" data-id="{{ $row->id }}"
                                                     data-hs-overlay="#edit-modal"
                                                     class="inline-flex items-center text-sm font-semibold text-blue-600 border border-transparent rounded-lg edit gap-x-2 hover:text-blue-800 disabled:pointer-events-none disabled:opacity-50 dark:text-blue-500 dark:hover:text-blue-400">Edit</button>
+                                                <a href="/karyawan/show/{{ $row->id }}"
+                                                    class="inline-flex items-center text-sm font-semibold text-green-600 border border-transparent rounded-lg edit gap-x-2 hover:text-green-800 disabled:pointer-events-none disabled:opacity-50 dark:text-green-500 dark:hover:text-green-400">Detail</a>
                                                 <form action="/karyawan/delete/{{ $row->id }}" method="post"
                                                     class="inline-flex delete-form">
                                                     @csrf
@@ -107,25 +109,25 @@
                     <div class="p-4 overflow-y-auto">
                         <label for="nama" class="block mb-2 text-sm font-medium dark:text-white">Nama</label>
                         <input type="text" id="nama" name="nama"
-                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
+                            class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
                             placeholder="Masukan Nama karyawan" autofocus="">
 
                         <label for="jenis_karyawan" class="block mb-2 text-sm font-medium dark:text-white">Jenis
                             Karyawan</label>
                         <select id="jenis_karyawan" name="jenis_karyawan"
-                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500">
+                            class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500">
                             <option value="cutting">Cutting</option>
                             <option value="jahit">Jahit</option>
                         </select>
 
                         <label for="no" class="block mb-2 text-sm font-medium dark:text-white">Nomor Hp</label>
                         <input type="text" id="no" name="no" maxlength="15"
-                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
+                            class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
                             placeholder="Masukan Nomor karyawan">
 
                         <label for="alamat" class="block mb-2 text-sm font-medium dark:text-white">Alamat</label>
                         <input type="text" id="alamat" name="alamat"
-                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
+                            class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
                             placeholder="Masukan Alamat karyawan">
                     </div>
                     <div class="flex items-center justify-end px-4 py-3 border-t gap-x-2 dark:border-neutral-700">
@@ -173,14 +175,14 @@
                     <div class="p-4 overflow-y-auto">
                         <label for="nama_model" class="block mb-2 text-sm font-medium dark:text-white">Nama</label>
                         <input type="text" id="nama_model" name="nama"
-                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
+                            class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
                             placeholder="Masukan Nama" autofocus="">
                     </div>
                     <div class="p-4 overflow-y-auto">
                         <label for="jenis_karyawan_model" class="block mb-2 text-sm font-medium dark:text-white">Jenis
                             Karyawan</label>
                         <select id="jenis_karyawan_model" name="jenis_karyawan"
-                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500">
+                            class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500">
                             <option value="cutting">Cutting</option>
                             <option value="jahit">Jahit</option>
                         </select>
@@ -188,13 +190,13 @@
                     <div class="p-4 overflow-y-auto">
                         <label for="no_model" class="block mb-2 text-sm font-medium dark:text-white">No</label>
                         <input type="text" id="no_model" name="no"
-                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
+                            class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
                             placeholder="Masukan No">
                     </div>
                     <div class="p-4 overflow-y-auto">
                         <label for="alamat_model" class="block mb-2 text-sm font-medium dark:text-white">Alamat</label>
                         <input type="text" id="alamat_model" name="alamat"
-                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
+                            class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
                             placeholder="Masukan Alamat">
                     </div>
                     <div class="flex items-center justify-end px-4 py-3 border-t gap-x-2 dark:border-neutral-700">

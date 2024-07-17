@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bon;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
 
@@ -34,6 +35,49 @@ class KaryawanController extends Controller
         $karyawan = Karyawan::findOrFail($id);
         return response()->json(['data' => $karyawan]);
     }
+    public function editBon($id)
+    {
+        $bon = Bon::findOrFail($id);
+        return response()->json(['data' => $bon]);
+    }
+    public function show($id)
+    {
+        $karyawan = Karyawan::findOrFail($id);
+        $bon = Bon::where('karyawan_id', $id)->get();
+
+        $belumLunasBon = $bon->where('status', 'belumlunas');
+        $lunasBon = $bon->where('status', 'lunas');
+
+        $totalBelumLunas = $belumLunasBon->sum('nominal');
+        $totalLunas = $lunasBon->sum('nominal');
+
+        $data = [
+            'karyawan' => $karyawan,
+            'bon' => $bon,
+            'totalBelumLunas' => $totalBelumLunas,
+            'totalLunas' => $totalLunas,
+        ];
+        return view('karyawan.show', $data);
+    }
+    public function print($id)
+    {
+        $karyawan = Karyawan::findOrFail($id);
+        $bon = Bon::where('karyawan_id', $id)->get();
+
+        $belumLunasBon = $bon->where('status', 'belumlunas');
+        $lunasBon = $bon->where('status', 'lunas');
+
+        $totalBelumLunas = $belumLunasBon->sum('nominal');
+        $totalLunas = $lunasBon->sum('nominal');
+
+        $data = [
+            'karyawan' => $karyawan,
+            'bon' => $bon,
+            'totalBelumLunas' => $totalBelumLunas,
+            'totalLunas' => $totalLunas,
+        ];
+        return view('karyawan.print', $data);
+    }
 
     public function update(Request $request)
     {
@@ -49,6 +93,19 @@ class KaryawanController extends Controller
         $karyawan->update($request->all());
 
         return redirect()->back()->with('success', 'Karyawan Berhasil Diupdate');
+    }
+    public function updateBon(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:karyawan,id',
+            'nominal' => 'required|string|max:255',
+            'status' => 'required|in:lunas,belumlunas',
+        ]);
+
+        $karyawan = Bon::findOrFail($request->id);
+        $karyawan->update($request->all());
+
+        return redirect()->back()->with('success', 'BON Berhasil Diupdate');
     }
 
     public function destroy($id)

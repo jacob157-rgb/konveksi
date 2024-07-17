@@ -76,6 +76,19 @@ class BarangController extends Controller
         ];
         return view('barang.edit', $data);
     }
+    public function print($id)
+    {
+        $data = [
+            'barang' => Barang::findOrFail($id),
+            'kain' => Kain::all(),
+            'model' => Models::all(),
+            'warna' => Warna::all(),
+            'supplyer' => Supplyer::all(),
+            'jahit' => Jahit::orderBy('id', 'desc')->where('barang_id', $id)->get(),
+            'cutting' => Cutting::orderBy('id', 'desc')->where('barang_id', $id)->get(),
+        ];
+        return view('barang.print', $data);
+    }
     public function show($id)
     {
         $data = [
@@ -125,7 +138,7 @@ class BarangController extends Controller
             'tanggal_jadi' => Carbon::now(),
         ]);
 
-        return redirect('/barang/show/'.$id)->with('success', 'Proses berhasil diselesaikan');
+        return redirect('/barang/show/' . $id)->with('success', 'Proses berhasil diselesaikan');
     }
 
     // pengembalian cutting
