@@ -5,4 +5,8 @@ if (!function_exists('formatRupiah')) {
     {
         return 'Rp ' . number_format($number, 0, ',', '.');
     }
+    function formatNominal($number)
+    {
+        return number_format($number, 0, ',', '.');
+    }
 }

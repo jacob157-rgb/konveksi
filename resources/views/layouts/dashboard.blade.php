@@ -76,47 +76,8 @@
                 <!-- End Logo -->
             </div>
 
-            <div class="flex items-center justify-end w-full ms-auto sm:order-3 sm:justify-between sm:gap-x-3">
-                <div class="sm:hidden">
-                    <button type="button"
-                        class="inline-flex h-[2.375rem] w-[2.375rem] items-center justify-center gap-x-2 rounded-full border border-transparent text-sm font-semibold text-gray-800 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 dark:text-white dark:hover:bg-neutral-700">
-                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8" />
-                            <path d="m21 21-4.3-4.3" />
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="hidden sm:block">
-                    <label for="icon" class="sr-only">Search</label>
-                    <div class="relative min-w-72 md:min-w-80">
-                        <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none start-0 ps-4">
-                            <svg class="flex-shrink-0 text-gray-400 size-4 dark:text-neutral-400"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <circle cx="11" cy="11" r="8" />
-                                <path d="m21 21-4.3-4.3" />
-                            </svg>
-                        </div>
-                        <input type="text" id="icon" name="icon"
-                            class="block w-full px-4 py-2 text-sm border-gray-200 rounded-lg ps-11 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                            placeholder="Search">
-                    </div>
-                </div>
-
+            <div class="flex items-center justify-end w-full ms-auto sm:order-3 sm:gap-x-3">
                 <div class="flex flex-row items-center justify-end gap-2">
-                    <button type="button"
-                        class="inline-flex h-[2.375rem] w-[2.375rem] items-center justify-center gap-x-2 rounded-full border border-transparent text-sm font-semibold text-gray-800 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 dark:text-white dark:hover:bg-neutral-700">
-                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-                            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-                        </svg>
-                    </button>
                     <div class="hs-dropdown">
                         <button type="button"
                             class="flex items-center font-medium text-gray-600 hs-dropdown-toggle hs-dark-mode group me-2 hover:text-blue-600 dark:text-neutral-400 dark:hover:text-neutral-500">
@@ -126,9 +87,8 @@
                                 <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
                             </svg>
                             <svg class="hidden size-4 hs-dark-mode-active:block" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
+                                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="4"></circle>
                                 <path d="M12 2v2"></path>
                                 <path d="M12 20v2"></path>
@@ -140,7 +100,6 @@
                                 <path d="m19.07 4.93-1.41 1.41"></path>
                             </svg>
                         </button>
-
                         <div id="selectThemeDropdown"
                             class="hs-dropdown-menu z-10 mb-2 mt-2 hidden origin-bottom-left space-y-1 rounded-lg bg-white p-2 opacity-0 shadow-md transition-[margin,opacity] duration-300 hs-dropdown-open:opacity-100 dark:divide-neutral-700 dark:border dark:border-neutral-700 dark:bg-neutral-800">
                             <button type="button"
@@ -160,12 +119,6 @@
                             </button>
                         </div>
                     </div>
-                    {{-- <button type="button"
-                        class="inline-flex h-[2.375rem] w-[2.375rem] items-center justify-center gap-x-2 rounded-full border border-transparent text-sm font-semibold text-gray-800 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 dark:text-white dark:hover:bg-neutral-700"
-                        data-hs-offcanvas="#hs-offcanvas-right">
-
-                    </button> --}}
-
                     <div class="hs-dropdown relative inline-flex [--placement:bottom-right]">
                         <button id="hs-dropdown-with-header" type="button"
                             class="inline-flex h-[2.375rem] w-[2.375rem] items-center justify-center gap-x-2 rounded-full border border-transparent text-sm font-semibold text-gray-800 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 dark:text-white dark:hover:bg-neutral-700">
@@ -173,7 +126,6 @@
                                 src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80"
                                 alt="Image Description">
                         </button>
-
                         <div class="hs-dropdown-menu duration min-w-60 hidden rounded-lg bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] hs-dropdown-open:opacity-100 dark:border dark:border-neutral-700 dark:bg-neutral-900"
                             aria-labelledby="hs-dropdown-with-header">
                             <div class="px-5 py-3 -m-2 bg-gray-100 rounded-t-lg dark:bg-neutral-800">
@@ -205,7 +157,6 @@
                                         Keluar
                                     </button>
                                 </form>
-
                             </div>
                         </div>
                     </div>

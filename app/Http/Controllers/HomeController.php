@@ -15,17 +15,16 @@ class HomeController extends Controller
     {
         $data = [
             'barang_sedang_proses' => [
-                'data' => Barang::where('tanggal_jadi', '==', null)->get(),
-                'count' => Barang::where('tanggal_jadi', '==', null)->count(),
+                'data' => Barang::where('tanggal_jadi', '=', null)->get(),
+                'count' => Barang::where('tanggal_jadi', '=', null)->count(),
             ],
             'barang_sudah_jadi' => [
                 'data' => Barang::where('tanggal_jadi', '!=', null)->get(),
                 'count' => Barang::where('tanggal_jadi', '!=', null)->count(),
             ],
-            'catting' => Karyawan::where('jenis_karyawan', 'cutting')->count(),
+            'cutting' => Karyawan::where('jenis_karyawan', 'cutting')->count(),
             'jahit' => Karyawan::where('jenis_karyawan', 'jahit')->count(),
         ];
-        dd($data);
         return view('home.index', $data);
     }
     public function getProfil()

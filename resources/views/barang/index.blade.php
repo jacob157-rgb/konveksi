@@ -9,7 +9,7 @@
                     <div
                         class="grid gap-3 px-6 py-4 border-b border-gray-200 dark:border-neutral-700 md:flex md:items-center md:justify-between">
                         <a href="/barang/create"
-                            class="inline-flex items-center justify-center px-4 py-3 text-sm font-semibold text-white bg-blue-600 border border-transparent rounded-lg gap-x-2 hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50">
+                            class="inline-flex items-center justify-center w-1/4 px-4 py-3 text-sm font-semibold text-white bg-blue-600 border border-transparent rounded-lg md:w-auto gap-x-2 hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50">
                             Tambah Barang
                         </a>
                     </div>

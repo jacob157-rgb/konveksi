@@ -125,7 +125,7 @@ class BarangController extends Controller
             'jumlah_cutting' => 0,
             'jumlah_jahit' => 0,
             'satuan' => $request->satuan,
-            'harga' => $request->harga,
+            'harga' => str_replace('.', '', $request->harga),
             'tanggal_datang' => $request->tanggal_datang,
             'tanggal_jadi' => null,
         ]);
@@ -181,10 +181,10 @@ class BarangController extends Controller
         }
 
         $barang->update([
-            'jumlah_cutting' => $total + $request->jumlah_kembali,
+            'jumlah_cutting' => $total + str_replace('.', '', $request->jumlah_kembali),
         ]);
         $cutting->update([
-            'bayar_ongkos' => $request->bayar_ongkos,
+            'bayar_ongkos' => str_replace('.', '', $request->bayar_ongkos),
             'tanggal_kembali' => Carbon::now(),
             'jumlah_kembali' => $request->jumlah_kembali,
             'status' => $request->status_cutting,
@@ -238,10 +238,10 @@ class BarangController extends Controller
         }
 
         $barang->update([
-            'jumlah_jahit' => $total + $request->jumlah_kembali,
+            'jumlah_jahit' => $total + str_replace('.', '', $request->jumlah_kembali),
         ]);
         $jahit->update([
-            'bayar_ongkos' => $request->bayar_ongkos,
+            'bayar_ongkos' => str_replace('.', '', $request->bayar_ongkos),
             'tanggal_kembali' => Carbon::now(),
             'jumlah_kembali' => $request->jumlah_kembali,
             'status' => $request->status_jahit,

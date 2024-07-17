@@ -45,7 +45,7 @@ class JahitController extends Controller
             'jumlah_ambil' => $request->jumlah_ambil,
             'jumlah_kembali' => 0,
             'satuan' => $request->satuan,
-            'ongkos' => $request->ongkos,
+            'ongkos' => str_replace('.', '', $request->ongkos),
             'tanggal_ambil' => $request->tanggal_ambil,
             'tanggal_kembali' => null,
             'status' => 'proses',
@@ -54,7 +54,7 @@ class JahitController extends Controller
             Bon::create([
                 'karyawan_id' => $request->karyawan_id,
                 'jahit_id' => $jahit->id,
-                'nominal' => $request->bon,
+                'nominal' => str_replace('.', '', $request->bon),
                 'status' => 'belumlunas',
             ]);
         }

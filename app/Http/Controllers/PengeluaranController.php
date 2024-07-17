@@ -12,7 +12,7 @@ class PengeluaranController extends Controller
         $data = [
             'pengeluaran' => Pengeluaran::orderBy('id', 'desc')->get(),
         ];
-        dd('view pengeluaran durung digawe ya jac, ikuti route, datane tampilna nominal, keterangan, karo update_at tampilna. ganti format',$data);
+        // dd('view pengeluaran durung digawe ya jac, ikuti route, datane tampilna nominal, keterangan, karo update_at tampilna. ganti format',$data);
         return view('pengeluaran.index', $data);
     }
     public function create()
@@ -27,7 +27,7 @@ class PengeluaranController extends Controller
         ]);
 
         Pengeluaran::create([
-            'nominal' => $request->nominal,
+            'nominal' => str_replace('.', '', $request->nominal),
             'keterangan' => $request->keterangan,
         ]);
         return redirect('/pengeluaran')->with('success', 'Catatan berhasil disimpan');
@@ -35,7 +35,7 @@ class PengeluaranController extends Controller
     public function edit($id)
     {
         $pengeluaran = Pengeluaran::find($id);
-        return view('pengeluaran.create', $pengeluaran);
+        return view('pengeluaran.edit', compact('pengeluaran'));
     }
     public function update(Request $request, $id)
     {
@@ -45,14 +45,13 @@ class PengeluaranController extends Controller
         ]);
 
         Pengeluaran::find($id)->update([
-            'nominal' => $request->nominal,
+            'nominal' => str_replace('.', '', $request->nominal),
             'keterangan' => $request->keterangan,
         ]);
         return redirect('/pengeluaran')->with('success', 'Catatan berhasil diupdate');
     }
     public function destroy($id)
     {
-
         $pengeluaran = Pengeluaran::find($id);
         $pengeluaran->delete();
         return redirect('/pengeluaran')->with('success', 'Catatan berhasil dihapus');
