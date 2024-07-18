@@ -203,7 +203,7 @@
                     </p>
                 </div>
                 <div class="flex items-center mt-1 gap-x-2">
-                    @if (empty($barang_sudah_jadi['data']))
+                    @if ($barang_sudah_jadi['data']->isEmpty())
                         <div class="mx-auto flex min-h-[400px] w-full max-w-sm flex-col justify-center px-6 py-4">
                             <div
                                 class="size-[46px] flex items-center justify-center rounded-lg bg-gray-100 dark:bg-neutral-800">

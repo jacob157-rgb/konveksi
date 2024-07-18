@@ -2,8 +2,22 @@
 
 @section('content')
     <div class="flex flex-col">
-        <div class="pb-2 mb-2 border-b">
-            <h2 class="text-2xl font-semibold text-gray-800 dark:text-neutral-200">Daftar Pengeluaran</h2>
+        <div class="flex items-center justify-between pb-2 mb-2 border-b">
+            @if ($pengeluaran->isNotEmpty())
+                <h2 class="text-2xl font-semibold text-gray-800 dark:text-neutral-200">Daftar Pengeluaran</h2>
+                <a href="/pengeluaran/create"
+                    class="inline-flex items-center justify-center px-3 py-2 text-sm font-semibold text-white bg-blue-600 border border-transparent rounded-lg gap-x-2 hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-plus">
+                        <path d="M5 12h14" />
+                        <path d="M12 5v14" />
+                    </svg>
+                    Tambahkan Pengeluaran
+                </a>
+            @else
+                <h2 class="text-2xl font-semibold text-gray-800 dark:text-neutral-200">Daftar Pengeluaran</h2>
+            @endif
         </div>
         <div class="-m-1.5 overflow-x-auto">
             <div class="inline-block min-w-full p-1.5 align-middle">
@@ -95,7 +109,7 @@
                                                     <form action="/pengeluaran/delete/{{ $row->id }}" method="post">
                                                         @csrf
                                                         <button
-                                                            class="flex w-full delete items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
+                                                            class="delete flex w-full items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
                                                             type="submit">Hapus</button>
                                                     </form>
                                                 </div>

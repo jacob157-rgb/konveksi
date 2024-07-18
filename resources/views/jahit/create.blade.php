@@ -164,35 +164,35 @@
 
                         <div class="mt-2 space-y-3">
                             <p>Supplyer</p>
-                            <input id="af-payment-billing-contact" value="{{ $barang->supplyer->nama }}"
+                            <input id="af-payment-billing-contact" readonly value="{{ $barang->supplyer->nama }}"
                                 name="jumlah_mentah" type="text"
                                 class="block w-full px-3 py-2 text-sm border border-gray-200 rounded-lg shadow-sm pe-11 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                 placeholder="Masukan jumlah barang mentah">
                         </div>
                         <div class="mt-2 space-y-3">
                             <p>Model</p>
-                            <input id="af-payment-billing-contact" value="{{ $barang->model->nama }}"
+                            <input id="af-payment-billing-contact" readonly value="{{ $barang->model->nama }}"
                                 name="jumlah_mentah" type="text"
                                 class="block w-full px-3 py-2 text-sm border border-gray-200 rounded-lg shadow-sm pe-11 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                 placeholder="Masukan jumlah barang mentah">
                         </div>
                         <div class="mt-2 space-y-3">
                             <p>Kain</p>
-                            <input id="af-payment-billing-contact" value="{{ $barang->kain->nama }}" name="jumlah_mentah"
+                            <input id="af-payment-billing-contact" readonly value="{{ $barang->kain->nama }}" name="jumlah_mentah"
                                 type="text"
                                 class="block w-full px-3 py-2 text-sm border border-gray-200 rounded-lg shadow-sm pe-11 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                 placeholder="Masukan jumlah barang mentah">
                         </div>
                         <div class="mt-2 space-y-3">
                             <p>Warna</p>
-                            <input id="af-payment-billing-contact" value="{{ $barang->warna->nama }}"
+                            <input id="af-payment-billing-contact" readonly value="{{ $barang->warna->nama }}"
                                 name="jumlah_mentah" type="text"
                                 class="block w-full px-3 py-2 text-sm border border-gray-200 rounded-lg shadow-sm pe-11 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                 placeholder="Masukan jumlah barang mentah">
                         </div>
                         <div class="mt-2 space-y-3">
                             <p>Jumlah Barang Mentah</p>
-                            <input id="af-payment-billing-contact" value="{{ $barang->jumlah_mentah }}"
+                            <input id="af-payment-billing-contact" readonly value="{{ $barang->jumlah_mentah }}"
                                 name="jumlah_mentah" type="number"
                                 class="block w-full px-3 py-2 text-sm border border-gray-200 rounded-lg shadow-sm pe-11 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                 placeholder="Masukan jumlah barang mentah">
@@ -201,7 +201,7 @@
                         <div class="mt-2 space-y-3">
                             <p>Satuan Jumlah Barang</p>
                             <div class="grid gap-3 sm:flex">
-                                <select name="satuan"
+                                <select name="satuan" disabled
                                     class="block w-full px-3 py-2 text-sm border border-gray-200 rounded-lg shadow-sm pe-9 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
                                     <option selected disabled>Pilih satuan</option>
                                     <option value="kg" {{ $barang->satuan == 'kg' ? 'selected' : '' }}>Kilo ( KG )
@@ -213,22 +213,15 @@
                         </div>
                         <div class="mt-2 space-y-3">
                             <p>Harga</p>
-                            <input id="af-payment-billing-contact" type="number" name="harga"
-                                value="{{ $barang->harga }}"
+                            <input id="af-payment-billing-contact" readonly type="text" name="harga"
+                                value="{{ formatRupiah($barang->harga) }}"
                                 class="block w-full px-3 py-2 text-sm border border-gray-200 rounded-lg shadow-sm pe-11 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                 placeholder="Masukan harga">
                         </div>
                         <div class="mt-2 space-y-3">
                             <p>Tanggal datang</p>
-                            <input id="af-payment-billing-contact" type="datetime-local" name="tanggal_datang"
+                            <input id="af-payment-billing-contact" readonly type="datetime-local" name="tanggal_datang"
                                 value="{{ $barang->tanggal_datang }}"
-                                class="block w-full px-3 py-2 text-sm border border-gray-200 rounded-lg shadow-sm pe-11 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                placeholder="Masukan harga">
-                        </div>
-                        <div class="mt-2 space-y-3">
-                            <p>Tanggal jadi</p>
-                            <input id="af-payment-billing-contact" type="datetime-local" name="tanggal_jadi"
-                                value="{{ $barang->tanggal_jadi }}"
                                 class="block w-full px-3 py-2 text-sm border border-gray-200 rounded-lg shadow-sm pe-11 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                 placeholder="Masukan harga">
                         </div>

@@ -7,12 +7,6 @@
             <div class="p-4 sm:p-7">
                 <div class="text-center">
                     <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Masuk</h1>
-                    <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">
-                        Belum mempunyai akun?
-                        <a class="font-medium text-blue-600 decoration-2 hover:underline dark:text-blue-500" href="/register">
-                            Daftar disini
-                        </a>
-                    </p>
                 </div>
 
                 <div class="mt-5">
@@ -67,10 +61,6 @@
                                                 r="3"></circle>
                                         </svg>
                                     </button>
-                                </div>
-                                <div class="flex items-center justify-end mt-2">
-                                    <a class="text-sm font-medium text-blue-600 decoration-2 hover:underline"
-                                        href="">Lupa Password?</a>
                                 </div>
                                 @error('password')
                                     <p class="mt-2 text-xs text-red-600" id="password-error">{{ $message }}</p>
