@@ -71,6 +71,9 @@
                                         class="px-6 py-3 text-xs font-medium text-gray-500 uppercase text-start dark:text-neutral-500">
                                         Keterangan</th>
                                     <th scope="col"
+                                        class="px-6 py-3 text-xs font-medium text-gray-500 uppercase text-start dark:text-neutral-500">
+                                        Dibuat</th>
+                                    <th scope="col"
                                         class="px-6 py-3 text-xs font-medium text-gray-500 uppercase text-end dark:text-neutral-500">
                                         Aksi</th>
                                 </tr>
@@ -86,6 +89,9 @@
                                             {{ formatRupiah($row->nominal) }}</td>
                                         <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
                                             {{ $row->keterangan }}</td>
+                                        <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                                            {{ \Carbon\Carbon::parse($row->updated_at)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
+                                        </td>
                                         <td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-end">
                                             <div class="hs-dropdown relative m-1 inline-flex [--trigger:hover]">
                                                 <button id="hs-dropdown-hover-event" type="button"

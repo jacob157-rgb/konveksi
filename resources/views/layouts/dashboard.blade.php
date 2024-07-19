@@ -363,11 +363,16 @@
                 <li>
                     <a class="{{ request()->is('/pengeluaran') ? 'flex items-center gap-x-3.5 rounded-lg bg-gray-100 px-2.5 py-2 text-sm text-neutral-700 hover:bg-gray-100 dark:bg-neutral-700 dark:text-white' : 'flex items-center gap-x-3.5 rounded-lg  px-2.5 py-2 text-sm text-neutral-700 hover:bg-gray-100 dark:text-neutral-400' }}"
                         href="/pengeluaran">
-                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                            <polyline points="9 22 9 12 15 12 15 22" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="lucide lucide-candlestick-chart">
+                            <path d="M9 5v4" />
+                            <rect width="4" height="6" x="7" y="9" rx="1" />
+                            <path d="M9 15v2" />
+                            <path d="M17 3v2" />
+                            <rect width="4" height="8" x="15" y="5" rx="1" />
+                            <path d="M17 13v3" />
+                            <path d="M3 3v18h18" />
                         </svg>
                         Pengeluaran
                     </a>

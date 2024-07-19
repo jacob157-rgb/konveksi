@@ -32,7 +32,7 @@
                     +62 8132000973
                 </p>
                 <p class="text-gray-500 text-sm mt-1">
-                    JL. Sipelem Tegal Raya
+                    JL. Garuda RT 02 RW 01
                 </p>
             </div>
         </div>

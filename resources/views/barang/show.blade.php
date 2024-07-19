@@ -377,12 +377,12 @@
                                             {{ formatRupiah($row->ongkos) }}</td>
                                         <td
                                             class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                            @if ($bonCutting?->status == 'lunas')
+                                            @if ($bonJahit?->status == 'lunas')
                                                 <span
-                                                    class="line-through">{{ formatRupiah($bonCutting?->nominal) }}</span><br>
+                                                    class="line-through">{{ formatRupiah($bonJahit?->nominal) }}</span><br>
                                                 <span class="text-green-700">Lunas</span>
                                             @else
-                                                <span class="">{{ formatRupiah($bonCutting?->nominal) }}</span>
+                                                <span class="">{{ formatRupiah($bonJahit?->nominal) }}</span>
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-end">
