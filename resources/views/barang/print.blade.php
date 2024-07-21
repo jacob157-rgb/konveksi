@@ -18,8 +18,8 @@
 </style>
 
 <body>
-    <div class="max-w-3xl mx-auto p-6 bg-white rounded shadow-sm my-6" id="invoice">
-        <div class="grid grid-cols-2 items-center">
+    <div class="max-w-3xl p-6 mx-auto my-6 bg-white rounded shadow-sm" id="invoice">
+        <div class="grid items-center grid-cols-2">
             <div>
                 <img src="https://i.ibb.co.com/hyZ908t/images.png" alt="company-logo" height="100" width="100">
             </div>
@@ -28,27 +28,27 @@
                 <p>
                     Laporan Konveksi
                 </p>
-                <p class="text-gray-500 text-sm mt-1">
-                    +62 8132000973
+                <p class="mt-1 text-sm text-gray-500">
+                    +62 857-2588-8333
                 </p>
-                <p class="text-gray-500 text-sm mt-1">
-                    JL. Garuda RT 02 RW 01
+                <p class="mt-1 text-sm text-gray-500">
+                    JL. Garuda RT 02 RW 01, Tembok Kidul, Adiwerna
                 </p>
             </div>
         </div>
 
         <!-- Client info -->
-        <div class="grid grid-cols-2 items-center mt-8">
+        <div class="grid items-center grid-cols-2 mt-8">
             <div>
                 <p class="font-bold text-gray-800">
-                    Suplyyer :
+                    Supplyer :
                 </p>
                 <p class="text-gray-500">
                     {{ $barang->supplyer->nama }}
                     <br />
                     Status :
                     @if ($barang->tanggal_jadi)
-                        <span class="font-medium text-green-600 italic">Selesai</span>
+                        <span class="italic font-medium text-green-600">Selesai</span>
                     @else
                         <span class="font-medium text-red-600">Belum Selesai</span>
                     @endif
@@ -57,7 +57,7 @@
 
             <div class="text-right">
                 <p class="">
-                    Tanggal datang:
+                    Tanggal Datang:
                     <span
                         class="text-gray-500">{{ \Carbon\Carbon::parse($barang->tanggal_datang)->locale('id')->isoFormat('D MMMM YYYY') }}</span>
                 </p>
@@ -68,7 +68,7 @@
                         @if ($barang->tanggal_jadi)
                             {{ \Carbon\Carbon::parse($barang->tanggal_jadi)->locale('id')->isoFormat('D MMMM YYYY') }}
                         @else
-                            <span class="text-red-600 italic">belum selesai</span>
+                            <span class="italic text-red-600">Belum Selesai</span>
                         @endif
                     </span>
                 </p>
@@ -77,9 +77,9 @@
         </div>
 
         <!-- keterangan barang -->
-        <div class="-mx-4 mt-8 flow-root sm:mx-0">
+        <div class="flow-root mt-8 -mx-4 sm:mx-0">
             <table class="min-w-full">
-                <thead class="border-b border-gray-300 text-gray-900">
+                <thead class="text-gray-900 border-b border-gray-300">
                     <tr>
                         <th scope="col"
                             class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Model</th>
@@ -97,11 +97,11 @@
                 <tbody>
                     <tr class="border-b border-gray-200">
                         <td class="py-5 text-sm text-gray-500">{{ $barang->model->nama }}</td>
-                        <td class="hidden px-3 py-5 text-right text-sm text-gray-500 sm:table-cell">
+                        <td class="hidden px-3 py-5 text-sm text-right text-gray-500 sm:table-cell">
                             {{ $barang->kain->nama }}</td>
-                        <td class="hidden px-3 py-5 text-right text-sm text-gray-500 sm:table-cell">
+                        <td class="hidden px-3 py-5 text-sm text-right text-gray-500 sm:table-cell">
                             {{ $barang->warna->nama }}</td>
-                        <td class="py-5 pl-3 pr-4 text-right text-sm text-gray-500 sm:pr-0">
+                        <td class="py-5 pl-3 pr-4 text-sm text-right text-gray-500 sm:pr-0">
                             {{ formatRupiah($barang->harga) }} / {{ $barang->satuan }}</td>
                     </tr>
                 </tbody>
@@ -109,9 +109,9 @@
         </div>
 
         <!-- keterangan kinerja -->
-        <div class="-mx-4 mt-8 flow-root sm:mx-0">
+        <div class="flow-root mt-8 -mx-4 sm:mx-0">
             <table class="min-w-full">
-                <thead class="border-b border-gray-300 text-gray-900">
+                <thead class="text-gray-900 border-b border-gray-300">
                     <tr>
                         <th scope="col"
                             class="py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-0">Jumlah
@@ -128,19 +128,19 @@
                     <tr class="border-b border-gray-200">
                         <td class="py-5 text-sm text-center text-gray-500"> {{ $barang->jumlah_mentah }}
                             ({{ $barang->satuan }})</td>
-                        <td class="hidden px-3 py-5 text-center text-sm text-gray-500 sm:table-cell">
+                        <td class="hidden px-3 py-5 text-sm text-center text-gray-500 sm:table-cell">
                             {{ $barang->jumlah_cutting }} ({{ $barang->satuan }})</td>
-                        <td class="hidden px-3 py-5 text-center text-sm text-gray-500 sm:table-cell">
+                        <td class="hidden px-3 py-5 text-sm text-center text-gray-500 sm:table-cell">
                             {{ $barang->jumlah_jahit }} ({{ $barang->satuan }})</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="-mx-4 mt-8 flow-root sm:mx-0">
+        <div class="flow-root mt-8 -mx-4 sm:mx-0">
             <div class="font-bold text-gray-800">
                 <p>Histori proses cutting</p>
-                <hr class="border-t-2 border-gray-800 w-full mt-2">
+                <hr class="w-full mt-2 border-t-2 border-gray-800">
             </div>
             <table class="min-w-full table-auto">
                 <colgroup>
@@ -151,7 +151,7 @@
                     <col class="w-1/6 sm:w-1/6">
                     <col class="w-1/6 sm:w-1/6">
                 </colgroup>
-                <thead class="border-b border-gray-300 text-gray-900">
+                <thead class="text-gray-900 border-b border-gray-300">
                     <tr>
                         <th scope="col"
                             class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
@@ -191,30 +191,30 @@
                             $totalBonCutting += $bonCutting?->nominal;
                         @endphp
                         <tr class="border-b border-gray-200">
-                            <td class="px-3 py-5 text-left text-sm text-gray-500 sm:table-cell">
+                            <td class="px-3 py-5 text-sm text-left text-gray-500 sm:table-cell">
                                 {{ $row->karyawan->nama }}
                             </td>
-                            <td class="px-3 py-5 text-left text-sm text-gray-500 sm:table-cell">
+                            <td class="px-3 py-5 text-sm text-left text-gray-500 sm:table-cell">
                                 {{ $row->jumlah_ambil }} ({{ $row->satuan }})
                             </td>
-                            <td class="px-3 py-5 text-left text-sm text-gray-500 sm:table-cell">
+                            <td class="px-3 py-5 text-sm text-left text-gray-500 sm:table-cell">
                                 @if ($row->jumlah_kembali)
                                     {{ $row->jumlah_kembali }} ({{ $row->satuan }})
                                 @else
                                     <span class="text-red-600">Belum selesai</span>
                                 @endif
                             </td>
-                            <td class="px-3 py-5 text-left text-sm text-gray-500 sm:table-cell">
+                            <td class="px-3 py-5 text-sm text-left text-gray-500 sm:table-cell">
                                 {{ \Carbon\Carbon::parse($row->tanggal_ambil)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
                             </td>
-                            <td class="px-3 py-5 text-left text-sm text-gray-500 sm:table-cell">
+                            <td class="px-3 py-5 text-sm text-left text-gray-500 sm:table-cell">
                                 @if ($row->tanggal_kembali)
                                     {{ \Carbon\Carbon::parse($row->tanggal_kembali)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
                                 @else
                                     <span class="text-red-600">Belum selesai</span>
                                 @endif
                             </td>
-                            <td class="px-3 py-5 text-right text-sm text-gray-500 sm:table-cell">
+                            <td class="px-3 py-5 text-sm text-right text-gray-500 sm:table-cell">
                                 {{ $row->status }}
                             </td>
                         </tr>
@@ -223,26 +223,26 @@
                 <tfoot>
                     <tr>
                         <th scope="row" colspan="4"
-                            class="pl-4 pr-3 pt-6 text-right text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">
+                            class="pt-6 pl-4 pr-3 text-sm font-normal text-right text-gray-500 sm:table-cell sm:pl-0">
                             Total Ongkos Cutting :
                         </th>
-                        <td class="pl-3 pr-6 pt-6 text-right text-sm text-gray-500 sm:pr-0">
+                        <td class="pt-6 pl-3 pr-6 text-sm text-right text-gray-500 sm:pr-0">
                             {{ formatRupiah($totalOngkosCutting) }}</td>
                     </tr>
                     <tr>
                         <th scope="row" colspan="4"
-                            class="pl-4 pr-3 pt-4 text-right text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">
+                            class="pt-4 pl-4 pr-3 text-sm font-normal text-right text-gray-500 sm:table-cell sm:pl-0">
                             Total BON Cutting :
                         </th>
-                        <td class="pl-3 pr-6 pt-4 text-right text-sm text-gray-500 sm:pr-0">
+                        <td class="pt-4 pl-3 pr-6 text-sm text-right text-gray-500 sm:pr-0">
                             {{ formatRupiah($totalBonCutting) }}</td>
                     </tr>
                     <tr>
                         <th scope="row" colspan="4"
-                            class="pl-4 pr-3 pt-4 text-right text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0">
+                            class="pt-4 pl-4 pr-3 text-sm font-semibold text-right text-gray-900 sm:table-cell sm:pl-0">
                             Total Yang Harus Dibayarkan :
                         </th>
-                        <td class="pl-3 pr-4 pt-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">
+                        <td class="pt-4 pl-3 pr-4 text-sm font-semibold text-right text-gray-900 sm:pr-0">
                             {{ formatRupiah($totalOngkosCutting - $totalBonCutting) }}
                         </td>
                     </tr>
@@ -250,10 +250,10 @@
             </table>
         </div>
 
-        <div class="-mx-4 mt-8 flow-root sm:mx-0">
+        <div class="flow-root mt-8 -mx-4 sm:mx-0">
             <div class="font-bold text-gray-800">
                 <p>Histori proses jahit</p>
-                <hr class="border-t-2 border-gray-800 w-full mt-2">
+                <hr class="w-full mt-2 border-t-2 border-gray-800">
             </div>
             <table class="min-w-full table-auto">
                 <colgroup>
@@ -264,7 +264,7 @@
                     <col class="w-1/6 sm:w-1/6">
                     <col class="w-1/6 sm:w-1/6">
                 </colgroup>
-                <thead class="border-b border-gray-300 text-gray-900">
+                <thead class="text-gray-900 border-b border-gray-300">
                     <tr>
                         <th scope="col"
                             class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
@@ -304,30 +304,30 @@
                             $totalBonJahit += $bonJahit?->nominal;
                         @endphp
                         <tr class="border-b border-gray-200">
-                            <td class="px-3 py-5 text-left text-sm text-gray-500 sm:table-cell">
+                            <td class="px-3 py-5 text-sm text-left text-gray-500 sm:table-cell">
                                 {{ $row->karyawan->nama }}
                             </td>
-                            <td class="px-3 py-5 text-left text-sm text-gray-500 sm:table-cell">
+                            <td class="px-3 py-5 text-sm text-left text-gray-500 sm:table-cell">
                                 {{ $row->jumlah_ambil }} ({{ $row->satuan }})
                             </td>
-                            <td class="px-3 py-5 text-left text-sm text-gray-500 sm:table-cell">
+                            <td class="px-3 py-5 text-sm text-left text-gray-500 sm:table-cell">
                                 @if ($row->jumlah_kembali)
                                     {{ $row->jumlah_kembali }} ({{ $row->satuan }})
                                 @else
                                     <span class="text-red-600">Belum selesai</span>
                                 @endif
                             </td>
-                            <td class="px-3 py-5 text-left text-sm text-gray-500 sm:table-cell">
+                            <td class="px-3 py-5 text-sm text-left text-gray-500 sm:table-cell">
                                 {{ \Carbon\Carbon::parse($row->tanggal_ambil)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
                             </td>
-                            <td class="px-3 py-5 text-left text-sm text-gray-500 sm:table-cell">
+                            <td class="px-3 py-5 text-sm text-left text-gray-500 sm:table-cell">
                                 @if ($row->tanggal_kembali)
                                     {{ \Carbon\Carbon::parse($row->tanggal_kembali)->locale('id')->isoFormat('D MMMM YYYY - HH:mm:ss') }}
                                 @else
                                     <span class="text-red-600">Belum selesai</span>
                                 @endif
                             </td>
-                            <td class="px-3 py-5 text-right text-sm text-gray-500 sm:table-cell">
+                            <td class="px-3 py-5 text-sm text-right text-gray-500 sm:table-cell">
                                 {{ $row->status }}
                             </td>
                         </tr>
@@ -336,26 +336,26 @@
                 <tfoot>
                     <tr>
                         <th scope="row" colspan="4"
-                            class="pl-4 pr-3 pt-6 text-right text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">
+                            class="pt-6 pl-4 pr-3 text-sm font-normal text-right text-gray-500 sm:table-cell sm:pl-0">
                             Total Ongkos Jahit :
                         </th>
-                        <td class="pl-3 pr-6 pt-6 text-right text-sm text-gray-500 sm:pr-0">
+                        <td class="pt-6 pl-3 pr-6 text-sm text-right text-gray-500 sm:pr-0">
                             {{ formatRupiah($totalOngkosJahit) }}</td>
                     </tr>
                     <tr>
                         <th scope="row" colspan="4"
-                            class="pl-4 pr-3 pt-4 text-right text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">
+                            class="pt-4 pl-4 pr-3 text-sm font-normal text-right text-gray-500 sm:table-cell sm:pl-0">
                             Total BON Jahit :
                         </th>
-                        <td class="pl-3 pr-6 pt-4 text-right text-sm text-gray-500 sm:pr-0">
+                        <td class="pt-4 pl-3 pr-6 text-sm text-right text-gray-500 sm:pr-0">
                             {{ formatRupiah($totalBonJahit) }}</td>
                     </tr>
                     <tr>
                         <th scope="row" colspan="4"
-                            class="pl-4 pr-3 pt-4 text-right text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0">
+                            class="pt-4 pl-4 pr-3 text-sm font-semibold text-right text-gray-900 sm:table-cell sm:pl-0">
                             Total Yang Harus Dibayarkan :
                         </th>
-                        <td class="pl-3 pr-4 pt-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">
+                        <td class="pt-4 pl-3 pr-4 text-sm font-semibold text-right text-gray-900 sm:pr-0">
                             {{ formatRupiah($totalOngkosJahit - $totalBonJahit) }}
                         </td>
                     </tr>
@@ -365,9 +365,9 @@
 
 
         <!--  Footer  -->
-        <div class="border-t-2 pt-4 text-xs text-gray-500 text-center mt-16">
+        <div class="pt-4 mt-16 text-xs text-center text-gray-500 border-t-2">
             - Laporan dicetak menggunakan system ini adalah sah dan benar adanya - <br>
-            <span class="italic text-center font-mono ">Laporan dicetak pada
+            <span class="font-mono italic text-center ">Laporan dicetak pada
                 {{ \Carbon\Carbon::now()->locale('id')->isoFormat('dddd, D MMMM YYYY - HH:mm:ss') }}
             </span>
         </div>
