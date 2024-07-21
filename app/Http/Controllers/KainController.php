@@ -9,8 +9,12 @@ class KainController extends Controller
 {
     public function index()
     {
+        $datas = Kain::latest();
+        if (request()->input('query')) {
+            $datas->where('nama', 'like', '%' . request()->input('query') . '%');
+        }
         $data = [
-            'kain' => Kain::orderBy('id', 'desc')->get(),
+            'kain' => $datas->orderBy('id', 'desc')->get(),
         ];
         return view('kain.index', $data);
     }

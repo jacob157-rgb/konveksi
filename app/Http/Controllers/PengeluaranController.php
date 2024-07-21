@@ -7,12 +7,21 @@ use Illuminate\Http\Request;
 
 class PengeluaranController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $datas = Pengeluaran::latest();
+        if (request()->input('query')) {
+            $datas->where('nominal', 'like', '%' . request()->input('query') . '%')->orWhere('keterangan', 'like', '%' . request()->input('query') . '%');
+        }
+        if (request()->input('start_date') && request()->input('end_date')) {
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
+            $datas->whereBetween('created_at', [$startDate, $endDate]);
+        }
         $data = [
-            'pengeluaran' => Pengeluaran::orderBy('id', 'desc')->get(),
+            'pengeluaran' => $datas->orderBy('id', 'desc')->get(),
+            'total_nominal' => $datas->sum('nominal'),
         ];
-        // dd('view pengeluaran durung digawe ya jac, ikuti route, datane tampilna nominal, keterangan, karo update_at tampilna. ganti format',$data);
         return view('pengeluaran.index', $data);
     }
     public function create()

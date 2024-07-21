@@ -9,8 +9,12 @@ class WarnaController extends Controller
 {
     public function index()
     {
+        $datas = Warna::latest();
+        if (request()->input('query')) {
+            $datas->where('nama', 'like', '%' . request()->input('query') . '%');
+        }
         $data = [
-            'warna' => Warna::orderBy('id', 'desc')->get(),
+            'warna' => $datas->orderBy('id', 'desc')->get(),
         ];
         return view('warna.index', $data);
     }

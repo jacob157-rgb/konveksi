@@ -13,9 +13,23 @@ class JahitController extends Controller
 {
     public function index()
     {
+        $datas = Barang::latest()
+                ->join('supplyer', 'barang.supplyer_id', '=', 'supplyer.id')
+                ->join('kain', 'barang.kain_id', '=', 'kain.id')
+                ->join('model', 'barang.model_id', '=', 'model.id')
+                ->join('warna', 'barang.warna_id', '=', 'warna.id')
+                ->select('barang.*', 'supplyer.nama as supplyer_nama', 'kain.nama as kain_nama', 'model.nama as model_nama', 'warna.nama as warna_nama');
+
+        if (request()->input('query')) {
+            $datas->where('supplyer.nama', 'like', '%' . request()->input('query') . '%')
+            ->orWhere('kain.nama', 'like', '%' . request()->input('query') . '%')
+            ->orWhere('tanggal_datang', 'like', '%' . request()->input('query') . '%')
+            ->orWhere('model.nama', 'like', '%' . request()->input('query') . '%');
+        }
+
         $data = [
             'jahit' => Jahit::orderBy('id', 'desc')->get(),
-            'barang' => Barang::orderBy('id', 'desc')->get(),
+            'barang' => $datas->orderBy('id', 'desc')->get(),
         ];
         return view('jahit.index', $data);
     }

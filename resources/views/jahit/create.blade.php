@@ -66,6 +66,7 @@
                                             class="block w-full px-3 py-2 text-sm border border-gray-200 rounded-lg shadow-sm pe-9 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
                                             <option selected disabled>Pilih satuan</option>
                                             <option value="kg">Kilo ( KG )</option>
+                                            <option value="pcs">PCS ( pieces )</option>
                                             <option value="koli">Koli ( karung, box )</option>
                                         </select>
                                     </div>

@@ -90,6 +90,7 @@
                                             <option selected disabled>Pilih satuan</option>
                                             <option value="kg" {{ $barang->satuan == 'kg' ? 'selected' : '' }}>Kilo (
                                                 KG )</option>
+                                            <option value="yard" {{ $barang->satuan == 'yard' ? 'selected' : '' }}>Yard</option>
                                             <option value="koli" {{ $barang->satuan == 'koli' ? 'selected' : '' }}>Koli (
                                                 karung, box )</option>
                                         </select>

@@ -66,6 +66,7 @@
                                             class="block w-full px-3 py-2 text-sm border border-gray-200 rounded-lg shadow-sm pe-9 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
                                             <option selected disabled>Pilih satuan</option>
                                             <option value="kg">Kilo ( KG )</option>
+                                            <option value="yard">Yard</option>
                                             <option value="koli">Koli ( karung, box )</option>
                                         </select>
                                     </div>
@@ -205,6 +206,7 @@
                                     <option selected disabled>Pilih satuan</option>
                                     <option value="kg" {{ $barang->satuan == 'kg' ? 'selected' : '' }}>Kilo ( KG )
                                     </option>
+                                    <option value="yard" {{ $barang->satuan == 'yard' ? 'selected' : '' }}>Yard</option>
                                     <option value="koli" {{ $barang->satuan == 'koli' ? 'selected' : '' }}>Koli (
                                         karung, box )</option>
                                 </select>

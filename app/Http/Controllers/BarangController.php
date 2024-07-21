@@ -16,10 +16,23 @@ use Illuminate\Routing\Controller;
 
 class BarangController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $datas = Barang::latest()
+                ->join('supplyer', 'barang.supplyer_id', '=', 'supplyer.id')
+                ->join('kain', 'barang.kain_id', '=', 'kain.id')
+                ->join('model', 'barang.model_id', '=', 'model.id')
+                ->join('warna', 'barang.warna_id', '=', 'warna.id')
+                ->select('barang.*', 'supplyer.nama as supplyer_nama', 'kain.nama as kain_nama', 'model.nama as model_nama', 'warna.nama as warna_nama');
+
+        if (request()->input('query')) {
+            $datas->where('supplyer.nama', 'like', '%' . request()->input('query') . '%')
+            ->orWhere('kain.nama', 'like', '%' . request()->input('query') . '%')
+            ->orWhere('tanggal_datang', 'like', '%' . request()->input('query') . '%')
+            ->orWhere('model.nama', 'like', '%' . request()->input('query') . '%');
+        }
         $data = [
-            'barang' => Barang::orderBy('id', 'desc')->get(),
+            'barang' =>  $datas->orderBy('id', 'desc')->get(),
         ];
         return view('barang.index', $data);
     }
@@ -91,14 +104,38 @@ class BarangController extends Controller
     }
     public function show($id)
     {
+        $cutting = Cutting::latest()
+                ->join('karyawan', 'cutting.karyawan_id', '=', 'karyawan.id')
+                ->select('cutting.*', 'karyawan.nama as nama_karyawan');
+
+        if (request()->input('query')) {
+            $cutting->where('karyawan.nama', 'like', '%' . request()->input('query') . '%')
+                    ->orWhere('jumlah_ambil', 'like', '%' . request()->input('query') . '%')
+                    ->orWhere('status', 'like', '%' . request()->input('query') . '%')
+                    ->orWhere('ongkos', 'like', '%' . request()->input('query') . '%')
+                    ->orWhere('jumlah_kembali', 'like', '%' . request()->input('query') . '%');
+        }
+
+        $jahit = Jahit::latest()
+                ->join('karyawan', 'jahit.karyawan_id', '=', 'karyawan.id')
+                ->select('jahit.*', 'karyawan.nama as nama_karyawan');
+
+        if (request()->input('query')) {
+            $jahit->where('karyawan.nama', 'like', '%' . request()->input('query') . '%')
+                    ->orWhere('jumlah_ambil', 'like', '%' . request()->input('query') . '%')
+                    ->orWhere('status', 'like', '%' . request()->input('query') . '%')
+                    ->orWhere('ongkos', 'like', '%' . request()->input('query') . '%')
+                    ->orWhere('jumlah_kembali', 'like', '%' . request()->input('query') . '%');
+        }
+
         $data = [
             'barang' => Barang::findOrFail($id),
             'kain' => Kain::all(),
             'model' => Models::all(),
             'warna' => Warna::all(),
             'supplyer' => Supplyer::all(),
-            'jahit' => Jahit::orderBy('id', 'desc')->where('barang_id', $id)->get(),
-            'cutting' => Cutting::orderBy('id', 'desc')->where('barang_id', $id)->get(),
+            'jahit' => $jahit->orderBy('id', 'desc')->where('barang_id', $id)->get(),
+            'cutting' => $cutting->orderBy('id', 'desc')->where('barang_id', $id)->get(),
         ];
         return view('barang.show', $data);
     }

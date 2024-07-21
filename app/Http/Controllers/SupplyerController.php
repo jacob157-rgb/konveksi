@@ -7,10 +7,15 @@ use Illuminate\Http\Request;
 
 class SupplyerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+
+        $datas = Supplyer::latest();
+        if (request()->input('query')) {
+            $datas->where('nama', 'like', '%' . request()->input('query') . '%');
+        }
         $data = [
-            'supplyer' => Supplyer::orderBy('id', 'desc')->get(),
+            'supplyer' => $datas->orderBy('id', 'desc')->get(),
         ];
         return view('supplyer.index', $data);
     }

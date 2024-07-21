@@ -10,8 +10,15 @@ class KaryawanController extends Controller
 {
     public function index()
     {
+        $datas = Karyawan::latest();
+        if (request()->input('query')) {
+            $datas->where('nama', 'like', '%' . request()->input('query') . '%')
+            ->orWhere('jenis_karyawan', 'like', '%' . request()->input('query') . '%')
+            ->orWhere('alamat', 'like', '%' . request()->input('query') . '%')
+            ->orWhere('no', 'like', '%' . request()->input('query') . '%');
+        }
         $data = [
-            'karyawan' => Karyawan::orderBy('id', 'desc')->get(),
+            'karyawan' => $datas->orderBy('id', 'desc')->get(),
         ];
         return view('karyawan.index', $data);
     }

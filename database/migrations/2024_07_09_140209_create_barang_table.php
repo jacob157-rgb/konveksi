@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer("jumlah_mentah");
             $table->integer("jumlah_cutting");
             $table->integer("jumlah_jahit");
-            $table->enum("satuan", ['kg', 'koli']);
+            $table->enum("satuan", ['kg', 'koli', 'yard']);
             $table->double("harga", 15, 2);
             $table->dateTime("tanggal_datang");
             $table->dateTime("tanggal_jadi")->nullable();
