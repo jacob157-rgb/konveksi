@@ -1,15 +1,13 @@
 @extends('layouts.dashboard')
 
 @section('content')
-
-
-    <form class="max-w-sm flex">
-        <div class="relative">
+    <form class="flex flex-col w-full space-y-4 md:flex-row md:space-x-2 md:space-y-0">
+        <div class="relative w-full">
             <input type="date"
-                class="peer py-3 px-4 ps-11 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:border-transparent dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                class="block w-full px-4 py-3 text-sm bg-gray-100 border-transparent rounded-lg peer ps-11 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-transparent dark:bg-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                 placeholder="Enter name" name="start_date" value="{{ request()->query('start_date') }}">
             <div
-                class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
+                class="absolute inset-y-0 flex items-center pointer-events-none start-0 ps-4 peer-disabled:pointer-events-none peer-disabled:opacity-50">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="text-green-500 lucide lucide-calendar-search">
@@ -23,14 +21,14 @@
             </div>
         </div>
 
-        <span class="p-3 font-semibold text-sm">TO</span>
+        <span class="flex justify-center text-sm font-semibold md:p-3">TO</span>
 
-        <div class="relative">
+        <div class="relative w-full">
             <input type="date"
-                class="peer py-3 px-4 ps-11 block w-full bg-gray-100 border-transparent rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:border-transparent dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                placeholder="Enter " name="end_date" value="{{ request()->query('end_date') }}">
+                class="block w-full px-4 py-3 text-sm bg-gray-100 border-transparent rounded-lg peer ps-11 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-transparent dark:bg-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                placeholder="Enter" name="end_date" value="{{ request()->query('end_date') }}">
             <div
-                class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none">
+                class="absolute inset-y-0 flex items-center pointer-events-none start-0 ps-4 peer-disabled:pointer-events-none peer-disabled:opacity-50">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="text-green-500 lucide lucide-calendar-search">
@@ -44,7 +42,7 @@
             </div>
         </div>
         <button type="submit"
-            class="py-3 px-4 ml-1 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-red-500 text-red-500 hover:border-red-400 hover:text-red-400 disabled:opacity-50 disabled:pointer-events-none">
+            class="inline-flex items-center justify-center px-4 py-3 ml-0 text-sm font-semibold text-red-500 border border-red-500 rounded-lg gap-x-2 hover:border-red-400 hover:text-red-400 disabled:pointer-events-none disabled:opacity-50 md:ml-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="lucide lucide-filter">
@@ -53,32 +51,31 @@
         </button>
     </form>
 
-    <div class="grid gap-3 sm:grid-cols-1 sm:gap-1 lg:grid-cols-3">
-        <!-- Card -->
-        <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-800">
-            <div class="p-4 md:p-5">
-                <div class="flex items-center gap-x-3">
-                    <p class="text-xs tracking-wide text-gray-500 uppercase dark:text-neutral-500">
-                        @if (request()->query('start_date') && request()->query('end_date'))
-                            Total keseluruhan dari tanggal <br>
-                            <span
-                                class="font-bold text-blue-800">{{ \Carbon\Carbon::parse(request()->query('start_date'))->locale('id')->isoFormat('D MMMM YYYY') }}
-                                -
-                                {{ \Carbon\Carbon::parse(request()->query('end_date'))->locale('id')->isoFormat('D MMMM YYYY') }}</span>
-                        @else
-                            Total Semua Pengeluaran
-                        @endif
-                    </p>
-                </div>
-                <div class="flex items-center mt-1 gap-x-2">
-                    <h3 class="text-xl font-medium text-gray-800 dark:text-neutral-200 sm:text-2xl">
-                        {{ formatRupiah($total_nominal) }}
-                    </h3>
-                </div>
+
+    <!-- Card -->
+    <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-800">
+        <div class="p-4 md:p-5">
+            <div class="flex items-center gap-x-3">
+                <p class="text-xs tracking-wide text-gray-500 uppercase dark:text-neutral-500">
+                    @if (request()->query('start_date') && request()->query('end_date'))
+                        Total keseluruhan dari tanggal <br>
+                        <span
+                            class="font-bold text-blue-800">{{ \Carbon\Carbon::parse(request()->query('start_date'))->locale('id')->isoFormat('D MMMM YYYY') }}
+                            -
+                            {{ \Carbon\Carbon::parse(request()->query('end_date'))->locale('id')->isoFormat('D MMMM YYYY') }}</span>
+                    @else
+                        Total Semua Pengeluaran
+                    @endif
+                </p>
+            </div>
+            <div class="flex items-center mt-1 gap-x-2">
+                <h3 class="text-xl font-medium text-gray-800 dark:text-neutral-200 sm:text-2xl">
+                    {{ formatRupiah($total_nominal) }}
+                </h3>
             </div>
         </div>
-        <!-- End Card -->
     </div>
+    <!-- End Card -->
 
 
     <div class="flex flex-col">

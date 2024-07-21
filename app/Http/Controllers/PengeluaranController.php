@@ -16,7 +16,7 @@ class PengeluaranController extends Controller
         if (request()->input('start_date') && request()->input('end_date')) {
             $startDate = $request->input('start_date');
             $endDate = $request->input('end_date');
-            $datas->whereBetween('created_at', [$startDate, $endDate]);
+            $datas->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate);
         }
         $data = [
             'pengeluaran' => $datas->orderBy('id', 'desc')->get(),

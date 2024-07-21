@@ -18,7 +18,7 @@ use App\Http\Middleware\ValidateAuth;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|   
+|
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
@@ -28,7 +28,7 @@ use App\Http\Middleware\ValidateAuth;
 Route::controller(AuthController::class)->group(function () {
     Route::get('/', 'login');
     Route::post('/login', 'authenticate');
-    Route::get('/logout', 'logout');
+    Route::post('/logout', 'logout');
 });
 
 Route::middleware(ValidateAuth::class)->group(function () {

@@ -103,15 +103,6 @@
                 </div>
 
                 <div class="flex flex-row items-center justify-end gap-2">
-                    <button type="button"
-                        class="inline-flex h-[2.375rem] w-[2.375rem] items-center justify-center gap-x-2 rounded-full border border-transparent text-sm font-semibold text-gray-800 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 dark:text-white dark:hover:bg-neutral-700">
-                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-                            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-                        </svg>
-                    </button>
                     <div class="hs-dropdown">
                         <button type="button"
                             class="flex items-center font-medium text-gray-600 hs-dropdown-toggle hs-dark-mode group me-2 hover:text-blue-600 dark:text-neutral-400 dark:hover:text-neutral-500">
@@ -173,18 +164,7 @@
                             </div>
                             <div class="py-2 mt-2 first:pt-0 last:pb-0">
                                 <a class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300"
-                                    href="#">
-                                    <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
-                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-                                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-                                    </svg>
-                                    Pemberitahuan
-                                </a>
-                                <a class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300"
-                                    href="#">
+                                    href="/profil">
                                     {{-- href="{{ route('profile') }}"> --}}
                                     <svg class="flex-shrink-0 size-4" width="24" height="24"
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
