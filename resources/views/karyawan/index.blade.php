@@ -43,41 +43,39 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
-                                    @foreach ($karyawan as $row)
-                                        @if ($row->jenis_karyawan == 'cutting')
-                                            <tr class="text-center">
-                                                <td
-                                                    class="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                                    {{ $loop->iteration }}.</td>
-                                                <td
-                                                    class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                                    {{ $row->nama }}</td>
-                                                <td
-                                                    class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                                    {{ $row->jenis_karyawan }}</td>
-                                                <td
-                                                    class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                                    {{ $row->no }}</td>
-                                                <td
-                                                    class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                                    {{ $row->alamat }}</td>
-                                                <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
-                                                    <button type="button" data-id="{{ $row->id }}"
-                                                        data-hs-overlay="#edit-modal"
-                                                        class="inline-flex items-center text-sm font-semibold text-blue-600 border border-transparent rounded-lg edit gap-x-2 hover:text-blue-800 disabled:pointer-events-none disabled:opacity-50 dark:text-blue-500 dark:hover:text-blue-400">Edit</button>
-                                                    <a href="/cutting/{{ $row->id }}"
-                                                        class="inline-flex items-center text-sm font-semibold text-green-600 border border-transparent rounded-lg edit gap-x-2 hover:text-green-800 disabled:pointer-events-none disabled:opacity-50 dark:text-green-500 dark:hover:text-green-400">Detail</a>
-                                                    <form action="/karyawan/delete/{{ $row->id }}" method="post"
-                                                        class="inline-flex delete-form">
-                                                        @csrf
-                                                        <button type="button"
-                                                            class="inline-flex items-center text-sm font-semibold text-red-600 border border-transparent rounded-lg delete gap-x-2 hover:text-red-800 disabled:pointer-events-none disabled:opacity-50 dark:text-red-500 dark:hover:text-red-400">
-                                                            Hapus
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @endif
+                                    @foreach ($karyawanCutting as $row)
+                                        <tr class="text-center">
+                                            <td
+                                                class="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                                                {{ $loop->iteration }}.</td>
+                                            <td
+                                                class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                                                {{ $row->nama }}</td>
+                                            <td
+                                                class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                                                {{ $row->jenis_karyawan }}</td>
+                                            <td
+                                                class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                                                {{ $row->no }}</td>
+                                            <td
+                                                class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                                                {{ $row->alamat }}</td>
+                                            <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
+                                                <button type="button" data-id="{{ $row->id }}"
+                                                    data-hs-overlay="#edit-modal"
+                                                    class="inline-flex items-center text-sm font-semibold text-blue-600 border border-transparent rounded-lg edit gap-x-2 hover:text-blue-800 disabled:pointer-events-none disabled:opacity-50 dark:text-blue-500 dark:hover:text-blue-400">Edit</button>
+                                                <a href="/cutting/{{ $row->id }}"
+                                                    class="inline-flex items-center text-sm font-semibold text-green-600 border border-transparent rounded-lg edit gap-x-2 hover:text-green-800 disabled:pointer-events-none disabled:opacity-50 dark:text-green-500 dark:hover:text-green-400">Detail</a>
+                                                <form action="/karyawan/delete/{{ $row->id }}" method="post"
+                                                    class="inline-flex delete-form">
+                                                    @csrf
+                                                    <button type="button"
+                                                        class="inline-flex items-center text-sm font-semibold text-red-600 border border-transparent rounded-lg delete gap-x-2 hover:text-red-800 disabled:pointer-events-none disabled:opacity-50 dark:text-red-500 dark:hover:text-red-400">
+                                                        Hapus
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -113,41 +111,39 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
-                                    @foreach ($karyawan as $row)
-                                        @if ($row->jenis_karyawan == 'jahit')
-                                            <tr class="text-center">
-                                                <td
-                                                    class="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                                    {{ $loop->iteration }}.</td>
-                                                <td
-                                                    class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                                    {{ $row->nama }}</td>
-                                                <td
-                                                    class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                                    {{ $row->jenis_karyawan }}</td>
-                                                <td
-                                                    class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                                    {{ $row->no }}</td>
-                                                <td
-                                                    class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                                    {{ $row->alamat }}</td>
-                                                <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
-                                                    <button type="button" data-id="{{ $row->id }}"
-                                                        data-hs-overlay="#edit-modal"
-                                                        class="inline-flex items-center text-sm font-semibold text-blue-600 border border-transparent rounded-lg edit gap-x-2 hover:text-blue-800 disabled:pointer-events-none disabled:opacity-50 dark:text-blue-500 dark:hover:text-blue-400">Edit</button>
-                                                    <a href="/jahit/{{ $row->id }}"
-                                                        class="inline-flex items-center text-sm font-semibold text-green-600 border border-transparent rounded-lg edit gap-x-2 hover:text-green-800 disabled:pointer-events-none disabled:opacity-50 dark:text-green-500 dark:hover:text-green-400">Detail</a>
-                                                    <form action="/karyawan/delete/{{ $row->id }}" method="post"
-                                                        class="inline-flex delete-form">
-                                                        @csrf
-                                                        <button type="button"
-                                                            class="inline-flex items-center text-sm font-semibold text-red-600 border border-transparent rounded-lg delete gap-x-2 hover:text-red-800 disabled:pointer-events-none disabled:opacity-50 dark:text-red-500 dark:hover:text-red-400">
-                                                            Hapus
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @endif
+                                    @foreach ($karyawanJahit as $row)
+                                        <tr class="text-center">
+                                            <td
+                                                class="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                                                {{ $loop->iteration }}.</td>
+                                            <td
+                                                class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                                                {{ $row->nama }}</td>
+                                            <td
+                                                class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                                                {{ $row->jenis_karyawan }}</td>
+                                            <td
+                                                class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                                                {{ $row->no }}</td>
+                                            <td
+                                                class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
+                                                {{ $row->alamat }}</td>
+                                            <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
+                                                <button type="button" data-id="{{ $row->id }}"
+                                                    data-hs-overlay="#edit-modal"
+                                                    class="inline-flex items-center text-sm font-semibold text-blue-600 border border-transparent rounded-lg edit gap-x-2 hover:text-blue-800 disabled:pointer-events-none disabled:opacity-50 dark:text-blue-500 dark:hover:text-blue-400">Edit</button>
+                                                <a href="/jahit/{{ $row->id }}"
+                                                    class="inline-flex items-center text-sm font-semibold text-green-600 border border-transparent rounded-lg edit gap-x-2 hover:text-green-800 disabled:pointer-events-none disabled:opacity-50 dark:text-green-500 dark:hover:text-green-400">Detail</a>
+                                                <form action="/karyawan/delete/{{ $row->id }}" method="post"
+                                                    class="inline-flex delete-form">
+                                                    @csrf
+                                                    <button type="button"
+                                                        class="inline-flex items-center text-sm font-semibold text-red-600 border border-transparent rounded-lg delete gap-x-2 hover:text-red-800 disabled:pointer-events-none disabled:opacity-50 dark:text-red-500 dark:hover:text-red-400">
+                                                        Hapus
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>

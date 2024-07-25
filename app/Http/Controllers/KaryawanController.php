@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\BarangMentah;
 use App\Models\Bon;
 use App\Models\Cutting;
 use App\Models\Karyawan;
@@ -12,18 +13,9 @@ class KaryawanController extends Controller
 {
     public function index()
     {
-        $datas = Karyawan::latest();
-        if (request()->input('query')) {
-            $datas
-                ->where('nama', 'like', '%' . request()->input('query') . '%')
-                ->orWhere('jenis_karyawan', 'like', '%' . request()->input('query') . '%')
-                ->orWhere('alamat', 'like', '%' . request()->input('query') . '%')
-                ->orWhere('no', 'like', '%' . request()->input('query') . '%');
-        }
-        $data = [
-            'karyawan' => $datas->orderBy('id', 'desc')->get(),
-        ];
-        return view('karyawan.index', $data);
+        $karyawanJahit = Karyawan::where('jenis_karyawan', '=', 'jahit')->get();
+        $karyawanCutting = Karyawan::where('jenis_karyawan', '=', 'cutting')->get();
+        return view('karyawan.index', compact('karyawanJahit', 'karyawanCutting'));
     }
 
     public function store(Request $request)
@@ -113,7 +105,7 @@ class KaryawanController extends Controller
         $data = [
             'karyawan' => $karyawan,
             'cutting' => $cutting,
-            'barang' => Barang::orderBy('id', 'desc')->get()
+            'barang' => BarangMentah::orderBy('id', 'desc')->get()
         ];
 
         dd($data);

@@ -79,7 +79,7 @@
             <div class="p-4 md:p-5">
                 <div class="flex items-center border-b gap-x-2">
                     <p class="pb-2 font-medium tracking-wide text-gray-500 uppercase dark:text-neutral-500">
-                        Barang Proses
+                        Barang Mentah
                     </p>
                 </div>
                 <div class="flex items-center mt-1 gap-x-2">
@@ -101,7 +101,7 @@
                                 </svg>
                             </div>
                             <h2 class="mt-5 font-semibold text-gray-800 dark:text-white">
-                                Tidak ada Barang Proses
+                                Tidak ada Barang Mentah
                             </h2>
                             <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">
                                 Silahkan tambah Barang terlebih dahulu.

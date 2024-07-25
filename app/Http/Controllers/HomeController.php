@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\BarangJadi;
+use App\Models\BarangMentah;
 use App\Models\Karyawan;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,12 +17,12 @@ class HomeController extends Controller
     {
         $data = [
             'barang_sedang_proses' => [
-                'data' => Barang::where('tanggal_jadi', '=', null)->get(),
-                'count' => Barang::where('tanggal_jadi', '=', null)->count(),
+                'data' => BarangMentah::get(),
+                'count' => BarangMentah::count(),
             ],
             'barang_sudah_jadi' => [
-                'data' => Barang::where('tanggal_jadi', '!=', null)->get(),
-                'count' => Barang::where('tanggal_jadi', '!=', null)->count(),
+                'data' => BarangJadi::get(),
+                'count' => BarangJadi::count(),
             ],
             'cutting' => Karyawan::where('jenis_karyawan', 'cutting')->count(),
             'jahit' => Karyawan::where('jenis_karyawan', 'jahit')->count(),
