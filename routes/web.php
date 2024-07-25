@@ -40,10 +40,65 @@ Route::middleware(ValidateAuth::class)->group(function () {
     Route::controller(SupplyerController::class)->group(function () {
         Route::get('/supplyer', 'index');
         Route::post('/supplyer', 'store');
-        Route::get('/supplyer/edit/{id}', 'edit');
-        Route::post('/supplyer/update', 'update');
-        Route::post('/supplyer/delete/{id}', 'destroy');
+
+        Route::get('supplyer/detail/{id}', 'detail');
     });
+
+    // Route Crud Karyawan Jahit & Cutting
+    Route::controller(KaryawanController::class)->group(function () {
+        //karyawan CRUD
+        Route::get('karyawan', 'index');
+        Route::post('/karyawan', 'store');
+        Route::get('/karyawan/edit/{id}', 'edit');
+        Route::get('/karyawan/print/{id}', 'print');
+        Route::post('/karyawan/update', 'update');
+        Route::post('/karyawan/delete/{id}', 'destroy');
+
+        Route::prefix('cutting')->group(function () {
+            Route::get('/{id}', 'getCutting');
+            Route::post('/store', 'postCutting');
+            Route::get('/get/{id}', 'getResponseCutting');
+            Route::put('/update/{id}', 'putCutting');
+            Route::get('/detail/{id}', 'detailCutting');
+            Route::delete('/delete/{id}', 'deleteCutting');
+        });
+
+        Route::prefix('jahit')->group(function () {
+            Route::get('/{id}', 'getJahit');
+            Route::post('/store', 'postJahit');
+            Route::get('/get/{id}', 'getResponseJahit');
+            Route::put('/update/{id}', 'putJahit');
+
+            //halaman histori pengambilan
+            Route::get('/detail/{id}', 'detailJahit');
+            Route::delete('/delete/{id}', 'deleteJahit');
+        });
+    });
+
+    Route::controller(BarangController::class)->group(function () {
+        Route::prefix('barang')->group(function () {
+            // barang mentah store
+            Route::post('/mentah/', 'store');
+            // barang jadi store
+            Route::post('/jadi/', 'storeJadi');
+
+
+            Route::get('/barang/mentah/edit', 'editResponse');
+            Route::put('/barang/update', 'update');
+            Route::post('/barang/delete/{id}', 'destroy');
+
+            //Barang Jadi
+            Route::get('/barang/jadi', 'getJadi');
+
+            Route::get('/barang/jadi/detail/{id}', 'showJadi');
+            Route::get('/barang/jadi/edit/{id}', 'getResponseJadi');
+            Route::put('/barang/jadi/update', 'update');
+            Route::post('/barang/jadi/delete/{id}', 'destroy');
+
+            Route::get('/barang/print/{id}', 'print');
+        });
+    });
+
     Route::controller(KainController::class)->group(function () {
         Route::get('/kain', 'index');
         Route::post('/kain', 'store');
@@ -65,58 +120,39 @@ Route::middleware(ValidateAuth::class)->group(function () {
         Route::post('/warna/update', 'update');
         Route::post('/warna/delete/{id}', 'destroy');
     });
-    Route::controller(KaryawanController::class)->group(function () {
-        Route::get('/karyawan', 'index');
-        Route::post('/karyawan', 'store');
-        Route::get('/karyawan/edit/{id}', 'edit');
-        Route::get('/karyawan/show/{id}', 'show');
-        Route::get('/karyawan/print/{id}', 'print');
-        Route::post('/karyawan/update', 'update');
-        Route::get('/karyawan/edit/bon/{id}', 'editBon');
-        Route::post('/karyawan/update/bon', 'updateBon');
-        Route::post('/karyawan/delete/{id}', 'destroy');
-    });
-    Route::controller(BarangController::class)->group(function () {
-        Route::get('/barang', 'index');
-        Route::post('/barang', 'store');
-        Route::get('/barang/create', 'create');
-        Route::get('/barang/edit/{id}', 'edit');
-        Route::get('/barang/show/{id}', 'show');
-        Route::get('/barang/print/{id}', 'print');
-        Route::post('/barang/update/{id}', 'update');
-
-        Route::post('/barang/selesai/{id}', 'selesai');
-
-        //pengembalian
-        Route::get('/barang/pengembalian/cutting/detail/{id_barang}/{id_cutting}', 'getDetailPengembalianCutting');
-        Route::get('/barang/pengembalian/cutting/{id_barang}/{id_cutting}', 'getPengembalianCutting');
-        Route::post('/barang/pengembalian/cutting/update/{id_barang}/{id_cutting}', 'postPengembalianCutting');
-
-        Route::get('/barang/pengembalian/jahit/detail/{id_barang}/{id_jahit}', 'getDetailPengembalianJahit');
-        Route::get('/barang/pengembalian/jahit/{id_barang}/{id_jahit}', 'getPengembalianJahit');
-        Route::post('/barang/pengembalian/jahit/update/{id_barang}/{id_jahit}', 'postPengembalianJahit');
-
-        Route::post('/barang/delete/{id}', 'destroy');
-    });
-    Route::controller(CuttingController::class)->group(function () {
-        Route::get('/cutting', 'index');
-        Route::get('/cutting/create/{id}', 'create');
-        Route::post('/cutting', 'store');
-        Route::post('/cutting/delete/{id}', 'destroy');
-    });
-    Route::controller(JahitController::class)->group(function () {
-        Route::get('/jahit', 'index');
-        Route::get('/jahit/create/{id}', 'create');
-        Route::post('/jahit', 'store');
-        Route::post('/jahit/delete/{id}', 'destroy');
-    });
+    // Route::controller(KaryawanController::class)->group(function () {
+    //     Route::get('/karyawan', 'index');
+    //     Route::post('/karyawan', 'store');
+    //     Route::get('/karyawan/edit/{id}', 'edit');
+    //     Route::get('/karyawan/show/{id}', 'show');
+    //     Route::get('/karyawan/print/{id}', 'print');
+    //     Route::post('/karyawan/update', 'update');
+    //     Route::get('/karyawan/edit/bon/{id}', 'editBon');
+    //     Route::post('/karyawan/update/bon', 'updateBon');
+    //     Route::post('/karyawan/delete/{id}', 'destroy');
+    // });
+    //
+    // Route::controller(CuttingController::class)->group(function () {
+    //     Route::get('/cutting', 'index');
+    //     Route::get('/cutting/create/{id}', 'create');
+    //     Route::post('/cutting', 'store');
+    //     Route::post('/cutting/delete/{id}', 'destroy');
+    // });
+    // Route::controller(JahitController::class)->group(function () {
+    //     Route::get('/jahit', 'index');
+    //     Route::get('/jahit/create/{id}', 'create');
+    //     Route::post('/jahit', 'store');
+    //     Route::post('/jahit/delete/{id}', 'destroy');
+    // });
 
     Route::controller(PengeluaranController::class)->group(function () {
-        Route::get('/pengeluaran', 'index');
-        Route::get('/pengeluaran/create', 'create');
-        Route::post('/pengeluaran', 'store');
-        Route::get('/pengeluaran/edit/{id}', 'edit');
-        Route::post('/pengeluaran/update/{id}', 'update');
-        Route::post('/pengeluaran/delete/{id}', 'destroy');
+        Route::prefix('pengeluaran')->group(function () {
+            Route::get('/', 'index');
+            Route::get('/create', 'create');
+            Route::post('/', 'store');
+            Route::get('/edit/{id}', 'edit');
+            Route::post('/update/{id}', 'update');
+            Route::post('/delete/{id}', 'destroy');
+        });
     });
 });

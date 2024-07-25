@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
 use App\Models\Bon;
+use App\Models\Cutting;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
 
@@ -12,10 +14,11 @@ class KaryawanController extends Controller
     {
         $datas = Karyawan::latest();
         if (request()->input('query')) {
-            $datas->where('nama', 'like', '%' . request()->input('query') . '%')
-            ->orWhere('jenis_karyawan', 'like', '%' . request()->input('query') . '%')
-            ->orWhere('alamat', 'like', '%' . request()->input('query') . '%')
-            ->orWhere('no', 'like', '%' . request()->input('query') . '%');
+            $datas
+                ->where('nama', 'like', '%' . request()->input('query') . '%')
+                ->orWhere('jenis_karyawan', 'like', '%' . request()->input('query') . '%')
+                ->orWhere('alamat', 'like', '%' . request()->input('query') . '%')
+                ->orWhere('no', 'like', '%' . request()->input('query') . '%');
         }
         $data = [
             'karyawan' => $datas->orderBy('id', 'desc')->get(),
@@ -101,6 +104,22 @@ class KaryawanController extends Controller
 
         return redirect()->back()->with('success', 'Karyawan Berhasil Diupdate');
     }
+
+    //cutting
+    public function getCutting($id)
+    {
+        $karyawan = Karyawan::find($id);
+        $cutting = Cutting::where('karyawan_id', $id)->get();
+        $data = [
+            'karyawan' => $karyawan,
+            'cutting' => $cutting,
+            'barang' => Barang::orderBy('id', 'desc')->get()
+        ];
+
+        dd($data);
+        return view('karyawan.detail', $data);
+    }
+
     public function updateBon(Request $request)
     {
         $request->validate([

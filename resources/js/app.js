@@ -42,18 +42,51 @@ $(document).on("click", ".selesaikan-btn", function (e) {
     });
 });
 
-document.addEventListener('input', function(e) {
-    if (e.target.classList.contains('price')) {
+document.addEventListener("input", function (e) {
+    if (e.target.classList.contains("price")) {
         // Menghapus karakter non-numerik
-        let value = e.target.value.replace(/\D/g, '');
+        let value = e.target.value.replace(/\D/g, "");
 
         // Mengupdate input tersembunyi yang terkait dengan elemen input yang berubah
         e.target.nextElementSibling.value = value;
 
         // Memformat angka dengan pemisah ribuan
-        let formattedValue = new Intl.NumberFormat('id-ID').format(value);
+        let formattedValue = new Intl.NumberFormat("id-ID").format(value);
 
         // Menampilkan nilai terformat
         e.target.value = formattedValue;
+    }
+});
+
+document.addEventListener("input", function (e) {
+    if (
+        e.target.classList.contains("jumlah") ||
+        e.target.classList.contains("nominal")
+    ) {
+        // Find the closest container that includes both 'jumlah' and 'nominal' inputs
+        const container = e.target.closest("form");
+
+        if (container) {
+            // Get the values from the inputs
+            const jumlah =
+                parseFloat(container.querySelector(".jumlah").value) || 0;
+            const nominal =
+                parseFloat(
+                    container
+                        .querySelector(".nominal")
+                        .value.replace(/\D/g, "")
+                ) || 0;
+
+                console.log(nominal)
+            // Calculate the total
+            const total = jumlah * nominal;
+
+            // Update the total input field with the formatted total
+            container.querySelector(".total").value = new Intl.NumberFormat(
+                "id-ID"
+            ).format(total);
+        } else {
+            console.error("Container not found");
+        }
     }
 });

@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
+use App\Models\Kain;
+use App\Models\Models;
 use App\Models\Supplyer;
+use App\Models\Warna;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SupplyerController extends Controller
 {
+
+
     public function index(Request $request)
     {
-
         $datas = Supplyer::latest();
         if (request()->input('query')) {
             $datas->where('nama', 'like', '%' . request()->input('query') . '%');
@@ -17,7 +23,25 @@ class SupplyerController extends Controller
         $data = [
             'supplyer' => $datas->orderBy('id', 'desc')->get(),
         ];
-        return view('supplyer.index', $data);
+        $kain = Kain::all();
+        $model = Models::all();
+        $warna = Warna::all();
+        $supplyer = Supplyer::all();
+        return view('supplyer.indexnew', compact('kain', 'model', 'warna', 'supplyer'));
+    }
+
+    public function detail(Request $request, $id)
+    {
+        $barang = DB::table('barang')
+            ->join('supplyer', 'supplyer.id', '=', 'barang.supplyer_id')
+            ->join('kain', 'barang.kain_id', '=', 'kain.id')
+            ->join('model', 'barang.model_id', '=', 'model.id')
+            ->join('warna', 'barang.warna_id', '=', 'warna.id')
+            ->select('barang.*', 'kain.nama as kain_nama', 'model.nama as model_nama', 'warna.nama as warna_nama')
+            ->where('barang.supplyer_id', '=', $id)
+            ->get();
+
+        return view('supplyer.detail', compact('barang'));
     }
 
     public function store(Request $request)

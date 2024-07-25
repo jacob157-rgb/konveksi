@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger("karyawan_id");
             $table->integer("jumlah_ambil");
             $table->integer("jumlah_kembali")->nullable();
-            $table->enum("satuan", ['kg', 'koli', 'yard']);
+            $table->enum("satuan", ['kg', 'yard']);
             $table->double("ongkos", 15, 2);
             $table->double("bayar_ongkos", 15, 2)->nullable();
             $table->dateTime("tanggal_ambil");
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->enum("status", ['proses', 'jadi']);
             $table->timestamps();
 
-            $table->foreign("barang_id")->references("id")->on("barang")->onDelete("cascade");
+            // $table->foreign("barang_id")->references("id")->on("barang")->onDelete("cascade");
             $table->foreign("karyawan_id")->references("id")->on("karyawan")->onDelete("cascade");
         });
     }

@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use App\Models\Kain;
 use App\Models\Jahit;
 use App\Models\Warna;
-use App\Models\Barang;
+use App\Models\BarangMentah;
 use App\Models\Bon;
 use App\Models\Models;
 use App\Models\Cutting;
@@ -18,18 +18,18 @@ class BarangController extends Controller
 {
     public function index(Request $request)
     {
-        $datas = Barang::latest()
-                ->join('supplyer', 'barang.supplyer_id', '=', 'supplyer.id')
-                ->join('kain', 'barang.kain_id', '=', 'kain.id')
-                ->join('model', 'barang.model_id', '=', 'model.id')
-                ->join('warna', 'barang.warna_id', '=', 'warna.id')
-                ->select('barang.*', 'supplyer.nama as supplyer_nama', 'kain.nama as kain_nama', 'model.nama as model_nama', 'warna.nama as warna_nama');
+        $datas = BarangMentah::latest()
+            ->join('supplyer', 'barang.supplyer_id', '=', 'supplyer.id')
+            ->join('kain', 'barang.kain_id', '=', 'kain.id')
+            ->join('model', 'barang.model_id', '=', 'model.id')
+            ->join('warna', 'barang.warna_id', '=', 'warna.id')
+            ->select('barang.*', 'supplyer.nama as supplyer_nama', 'kain.nama as kain_nama', 'model.nama as model_nama', 'warna.nama as warna_nama');
 
         if (request()->input('query')) {
             $datas->where('supplyer.nama', 'like', '%' . request()->input('query') . '%')
-            ->orWhere('kain.nama', 'like', '%' . request()->input('query') . '%')
-            ->orWhere('tanggal_datang', 'like', '%' . request()->input('query') . '%')
-            ->orWhere('model.nama', 'like', '%' . request()->input('query') . '%');
+                ->orWhere('kain.nama', 'like', '%' . request()->input('query') . '%')
+                ->orWhere('tanggal_datang', 'like', '%' . request()->input('query') . '%')
+                ->orWhere('model.nama', 'like', '%' . request()->input('query') . '%');
         }
         $data = [
             'barang' =>  $datas->orderBy('id', 'desc')->get(),
@@ -49,7 +49,7 @@ class BarangController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request);
+        dd($request);
         $request->validate([
             'supplyer_id' => 'required',
             'kain_id' => 'required',
@@ -61,7 +61,7 @@ class BarangController extends Controller
             'tanggal_datang' => 'required',
         ]);
 
-        Barang::create([
+        BarangMentah::create([
             'supplyer_id' => $request->supplyer_id,
             'kain_id' => $request->kain_id,
             'model_id' => $request->model_id,
@@ -72,16 +72,45 @@ class BarangController extends Controller
             'satuan' => $request->satuan,
             'harga' => str_replace('.', '', $request->harga),
             'tanggal_datang' => $request->tanggal_datang,
-            'tanggal_jadi' => null,
         ]);
 
-        return redirect('/barang')->with('success', 'Barang Berhasil Ditambahkan.');
+        return redirect('/supplyer')->with('success', 'BarangMentah Mentah Berhasil Ditambahkan.');
+    }
+
+    public function storeJadi(Request $request)
+    {
+        dd($request);
+        $request->validate([
+            'supplyer_id' => 'required',
+            'kain_id' => 'required',
+            'model_id' => 'required',
+            'warna_id' => 'required',
+            'jumlah_mentah' => 'required',
+            'satuan' => 'required',
+            'harga' => 'required',
+            'tanggal_datang' => 'required',
+        ]);
+
+        BarangMentah::create([
+            'supplyer_id' => $request->supplyer_id,
+            'kain_id' => $request->kain_id,
+            'model_id' => $request->model_id,
+            'warna_id' => $request->warna_id,
+            'jumlah_mentah' => $request->jumlah_mentah,
+            'jumlah_cutting' => 0,
+            'jumlah_jahit' => 0,
+            'satuan' => $request->satuan,
+            'harga' => str_replace('.', '', $request->harga),
+            'tanggal_datang' => $request->tanggal_datang,
+        ]);
+
+        return redirect('/supplyer')->with('success', 'BarangMentah Jadi Berhasil Ditambahkan.');
     }
 
     public function edit($id)
     {
         $data = [
-            'barang' => Barang::findOrFail($id),
+            'barang' => BarangMentah::findOrFail($id),
             'kain' => Kain::all(),
             'model' => Models::all(),
             'warna' => Warna::all(),
@@ -92,7 +121,7 @@ class BarangController extends Controller
     public function print($id)
     {
         $data = [
-            'barang' => Barang::findOrFail($id),
+            'barang' => BarangMentah::findOrFail($id),
             'kain' => Kain::all(),
             'model' => Models::all(),
             'warna' => Warna::all(),
@@ -105,31 +134,31 @@ class BarangController extends Controller
     public function show($id)
     {
         $cutting = Cutting::latest()
-                ->join('karyawan', 'cutting.karyawan_id', '=', 'karyawan.id')
-                ->select('cutting.*', 'karyawan.nama as nama_karyawan');
+            ->join('karyawan', 'cutting.karyawan_id', '=', 'karyawan.id')
+            ->select('cutting.*', 'karyawan.nama as nama_karyawan');
 
         if (request()->input('query')) {
             $cutting->where('karyawan.nama', 'like', '%' . request()->input('query') . '%')
-                    ->orWhere('jumlah_ambil', 'like', '%' . request()->input('query') . '%')
-                    ->orWhere('status', 'like', '%' . request()->input('query') . '%')
-                    ->orWhere('ongkos', 'like', '%' . request()->input('query') . '%')
-                    ->orWhere('jumlah_kembali', 'like', '%' . request()->input('query') . '%');
+                ->orWhere('jumlah_ambil', 'like', '%' . request()->input('query') . '%')
+                ->orWhere('status', 'like', '%' . request()->input('query') . '%')
+                ->orWhere('ongkos', 'like', '%' . request()->input('query') . '%')
+                ->orWhere('jumlah_kembali', 'like', '%' . request()->input('query') . '%');
         }
 
         $jahit = Jahit::latest()
-                ->join('karyawan', 'jahit.karyawan_id', '=', 'karyawan.id')
-                ->select('jahit.*', 'karyawan.nama as nama_karyawan');
+            ->join('karyawan', 'jahit.karyawan_id', '=', 'karyawan.id')
+            ->select('jahit.*', 'karyawan.nama as nama_karyawan');
 
         if (request()->input('query')) {
             $jahit->where('karyawan.nama', 'like', '%' . request()->input('query') . '%')
-                    ->orWhere('jumlah_ambil', 'like', '%' . request()->input('query') . '%')
-                    ->orWhere('status', 'like', '%' . request()->input('query') . '%')
-                    ->orWhere('ongkos', 'like', '%' . request()->input('query') . '%')
-                    ->orWhere('jumlah_kembali', 'like', '%' . request()->input('query') . '%');
+                ->orWhere('jumlah_ambil', 'like', '%' . request()->input('query') . '%')
+                ->orWhere('status', 'like', '%' . request()->input('query') . '%')
+                ->orWhere('ongkos', 'like', '%' . request()->input('query') . '%')
+                ->orWhere('jumlah_kembali', 'like', '%' . request()->input('query') . '%');
         }
 
         $data = [
-            'barang' => Barang::findOrFail($id),
+            'barang' => BarangMentah::findOrFail($id),
             'kain' => Kain::all(),
             'model' => Models::all(),
             'warna' => Warna::all(),
@@ -153,7 +182,7 @@ class BarangController extends Controller
             'tanggal_datang' => 'required',
         ]);
 
-        Barang::findOrFail($id)->update([
+        BarangMentah::findOrFail($id)->update([
             'supplyer_id' => $request->supplyer_id,
             'kain_id' => $request->kain_id,
             'model_id' => $request->model_id,
@@ -167,11 +196,11 @@ class BarangController extends Controller
             'tanggal_jadi' => null,
         ]);
 
-        return redirect('/barang')->with('success', 'Barang Berhasil Diupdate');
+        return redirect('/barang')->with('success', 'BarangMentah Berhasil Diupdate');
     }
     public function selesai(Request $request, $id)
     {
-        Barang::findOrFail($id)->update([
+        BarangMentah::findOrFail($id)->update([
             'tanggal_jadi' => Carbon::now(),
         ]);
 
@@ -181,7 +210,7 @@ class BarangController extends Controller
     // pengembalian cutting
     public function getDetailPengembalianCutting($id_barang, $id_cutting)
     {
-        $barang = Barang::findOrFail($id_barang);
+        $barang = BarangMentah::findOrFail($id_barang);
         $cutting = Cutting::findOrFail($id_cutting);
         $data = [
             'barang' => $barang,
@@ -191,7 +220,7 @@ class BarangController extends Controller
     }
     public function getPengembalianCutting($id_barang, $id_cutting)
     {
-        $barang = Barang::findOrFail($id_barang);
+        $barang = BarangMentah::findOrFail($id_barang);
         $cutting = Cutting::findOrFail($id_cutting);
         $data = [
             'barang' => $barang,
@@ -201,7 +230,7 @@ class BarangController extends Controller
     }
     public function postPengembalianCutting(Request $request, $id_barang, $id_cutting)
     {
-        $barang = Barang::findOrFail($id_barang);
+        $barang = BarangMentah::findOrFail($id_barang);
         $cutting = Cutting::findOrFail($id_cutting);
         $request->validate([
             'jumlah_kembali' => 'required',
@@ -238,7 +267,7 @@ class BarangController extends Controller
     // pengembalian jahit
     public function getDetailPengembalianJahit($id_barang, $id_jahit)
     {
-        $barang = Barang::findOrFail($id_barang);
+        $barang = BarangMentah::findOrFail($id_barang);
         $jahit = Jahit::findOrFail($id_jahit);
         $data = [
             'barang' => $barang,
@@ -248,7 +277,7 @@ class BarangController extends Controller
     }
     public function getPengembalianJahit($id_barang, $id_jahit)
     {
-        $barang = Barang::findOrFail($id_barang);
+        $barang = BarangMentah::findOrFail($id_barang);
         $jahit = Jahit::findOrFail($id_jahit);
         $data = [
             'barang' => $barang,
@@ -258,7 +287,7 @@ class BarangController extends Controller
     }
     public function postPengembalianJahit(Request $request, $id_barang, $id_jahit)
     {
-        $barang = Barang::findOrFail($id_barang);
+        $barang = BarangMentah::findOrFail($id_barang);
         $jahit = Jahit::findOrFail($id_jahit);
         $request->validate([
             'jumlah_kembali' => 'required',
@@ -294,11 +323,11 @@ class BarangController extends Controller
 
     public function destroy($id)
     {
-        $barang = Barang::find($id);
+        $barang = BarangMentah::find($id);
         if ($barang->tanggal_jadi) {
             return redirect()->back()->with('error', 'Gagal Menghapus karena barang selesai.');
         }
         $barang->delete();
-        return redirect()->back()->with('success', 'Barang Dihapus.');
+        return redirect()->back()->with('success', 'BarangMentah Dihapus.');
     }
 }
