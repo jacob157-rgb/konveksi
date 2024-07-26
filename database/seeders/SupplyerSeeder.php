@@ -14,13 +14,13 @@ class SupplyerSeeder extends Seeder
     public function run(): void
     {
         Supplyer::create([
-            'nama' => 'Abdullah',
-        ]);
-        Supplyer::create([
             'nama' => 'Ucup',
         ]);
         Supplyer::create([
             'nama' => 'Sinta',
+        ]);
+        Supplyer::create([
+            'nama' => 'Abdullah',
         ]);
     }
 }

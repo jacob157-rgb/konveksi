@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BarangJadi;
 use Carbon\Carbon;
 use App\Models\Kain;
 use App\Models\Jahit;
@@ -49,7 +50,7 @@ class BarangController extends Controller
 
     public function store(Request $request)
     {
-        dd($request);
+        // dd($request);
         $request->validate([
             'supplyer_id' => 'required',
             'kain_id' => 'required',
@@ -67,44 +68,38 @@ class BarangController extends Controller
             'model_id' => $request->model_id,
             'warna_id' => $request->warna_id,
             'jumlah_mentah' => $request->jumlah_mentah,
-            'jumlah_cutting' => 0,
-            'jumlah_jahit' => 0,
             'satuan' => $request->satuan,
             'harga' => str_replace('.', '', $request->harga),
             'tanggal_datang' => $request->tanggal_datang,
         ]);
 
-        return redirect('/supplyer')->with('success', 'BarangMentah Mentah Berhasil Ditambahkan.');
+        return redirect('/supplyer')->with('success', 'Barang Mentah Mentah Berhasil Ditambahkan.');
     }
 
     public function storeJadi(Request $request)
     {
-        dd($request);
+        // dd("jadi", $request);
         $request->validate([
             'supplyer_id' => 'required',
-            'kain_id' => 'required',
             'model_id' => 'required',
             'warna_id' => 'required',
-            'jumlah_mentah' => 'required',
+            'jumlah_jadi' => 'required',
             'satuan' => 'required',
             'harga' => 'required',
-            'tanggal_datang' => 'required',
+            'tanggal_kirim' => 'required',
         ]);
 
-        BarangMentah::create([
+        BarangJadi::create([
             'supplyer_id' => $request->supplyer_id,
-            'kain_id' => $request->kain_id,
             'model_id' => $request->model_id,
             'warna_id' => $request->warna_id,
-            'jumlah_mentah' => $request->jumlah_mentah,
-            'jumlah_cutting' => 0,
-            'jumlah_jahit' => 0,
+            'jumlah_jadi' => $request->jumlah_jadi,
             'satuan' => $request->satuan,
             'harga' => str_replace('.', '', $request->harga),
-            'tanggal_datang' => $request->tanggal_datang,
+            'tanggal_kirim' => $request->tanggal_kirim,
         ]);
 
-        return redirect('/supplyer')->with('success', 'BarangMentah Jadi Berhasil Ditambahkan.');
+        return redirect('/supplyer')->with('success', 'Barang Jadi Berhasil Ditambahkan.');
     }
 
     public function edit($id)

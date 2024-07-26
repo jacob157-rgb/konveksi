@@ -78,9 +78,9 @@ Route::middleware(ValidateAuth::class)->group(function () {
     Route::controller(BarangController::class)->group(function () {
         Route::prefix('barang')->group(function () {
             // barang mentah store
-            Route::post('/mentah/', 'store');
+            Route::post('/mentah', 'store');
             // barang jadi store
-            Route::post('/jadi/', 'storeJadi');
+            Route::post('/jadi', 'storeJadi');
 
 
             Route::get('/barang/mentah/edit', 'editResponse');

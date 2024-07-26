@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('warna', function (Blueprint $table) {
             $table->id();
             $table->string("nama");
-            $table->timestamps();
         });
     }
 

@@ -34,7 +34,7 @@ class HomeController extends Controller
         $data = [
             'users' => User::find(auth()->user()->id),
         ];
-        return view('profil.index', $data);
+        return view('pages.profil.index', $data);
     }
     public function postProfil(Request $request)
     {

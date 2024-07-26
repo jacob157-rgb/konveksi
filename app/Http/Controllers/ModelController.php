@@ -9,14 +9,8 @@ class ModelController extends Controller
 {
     public function index()
     {
-        $datas = Models::latest();
-        if (request()->input('query')) {
-            $datas->where('nama', 'like', '%' . request()->input('query') . '%');
-        }
-        $data = [
-            'model' => $datas->orderBy('id', 'desc')->get(),
-        ];
-        return view('model.index', $data);
+        $model = Models::orderBy('id', 'desc')->get();
+        return view('pages.model.index', compact('model'));
     }
 
     public function store(Request $request)

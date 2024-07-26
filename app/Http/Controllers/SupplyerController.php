@@ -16,18 +16,11 @@ class SupplyerController extends Controller
 
     public function index(Request $request)
     {
-        $datas = Supplyer::latest();
-        if (request()->input('query')) {
-            $datas->where('nama', 'like', '%' . request()->input('query') . '%');
-        }
-        $data = [
-            'supplyer' => $datas->orderBy('id', 'desc')->get(),
-        ];
         $kain = Kain::all();
         $model = Models::all();
         $warna = Warna::all();
-        $supplyer = Supplyer::all();
-        return view('supplyer.indexnew', compact('kain', 'model', 'warna', 'supplyer'));
+        $supplyer = Supplyer::orderBy('id', 'desc')->get();
+        return view('pages.supplyer.index', compact('kain', 'model', 'warna', 'supplyer'));
     }
 
     public function detail(Request $request, $id)
@@ -41,7 +34,7 @@ class SupplyerController extends Controller
             ->where('barang.supplyer_id', '=', $id)
             ->get();
 
-        return view('supplyer.detail', compact('barang'));
+        return view('pages.supplyer.detail', compact('barang'));
     }
 
     public function store(Request $request)

@@ -72,12 +72,10 @@ document.addEventListener("input", function (e) {
                 parseFloat(container.querySelector(".jumlah").value) || 0;
             const nominal =
                 parseFloat(
-                    container
-                        .querySelector(".nominal")
-                        .value.replace(/\D/g, "")
+                    container.querySelector(".nominal").value.replace(/\D/g, "")
                 ) || 0;
 
-                console.log(nominal)
+            console.log(nominal);
             // Calculate the total
             const total = jumlah * nominal;
 
@@ -89,4 +87,39 @@ document.addEventListener("input", function (e) {
             console.error("Container not found");
         }
     }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const tambahBarangButtons = document.querySelectorAll(".tambah-barang");
+    const kirimBarangButtons = document.querySelectorAll(".kirim-barang");
+
+    if (tambahBarangButtons.length === 0 || kirimBarangButtons.length === 0) {
+        console.error(
+            "No elements with the class 'tambah-barang' or 'kirim-barang' found."
+        );
+        return;
+    }
+
+    function setSupplyerId(event) {
+        const supplyerId = event.currentTarget.getAttribute("data-supplyer-id");
+        const hiddenInputs = document.querySelectorAll(".supplyer_id");
+
+        if (hiddenInputs.length === 0) {
+            console.error("No elements with the class 'supplyer_id' found.");
+            return;
+        }
+
+        hiddenInputs.forEach((hiddenInput) => {
+            hiddenInput.value = supplyerId;
+            console.log(hiddenInput.value);
+        });
+    }
+
+    tambahBarangButtons.forEach((button) => {
+        button.addEventListener("click", setSupplyerId);
+    });
+
+    kirimBarangButtons.forEach((button) => {
+        button.addEventListener("click", setSupplyerId);
+    });
 });

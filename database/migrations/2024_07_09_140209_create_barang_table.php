@@ -36,7 +36,7 @@ return new class extends Migration
             $table->integer("jumlah_jadi");
             $table->enum("satuan", ['pcs']);
             $table->double("harga", 15, 2);
-            $table->dateTime("tanggal_jadi");
+            $table->dateTime("tanggal_kirim");
             $table->timestamps();
 
             $table->foreign("supplyer_id")->references("id")->on("supplyer")->onDelete("cascade");

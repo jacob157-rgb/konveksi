@@ -10,16 +10,20 @@ class Karyawan extends Model
     use HasFactory;
     protected $table = 'karyawan';
     protected $guarded = ['id'];
+    public $timestamps = false;
 
-    public function bon() {
+    public function bon()
+    {
         return $this->hasMany(Bon::class);
     }
 
-    public function cutting(){
+    public function cutting()
+    {
         return $this->hasMany(Cutting::class);
     }
 
-    public function jahit(){
+    public function jahit()
+    {
         return $this->hasMany(Jahit::class);
     }
 }
