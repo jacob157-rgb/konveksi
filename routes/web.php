@@ -40,7 +40,6 @@ Route::middleware(ValidateAuth::class)->group(function () {
     Route::controller(SupplyerController::class)->group(function () {
         Route::get('/supplyer', 'index');
         Route::post('/supplyer', 'store');
-
         Route::get('supplyer/detail/{id}', 'detail');
     });
 
@@ -78,22 +77,16 @@ Route::middleware(ValidateAuth::class)->group(function () {
     Route::controller(BarangController::class)->group(function () {
         Route::prefix('barang')->group(function () {
             // barang mentah store
-            Route::post('/mentah', 'store');
+            Route::post('/mentah', 'storeMentah');
+            Route::get('/mentah/edit/{id}', 'editResponseMentah');
+            Route::put('/mentah/update', 'updateMentah');
+            Route::post('/mentah/delete/{id}', 'destroyMentah');
+
             // barang jadi store
             Route::post('/jadi', 'storeJadi');
-
-
-            Route::get('/barang/mentah/edit', 'editResponse');
-            Route::put('/barang/update', 'update');
-            Route::post('/barang/delete/{id}', 'destroy');
-
-            //Barang Jadi
-            Route::get('/barang/jadi', 'getJadi');
-
-            Route::get('/barang/jadi/detail/{id}', 'showJadi');
-            Route::get('/barang/jadi/edit/{id}', 'getResponseJadi');
-            Route::put('/barang/jadi/update', 'update');
-            Route::post('/barang/jadi/delete/{id}', 'destroy');
+            Route::get('/jadi/edit/{id}', 'editResponseJadi');
+            Route::put('/jadi/update', 'updateJadi');
+            Route::post('/jadi/delete/{id}', 'destroyJadi');
 
             Route::get('/barang/print/{id}', 'print');
         });

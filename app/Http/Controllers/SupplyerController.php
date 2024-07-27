@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\BarangJadi;
+use App\Models\BarangMentah;
 use App\Models\Kain;
 use App\Models\Models;
 use App\Models\Supplyer;
@@ -12,8 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 class SupplyerController extends Controller
 {
-
-
     public function index(Request $request)
     {
         $kain = Kain::all();
@@ -25,16 +25,19 @@ class SupplyerController extends Controller
 
     public function detail(Request $request, $id)
     {
-        $barang = DB::table('barang')
-            ->join('supplyer', 'supplyer.id', '=', 'barang.supplyer_id')
-            ->join('kain', 'barang.kain_id', '=', 'kain.id')
-            ->join('model', 'barang.model_id', '=', 'model.id')
-            ->join('warna', 'barang.warna_id', '=', 'warna.id')
-            ->select('barang.*', 'kain.nama as kain_nama', 'model.nama as model_nama', 'warna.nama as warna_nama')
-            ->where('barang.supplyer_id', '=', $id)
-            ->get();
+        $barangJadi = BarangJadi::where('supplyer_id', $id)->latest();
 
-        return view('pages.supplyer.detail', compact('barang'));
+        if ($request->query('date')) {
+            $tanggal = $request->query('date');
+            $barangJadi->whereDate('tanggal_kirim', $tanggal);
+        }
+
+        $data = [
+            'supplayer' => Supplyer::find($id),
+            'barangMentah' => BarangMentah::where('supplyer_id', $id)->paginate(10),
+            'barangJadi' => $barangJadi->get(),
+        ];
+        return view('pages.supplyer.detail', $data);
     }
 
     public function store(Request $request)

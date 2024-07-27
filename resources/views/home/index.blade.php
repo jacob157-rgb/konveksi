@@ -164,12 +164,7 @@
                                                     <td
                                                         class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
                                                         {{ $row->kain->nama }}</td>
-                                                    <td
-                                                        class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                                        {{ $row->model->nama }}</td>
-                                                    <td
-                                                        class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                                        {{ $row->warna->nama }}</td>
+                                                    
                                                     <td
                                                         class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
                                                         {{ $row->jumlah_mentah }} ({{ $row->satuan }})</td>
@@ -280,9 +275,7 @@
                                                     <td
                                                         class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
                                                         {{ $row->supplyer->nama }}</td>
-                                                    <td
-                                                        class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
-                                                        {{ $row->kain->nama }}</td>
+                                                  
                                                     <td
                                                         class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
                                                         {{ $row->model->nama }}</td>

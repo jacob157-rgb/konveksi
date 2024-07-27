@@ -20,61 +20,60 @@
                     </svg>
                 </button>
             </div>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="/barang/mentah" method="post">
                 @csrf
                 <div class="p-4 -mt-2 space-y-2 overflow-y-auto">
+                    <input type="hidden" class="supplyer_id" name="supplyer_id" value="{{ old('supplyer_id') }}">
 
-                    <input type="hidden" class="supplyer_id" name="supplyer_id" value="">
                     <label for="tanggal_datang" class="block mb-2 text-sm font-medium dark:text-white">Tanggal
                         Masuk</label>
                     <input type="datetime-local" name="tanggal_datang"
                         class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
-                        autofocus="">
+                        autofocus="" value="{{ old('tanggal_datang') }}" >
+
                     <label for="kain_id" class="block mb-2 text-sm font-medium dark:text-white">Jenis Kain</label>
                     <select name="kain_id"
                         class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg pe-9 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-                        <option selected value="">Pilih Jenis Kain</option>
+                        <option value="">Pilih Jenis Kain</option>
                         @foreach ($kain as $row)
-                            <option value="{{ $row->id }}">{{ $row->nama }}</option>
+                            <option value="{{ $row->id }}" {{ old('kain_id') == $row->id ? 'selected' : '' }}>
+                                {{ $row->nama }}</option>
                         @endforeach
                     </select>
-                    <label for="model_id" class="block mb-2 text-sm font-medium dark:text-white">Model</label>
-                    <select name="model_id"
-                        class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg pe-9 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-                        <option selected value="">Pilih Model</option>
-                        @foreach ($model as $row)
-                            <option value="{{ $row->id }}">{{ $row->nama }}</option>
-                        @endforeach
-                    </select>
-                    <label for="warna_id" class="block mb-2 text-sm font-medium dark:text-white">Warna</label>
-                    <select name="warna_id"
-                        class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg pe-9 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-                        <option selected value="">Pilih Model</option>
-                        @foreach ($warna as $row)
-                            <option value="{{ $row->id }}">{{ $row->nama }}</option>
-                        @endforeach
-                    </select>
+
                     <div>
                         <label for="hs-inline-leading-pricing-select-label"
                             class="block mb-2 text-sm font-medium dark:text-white">Jml. Barang</label>
                         <div class="relative">
                             <input type="number" id="hs-inline-leading-pricing-select-label" name="jumlah_mentah"
                                 class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg shadow-sm jumlah pe-20 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                placeholder="Masukan Jumlah Barang">
+                                placeholder="Masukan Jumlah Barang" value="{{ old('jumlah_mentah') }}">
                             <div class="absolute inset-y-0 flex items-center text-gray-500 end-0 pe-px">
                                 <label for="satuan" class="sr-only">Satuan</label>
                                 <select id="satuan" name="satuan"
                                     class="block w-full border border-transparent rounded-lg focus:border-blue-600 focus:ring-blue-600 dark:bg-neutral-800 dark:text-neutral-500">
-                                    <option value="kg" selected>Kg</option>
-                                    <option value="yard">Yard</option>
+                                    <option value="kg" {{ old('satuan') == 'kg' ? 'selected' : '' }}>Kg</option>
+                                    <option value="yard" {{ old('satuan') == 'yard' ? 'selected' : 'selected' }}>Yard</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+
                     <label for="harga" class="block mb-2 text-sm font-medium dark:text-white">Harga Barang</label>
                     <div class="relative rounded-md">
                         <input type="text" name="harga"
-                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm nominal price pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm nominal price pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                            value="{{ old('harga') }}">
                         <input type="hidden" id="nominal">
                         <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none start-0 ps-4">
                             <span class="text-gray-500 dark:text-neutral-500">Rp.</span>
@@ -83,10 +82,12 @@
                             <span class="text-gray-500 dark:text-neutral-500">IDR</span>
                         </div>
                     </div>
+
                     <label for="total" class="block mb-2 text-sm font-medium dark:text-white">Total Harga</label>
                     <div class="relative rounded-md">
                         <input type="text" readonly
-                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm total price pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm total price pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                            value="{{ old('total') }}">
                         <input type="hidden" id="total" readonly>
                         <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none start-0 ps-4">
                             <span class="text-gray-500 dark:text-neutral-500">Rp.</span>
@@ -108,6 +109,7 @@
                     </button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
