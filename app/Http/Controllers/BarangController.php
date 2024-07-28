@@ -88,13 +88,14 @@ class BarangController extends Controller
     public function getJadi($id) {
         $data = [
             'supplyer' => Supplyer::find($id),
-            'model' => Models::orderBy('id', 'desc')->get()
+            'model' => Models::orderBy('id', 'desc')->get(),
+            'warna' => Warna::orderBy('id', 'desc')->get()
         ];
         return view('pages.barang.jadi.index', $data);
     }
     public function storeJadi(Request $request)
     {
-
+        dd($request->all());
         $request->validate([
             // tanggal kirim
             'tanggal_kirim' => 'required',
@@ -117,7 +118,7 @@ class BarangController extends Controller
             'barang_jadi_id' => $barang_jadi->id,
             'model' => $request->model,
         ]);
-        
+
         $warna_model = WarnaModel::create([
             'model_barang_jadi_id' => $model_barang_jadi->id,
             'warna' => $request->warna,

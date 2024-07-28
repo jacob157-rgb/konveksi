@@ -15,7 +15,7 @@ use App\Models\Supplyer;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-class BarangController extends Controller
+class BarangControllerOld extends Controller
 {
     public function index(Request $request)
     {

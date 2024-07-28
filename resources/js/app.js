@@ -64,7 +64,7 @@ document.addEventListener("input", function (e) {
         e.target.classList.contains("nominal")
     ) {
         // Find the closest container that includes both 'jumlah' and 'nominal' inputs
-        const container = e.target.closest("form");
+        const container = e.target.closest(".value-container");
 
         if (container) {
             // Get the values from the inputs
