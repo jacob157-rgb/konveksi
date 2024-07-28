@@ -108,8 +108,8 @@ class KaryawanController extends Controller
             'barang' => BarangMentah::orderBy('id', 'desc')->get()
         ];
 
-        dd($data);
-        return view('karyawan.detail', $data);
+        // dd($data);
+        return view('karyawan.cutting.index', $data);
     }
 
     public function updateBon(Request $request)

@@ -27,17 +27,28 @@ return new class extends Migration {
         Schema::create('barang_jadi', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('supplyer_id');
-            $table->unsignedBigInteger('model_id');
-            $table->unsignedBigInteger('warna_id');
-            $table->integer('jumlah_jadi');
-            $table->enum('satuan', ['pcs']);
-            $table->double('harga', 15, 2);
             $table->dateTime('tanggal_kirim');
             $table->timestamps();
-
             $table->foreign('supplyer_id')->references('id')->on('supplyer')->onDelete('cascade');
-            $table->foreign('model_id')->references('id')->on('model')->onDelete('cascade');
-            $table->foreign('warna_id')->references('id')->on('warna')->onDelete('cascade');
+        });
+
+        Schema::create('model_barang_jadi', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('barang_jadi_id');
+            $table->string('model');
+            $table->timestamps();
+            $table->foreign('barang_jadi_id')->references('id')->on('barang_jadi')->onDelete('cascade');
+        });
+
+        Schema::create('warna_model', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('model_barang_jadi_id');
+            $table->string('warna');
+            $table->string('jumlah');
+            $table->string('harga');
+            $table->string('total');
+            $table->timestamps();
+            $table->foreign('model_barang_jadi_id')->references('id')->on('model_barang_jadi')->onDelete('cascade');
         });
     }
 

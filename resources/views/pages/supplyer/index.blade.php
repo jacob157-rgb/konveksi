@@ -58,8 +58,7 @@
                                                             d="M21 12.43a1.93 1.93 0 0 0 0-3.36L8.83 2.2a1.64 1.64 0 0 0-1.63 0L3 4.57a1.93 1.93 0 0 0 0 3.36l12.18 6.86a1.636 1.636 0 0 0 1.63 0z" />
                                                     </svg>
                                                 </button>
-                                                <button type="button" data-hs-overlay="#kirim-barang"
-                                                    data-supplyer-id="{{ $row->id }}"
+                                                <a href="/barang/jadi/{{ $row->id }}"
                                                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-full kirim-barang gap-x-2 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
                                                     Kirim
                                                     Barang Jadi
@@ -74,7 +73,7 @@
                                                         <polyline points="3.29 7 12 12 20.71 7" />
                                                         <line x1="12" x2="12" y1="22" y2="12" />
                                                     </svg>
-                                                </button>
+                                                </a>
                                                 <a href="/supplyer/detail/{{ $row->id }}"
                                                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-full gap-x-2 hover:bg-green-700 focus:bg-green-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
                                                     Detail

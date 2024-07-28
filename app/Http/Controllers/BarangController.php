@@ -82,6 +82,13 @@ class BarangController extends Controller
     }
 
     // proses Barang Jadi atau kirim
+
+    public function getJadi($id) {
+        $data = [
+            'supplyer' => Supplyer::find($id)
+        ];
+        return view('pages.barang.jadi.index', $data);
+    }
     public function storeJadi(Request $request)
     {
         $request->validate([

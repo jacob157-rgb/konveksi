@@ -83,6 +83,7 @@ Route::middleware(ValidateAuth::class)->group(function () {
             Route::post('/mentah/delete/{id}', 'destroyMentah');
 
             // barang jadi store
+            Route::get('/jadi/{id}', 'getJadi');
             Route::post('/jadi', 'storeJadi');
             Route::get('/jadi/edit/{id}', 'editResponseJadi');
             Route::put('/jadi/update', 'updateJadi');
