@@ -12,6 +12,8 @@ use App\Models\Cutting;
 use App\Models\Supplyer;
 use App\Models\BarangJadi;
 use App\Models\BarangMentah;
+use App\Models\ModelBarangJadi;
+use App\Models\WarnaModel;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Database\Eloquent\Model;
@@ -85,30 +87,43 @@ class BarangController extends Controller
 
     public function getJadi($id) {
         $data = [
-            'supplyer' => Supplyer::find($id)
+            'supplyer' => Supplyer::find($id),
+            'model' => Models::orderBy('id', 'desc')->get()
         ];
         return view('pages.barang.jadi.index', $data);
     }
     public function storeJadi(Request $request)
     {
+
         $request->validate([
-            'supplyer_id' => 'required',
-            'model_id' => 'required',
-            'warna_id' => 'required',
-            'jumlah_jadi' => 'required',
-            'satuan' => 'required',
-            'harga' => 'required',
+            // tanggal kirim
             'tanggal_kirim' => 'required',
+            'supplyer_id' => 'required',
+            // model barang jadi
+            'model' => 'required',
+            // warna
+            'warna' => 'required',
+            'jumlah' => 'required',
+            'harga' => 'required',
+            'total' => 'required',
         ]);
 
-        BarangJadi::create([
+        $barang_jadi = BarangJadi::create([
             'supplyer_id' => $request->supplyer_id,
-            'model_id' => $request->model_id,
-            'warna_id' => $request->warna_id,
-            'jumlah_jadi' => $request->jumlah_jadi,
-            'satuan' => $request->satuan,
-            'harga' => str_replace('.', '', $request->harga),
             'tanggal_kirim' => $request->tanggal_kirim,
+        ]);
+
+        $model_barang_jadi = ModelBarangJadi::create([
+            'barang_jadi_id' => $barang_jadi->id,
+            'model' => $request->model,
+        ]);
+        
+        $warna_model = WarnaModel::create([
+            'model_barang_jadi_id' => $model_barang_jadi->id,
+            'warna' => $request->warna,
+            'jumlah' => $request->jumlah,
+            'harga' => $request->harga,
+            'total' => $request->total,
         ]);
 
         return redirect('/supplyer')->with('success', 'Barang Jadi Berhasil Ditambahkan.');
