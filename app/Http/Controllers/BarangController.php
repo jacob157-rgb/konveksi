@@ -11,12 +11,14 @@ use App\Models\Models;
 use App\Models\Cutting;
 use App\Models\Supplyer;
 use App\Models\BarangJadi;
-use App\Models\BarangMentah;
-use App\Models\ModelBarangJadi;
 use App\Models\WarnaModel;
+use Illuminate\Support\Str;
+use App\Models\BarangMentah;
 use Illuminate\Http\Request;
+use App\Models\ModelBarangJadi;
 use Illuminate\Routing\Controller;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
 
 class BarangController extends Controller
 {
@@ -85,84 +87,83 @@ class BarangController extends Controller
 
     // proses Barang Jadi atau kirim
 
-    public function getJadi($id) {
+    public function getJadi($id)
+    {
         $data = [
             'supplyer' => Supplyer::find($id),
             'model' => Models::orderBy('id', 'desc')->get(),
-            'warna' => Warna::orderBy('id', 'desc')->get()
+            'warna' => Warna::orderBy('id', 'desc')->get(),
         ];
         return view('pages.barang.jadi.index', $data);
     }
+
     public function storeJadi(Request $request)
     {
-        dd($request->all());
-        $request->validate([
-            // tanggal kirim
+        $validator = Validator::make($request->all(), [
             'tanggal_kirim' => 'required',
             'supplyer_id' => 'required',
-            // model barang jadi
-            'model' => 'required',
-            // warna
-            'warna' => 'required',
-            'jumlah' => 'required',
-            'harga' => 'required',
-            'total' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'errors' => $validator->errors(),
+                ],
+                422,
+            );
+        }
 
         $barang_jadi = BarangJadi::create([
             'supplyer_id' => $request->supplyer_id,
             'tanggal_kirim' => $request->tanggal_kirim,
         ]);
 
-        $model_barang_jadi = ModelBarangJadi::create([
-            'barang_jadi_id' => $barang_jadi->id,
-            'model' => $request->model,
-        ]);
+        foreach ($request->model as $modelData) {
+            $model_barang_jadi = ModelBarangJadi::create([
+                'barang_jadi_id' => $barang_jadi->id,
+                'model' => $modelData['nama'],
+            ]);
 
-        $warna_model = WarnaModel::create([
-            'model_barang_jadi_id' => $model_barang_jadi->id,
-            'warna' => $request->warna,
-            'jumlah' => $request->jumlah,
-            'harga' => $request->harga,
-            'total' => $request->total,
-        ]);
+            foreach ($modelData['warna'] as $warnaData) {
+                WarnaModel::create([
+                    'model_barang_jadi_id' => $model_barang_jadi->id,
+                    'warna' => $warnaData['warna'],
+                    'jumlah' => Str::of($warnaData['jumlah_jadi'])->remove('.'),
+                    'satuan' => Str::of($warnaData['satuan'])->remove('.'),
+                    'harga' => Str::of($warnaData['harga'])->remove('.'),
+                    'total' => Str::of($warnaData['total'])->remove('.'),
+                ]);
+            }
+        }
 
-        return redirect('/supplyer')->with('success', 'Barang Jadi Berhasil Ditambahkan.');
+        return response()->json(
+            [
+                'success' => true,
+            ],
+            201,
+        );
     }
 
     public function editResponseJadi($id)
     {
         return response()->json([
             'success' => true,
-            'barang' => BarangJadi::findOrFail($id),
-            'model' => Model::all(),
-            'warna' => Warna::all(),
+            'data' => BarangJadi::findOrFail($id),
         ]);
     }
 
     public function updateJadi(Request $request)
     {
         $request->validate([
-            'supplyer_id' => 'required',
-            'model_id' => 'required',
-            'warna_id' => 'required',
-            'jumlah_jadi' => 'required',
-            'satuan' => 'required',
-            'harga' => 'required',
             'tanggal_kirim' => 'required',
         ]);
 
         BarangJadi::findOrFail($request->id)->update([
-            'supplyer_id' => $request->supplyer_id,
-            'model_id' => $request->model_id,
-            'warna_id' => $request->warna_id,
-            'jumlah_jadi' => $request->jumlah_jadi,
-            'satuan' => $request->satuan,
-            'harga' => str_replace('.', '', $request->harga),
             'tanggal_kirim' => $request->tanggal_kirim,
         ]);
 
-        return redirect()->back()->with('success', 'Barang Jadi Berhasil Diupdate');
+        return redirect()->back()->with('success', 'Tanggal Barang Jadi Berhasil Diupdate');
     }
 
     public function destroyJadi($id)

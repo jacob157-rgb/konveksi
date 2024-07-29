@@ -11,7 +11,9 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CuttingController;
 use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\ModelJadiController;
 use App\Http\Controllers\PengeluaranController;
+use App\Http\Controllers\WarnaModelController;
 use App\Http\Middleware\ValidateAuth;
 
 /*
@@ -89,7 +91,19 @@ Route::middleware(ValidateAuth::class)->group(function () {
             Route::put('/jadi/update', 'updateJadi');
             Route::post('/jadi/delete/{id}', 'destroyJadi');
 
-            Route::get('/barang/print/{id}', 'print');
+            // Route::get('/barang/print/{id}', 'print');
+
+            // warna
+            Route::controller(WarnaModelController::class)->group(function () {
+                Route::get('/jadi/warna/edit/{id}', 'edit');
+                Route::post('/jadi/warna/update', 'update');
+                Route::post('/jadi/warna/delete/{id}', 'destroy');
+            });
+            Route::controller(ModelJadiController::class)->group(function () {
+                Route::get('/jadi/model/edit/{id}', 'edit');
+                Route::post('/jadi/model/update', 'update');
+                Route::post('/jadi/model/delete/{id}', 'destroy');
+            });
         });
     });
 

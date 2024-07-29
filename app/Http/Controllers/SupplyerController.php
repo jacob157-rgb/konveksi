@@ -6,6 +6,7 @@ use App\Models\Barang;
 use App\Models\BarangJadi;
 use App\Models\BarangMentah;
 use App\Models\Kain;
+use App\Models\ModelBarangJadi;
 use App\Models\Models;
 use App\Models\Supplyer;
 use App\Models\Warna;
@@ -36,6 +37,7 @@ class SupplyerController extends Controller
             'supplayer' => Supplyer::find($id),
             'barangMentah' => BarangMentah::where('supplyer_id', $id)->paginate(10),
             'barangJadi' => $barangJadi->get(),
+            'modelBarangJadi' => ModelBarangJadi::all()
         ];
         return view('pages.supplyer.detail', $data);
     }

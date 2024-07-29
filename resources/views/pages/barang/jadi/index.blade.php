@@ -9,7 +9,7 @@
         class="flex flex-col p-4 bg-white border border-gray-200 shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
         <div class="flex flex-col">
             <div class="-m-1.5 overflow-x-auto">
-                <form action="/barang/jadi" method="post">
+                <form action="/barang/jadi" method="post" id="addBarangJadiForm">
                     @csrf
                     <div class="inline-block min-w-full py-1.5 align-middle">
 
@@ -26,7 +26,7 @@
                                 autofocus="">
                             <div class="model-card">
                                 <div
-                                    class="flex flex-col p-4 mt-3 bg-white border border-gray-200 shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
+                                    class="flex flex-col p-4 mt-3 bg-white border border-blue-800 shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
                                     <label for="model_id"
                                         class="block mb-2 text-sm font-medium dark:text-white">Model</label>
                                     <select name="model[0][nama]"
@@ -39,7 +39,7 @@
                                     <div class="warna-container">
                                         <div class="warna-card">
                                             <div
-                                                class="flex flex-col p-4 mt-3 bg-white border border-gray-200 shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
+                                                class="flex flex-col p-4 mt-3 bg-white border border-red-800 shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
                                                 <label for="warna_id"
                                                     class="block mb-2 text-sm font-medium dark:text-white">Warna</label>
                                                 <select name="model[0][warna][0][warna]"
@@ -129,7 +129,7 @@
                     data-hs-overlay="#tambah-modal">
                     Batal
                 </button>
-                <button type="submit"
+                <button type="button" id="submitFormBtn"
                     class="inline-flex items-center px-3 py-2 text-sm font-semibold text-white bg-blue-600 border border-transparent rounded-lg gap-x-2 hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50">
                     Kirim
                 </button>
@@ -148,7 +148,7 @@
 
                 const cardModel = `
                 <div class="model-card">
-                    <div class="flex flex-col p-4 mt-3 bg-white border border-gray-200 shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
+                    <div class="flex flex-col p-4 mt-3 bg-white border border-blue-700 shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
                         <div class="flex items-center justify-start mb-4">
                             <button type="button"
                                 class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-red-500 border border-transparent rounded-lg hapus-model gap-x-2 hover:bg-red-600 disabled:pointer-events-none disabled:opacity-50">
@@ -275,7 +275,7 @@
                 if (warnaContainer) {
                     const cardWarna = `
                 <div class="warna-card">
-                    <div class="flex flex-col p-4 mt-3 bg-white border border-gray-200 shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
+                    <div class="flex flex-col p-4 mt-3 bg-white border border-red-800 shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
                         <div class="flex items-center justify-start mb-4">
                             <button type="button"
                                 class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-red-500 border border-transparent rounded-lg hapus-warna gap-x-2 hover:bg-red-600 disabled:pointer-events-none disabled:opacity-50">
@@ -357,6 +357,56 @@
                 const warnaCard = event.target.closest('.warna-card');
                 warnaCard.remove();
             }
+        });
+    </script>
+
+    <script>
+        document.getElementById('submitFormBtn').addEventListener('click', function() {
+            var form = document.getElementById('addBarangJadiForm');
+            var formData = new FormData(form);
+
+            Swal.fire({
+                title: 'Proses..',
+                text: 'Proses kirim barang sudah jadi.',
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                allowOutsideClick: false
+            });
+
+            fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Barang Jadi berhasil dikirim.',
+                        }).then(() => {
+                            window.location.href = '/supplyer';
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            html: '<b>Gagal menyimpan data</b> <br> <center>Pastikan semua inputan terisi semuanya.</center>',
+                        });
+                    }
+
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Terjadi kesalahan: ' + error.message,
+                    });
+                });
         });
     </script>
 @endsection

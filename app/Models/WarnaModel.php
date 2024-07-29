@@ -14,4 +14,7 @@ class WarnaModel extends Model
     public function model_barang_jadi() {
         return $this->belongsTo(ModelBarangJadi::class);
     }
+    static function getByWarnaModel($warnaModel) {
+        return static::where('model_barang_jadi_id', $warnaModel)->get();
+    }
 }

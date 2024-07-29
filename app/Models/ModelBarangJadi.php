@@ -14,4 +14,8 @@ class ModelBarangJadi extends Model
     public function barang_jadi() {
         return $this->belongsTo(BarangJadi::class);
     }
+
+    static function getByBarangJadi($barangJadiId) {
+        return static::where('barang_jadi_id', $barangJadiId)->get();
+    }
 }
