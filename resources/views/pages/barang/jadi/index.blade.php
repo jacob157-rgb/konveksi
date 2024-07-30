@@ -167,7 +167,7 @@
                         <div class="warna-container">
                             <div class="warna-card">
                                 <div
-                                    class="flex flex-col p-4 mt-3 bg-white border border-gray-200 shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
+                                    class="flex flex-col p-4 mt-3 bg-white border border-red-800 shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
                                     <label for="warna_id"
                                         class="block mb-2 text-sm font-medium dark:text-white">Warna</label>
                                     <select name="model[${modelCount}][warna][${warnaCount}][warna]"

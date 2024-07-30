@@ -82,7 +82,7 @@ class BarangController extends Controller
     {
         $barang = BarangMentah::find($id);
         $barang->delete();
-        return redirect()->back()->with('success', 'Barang Mentah Dihapus.');
+        return redirect()->back()->with('success', 'Barang Mentah Berhasil Dihapus.');
     }
 
     // proses Barang Jadi atau kirim
@@ -156,6 +156,7 @@ class BarangController extends Controller
     public function updateJadi(Request $request)
     {
         $request->validate([
+            'id' => 'required',
             'tanggal_kirim' => 'required',
         ]);
 
@@ -170,7 +171,7 @@ class BarangController extends Controller
     {
         $barang = BarangJadi::find($id);
         $barang->delete();
-        return redirect()->back()->with('success', 'Barang Jadi Dihapus.');
+        return redirect()->back()->with('success', 'Barang Jadi Berhasil Dihapus.');
     }
 
     // print

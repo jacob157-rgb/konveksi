@@ -96,12 +96,12 @@ Route::middleware(ValidateAuth::class)->group(function () {
             // warna
             Route::controller(WarnaModelController::class)->group(function () {
                 Route::get('/jadi/warna/edit/{id}', 'edit');
-                Route::post('/jadi/warna/update', 'update');
+                Route::put('/jadi/warna/update', 'update');
                 Route::post('/jadi/warna/delete/{id}', 'destroy');
             });
             Route::controller(ModelJadiController::class)->group(function () {
                 Route::get('/jadi/model/edit/{id}', 'edit');
-                Route::post('/jadi/model/update', 'update');
+                Route::put('/jadi/model/update', 'update');
                 Route::post('/jadi/model/delete/{id}', 'destroy');
             });
         });

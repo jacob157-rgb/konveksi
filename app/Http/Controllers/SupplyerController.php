@@ -37,7 +37,9 @@ class SupplyerController extends Controller
             'supplayer' => Supplyer::find($id),
             'barangMentah' => BarangMentah::where('supplyer_id', $id)->paginate(10),
             'barangJadi' => $barangJadi->get(),
-            'modelBarangJadi' => ModelBarangJadi::all()
+            'modelBarangJadi' => ModelBarangJadi::all(),
+            'warna' => Warna::all(),
+            'model' => Models::all(),
         ];
         return view('pages.supplyer.detail', $data);
     }
