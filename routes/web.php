@@ -10,9 +10,11 @@ use App\Http\Controllers\WarnaController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CuttingController;
+use App\Http\Controllers\KainMentahController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\ModelJadiController;
 use App\Http\Controllers\PengeluaranController;
+use App\Http\Controllers\WarnaKainController;
 use App\Http\Controllers\WarnaModelController;
 use App\Http\Middleware\ValidateAuth;
 
@@ -79,6 +81,7 @@ Route::middleware(ValidateAuth::class)->group(function () {
     Route::controller(BarangController::class)->group(function () {
         Route::prefix('barang')->group(function () {
             // barang mentah store
+            Route::get('/mentah/{id}', 'getMentah');
             Route::post('/mentah', 'storeMentah');
             Route::get('/mentah/edit/{id}', 'editResponseMentah');
             Route::put('/mentah/update', 'updateMentah');
@@ -93,16 +96,31 @@ Route::middleware(ValidateAuth::class)->group(function () {
 
             // Route::get('/barang/print/{id}', 'print');
 
-            // warna
-            Route::controller(WarnaModelController::class)->group(function () {
-                Route::get('/jadi/warna/edit/{id}', 'edit');
-                Route::put('/jadi/warna/update', 'update');
-                Route::post('/jadi/warna/delete/{id}', 'destroy');
+            // kain jadi
+            Route::controller(KainMentahController::class)->group(function () {
+                Route::get('/mentah/kain/edit/{id}', 'edit');
+                Route::put('/mentah/kain/update', 'update');
+                Route::post('/mentah/kain/delete/{id}', 'destroy');
             });
+
+            Route::controller(WarnaKainController::class)->group(function () {
+                Route::get('/mentah/warna/edit/{id}', 'edit');
+                Route::put('/mentah/warna/update', 'update');
+                Route::post('/mentah/warna/delete/{id}', 'destroy');
+            });
+
+
+            // Jadi Controller
             Route::controller(ModelJadiController::class)->group(function () {
                 Route::get('/jadi/model/edit/{id}', 'edit');
                 Route::put('/jadi/model/update', 'update');
                 Route::post('/jadi/model/delete/{id}', 'destroy');
+            });
+
+            Route::controller(WarnaModelController::class)->group(function () {
+                Route::get('/jadi/warna/edit/{id}', 'edit');
+                Route::put('/jadi/warna/update', 'update');
+                Route::post('/jadi/warna/delete/{id}', 'destroy');
             });
         });
     });

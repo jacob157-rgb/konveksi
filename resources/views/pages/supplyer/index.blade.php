@@ -40,8 +40,7 @@
                                                 class="px-3 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
                                                 {{ $row->nama }}</td>
                                             <td class="px-3 py-4 space-x-1 text-sm font-medium whitespace-nowrap">
-                                                <button type="button" data-hs-overlay="#tambah-barang"
-                                                    data-supplyer-id="{{ $row->id }}"
+                                                <a href="/barang/mentah/{{ $row->id }}"
                                                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-full tambah-barang gap-x-2 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
                                                     Tambah
                                                     Barang Mentah
@@ -57,7 +56,7 @@
                                                         <path
                                                             d="M21 12.43a1.93 1.93 0 0 0 0-3.36L8.83 2.2a1.64 1.64 0 0 0-1.63 0L3 4.57a1.93 1.93 0 0 0 0 3.36l12.18 6.86a1.636 1.636 0 0 0 1.63 0z" />
                                                     </svg>
-                                                </button>
+                                                </a>
                                                 <a href="/barang/jadi/{{ $row->id }}"
                                                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-full kirim-barang gap-x-2 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
                                                     Kirim
@@ -135,8 +134,6 @@
             </div>
         </div>
     </div>
-    @include('partials.modal_tambah')
-    @include('partials.modal_kirim')
 
     <div id="edit-modal"
         class="hs-overlay size-full pointer-events-none fixed start-0 top-0 z-[80] hidden overflow-y-auto overflow-x-hidden">

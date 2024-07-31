@@ -13,16 +13,32 @@ return new class extends Migration {
         Schema::create('barang_mentah', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('supplyer_id');
-            $table->unsignedBigInteger('kain_id');
-            $table->integer('jumlah_mentah');
-            $table->enum('satuan', ['kg', 'koli', 'yard']);
-            $table->double('harga', 15, 2);
             $table->dateTime('tanggal_datang');
             $table->timestamps();
-
             $table->foreign('supplyer_id')->references('id')->on('supplyer')->onDelete('cascade');
-            $table->foreign('kain_id')->references('id')->on('kain')->onDelete('cascade');
         });
+
+        Schema::create('kain_barang_mentah', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('barang_mentah_id');
+            $table->string('kain');
+            $table->timestamps();
+            $table->foreign('barang_mentah_id')->references('id')->on('barang_mentah')->onDelete('cascade');
+        });
+
+        Schema::create('warna_kain', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('kain_mentah_id');
+            $table->string('warna');
+            $table->string('jumlah');
+            $table->string('harga');
+            $table->enum('satuan', ['yard', 'kg']);
+            $table->string('total');
+            $table->timestamps();
+            $table->foreign('kain_mentah_id')->references('id')->on('kain_barang_mentah')->onDelete('cascade');
+        });
+
+        //barang jadi
 
         Schema::create('barang_jadi', function (Blueprint $table) {
             $table->id();
@@ -58,6 +74,10 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('barang_mentah');
+        Schema::dropIfExists('kain_barang_mentah');
+        Schema::dropIfExists('warna_kain_mentah');
         Schema::dropIfExists('barang_jadi');
+        Schema::dropIfExists('model_barang_jadi');
+        Schema::dropIfExists('warna_model');
     }
 };

@@ -27,19 +27,22 @@ class SupplyerController extends Controller
     public function detail(Request $request, $id)
     {
         $barangJadi = BarangJadi::where('supplyer_id', $id)->latest();
+        $barangMentah = BarangMentah::where('supplyer_id', $id)->latest();
 
         if ($request->query('date')) {
             $tanggal = $request->query('date');
             $barangJadi->whereDate('tanggal_kirim', $tanggal);
+            $barangMentah->whereDate('tanggal_datang', $tanggal);
         }
 
         $data = [
             'supplayer' => Supplyer::find($id),
-            'barangMentah' => BarangMentah::where('supplyer_id', $id)->paginate(10),
+            'barangMentah' => $barangMentah->get(),
             'barangJadi' => $barangJadi->get(),
             'modelBarangJadi' => ModelBarangJadi::all(),
             'warna' => Warna::all(),
             'model' => Models::all(),
+            'kain' => Kain::orderBy('id', 'desc')->get(),
         ];
         return view('pages.supplyer.detail', $data);
     }

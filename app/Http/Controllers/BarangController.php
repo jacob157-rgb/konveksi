@@ -14,8 +14,10 @@ use App\Models\BarangJadi;
 use App\Models\WarnaModel;
 use Illuminate\Support\Str;
 use App\Models\BarangMentah;
+use App\Models\KainBarangMentah;
 use Illuminate\Http\Request;
 use App\Models\ModelBarangJadi;
+use App\Models\WarnaKain;
 use Illuminate\Routing\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
@@ -23,55 +25,80 @@ use Illuminate\Support\Facades\Validator;
 class BarangController extends Controller
 {
     // Proses Barang mentah
+
+    public function getMentah($id)
+    {
+        $data = [
+            'supplyer' => Supplyer::find($id),
+            'warna' => Warna::orderBy('id', 'desc')->get(),
+            'kain' => Kain::orderBy('id', 'desc')->get(),
+        ];
+        return view('pages.barang.mentah.index', $data);
+    }
     public function storeMentah(Request $request)
     {
-        $request->validate([
-            'supplyer_id' => 'required',
-            'kain_id' => 'required',
-            'jumlah_mentah' => 'required',
-            'satuan' => 'required',
-            'harga' => 'required',
+        $validator = Validator::make($request->all(), [
             'tanggal_datang' => 'required',
+            'supplyer_id' => 'required',
         ]);
 
-        BarangMentah::create([
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'errors' => $validator->errors(),
+                ],
+                422,
+            );
+        }
+
+        $barang_mentah = BarangMentah::create([
             'supplyer_id' => $request->supplyer_id,
-            'kain_id' => $request->kain_id,
-            'jumlah_mentah' => $request->jumlah_mentah,
-            'satuan' => $request->satuan,
-            'harga' => str_replace('.', '', $request->harga),
             'tanggal_datang' => $request->tanggal_datang,
         ]);
 
-        return redirect('/supplyer')->with('success', 'Barang Mentah Mentah Berhasil Ditambahkan.');
+        foreach ($request->kain as $kainData) {
+            $kain_mentah = KainBarangMentah::create([
+                'barang_mentah_id' => $barang_mentah->id,
+                'kain' => $kainData['nama'],
+            ]);
+
+            foreach ($kainData['warna'] as $warnaData) {
+                WarnaKain::create([
+                    'kain_mentah_id' => $kain_mentah->id,
+                    'warna' => $warnaData['warna'],
+                    'jumlah' => Str::of($warnaData['jumlah_mentah'])->remove('.'),
+                    'satuan' => Str::of($warnaData['satuan'])->remove('.'),
+                    'harga' => Str::of($warnaData['harga'])->remove('.'),
+                    'total' => Str::of($warnaData['total'])->remove('.'),
+                ]);
+            }
+        }
+
+        return response()->json(
+            [
+                'success' => true,
+            ],
+            201,
+        );
     }
 
     public function editResponseMentah($id)
     {
         return response()->json([
             'success' => true,
-            'barang' => BarangMentah::findOrFail($id),
-            'kain' => Kain::all(),
+            'data' => BarangMentah::findOrFail($id),
         ]);
     }
 
     public function updateMentah(Request $request)
     {
-        $request->validate([
-            'supplyer_id' => 'required',
-            'kain_id' => 'required',
-            'jumlah_mentah' => 'required',
-            'satuan' => 'required',
-            'harga' => 'required',
+         $request->validate([
+            'id' => 'required',
             'tanggal_datang' => 'required',
         ]);
 
         BarangMentah::findOrFail($request->id)->update([
-            'supplyer_id' => $request->supplyer_id,
-            'kain_id' => $request->kain_id,
-            'jumlah_mentah' => $request->jumlah_mentah,
-            'satuan' => $request->satuan,
-            'harga' => str_replace('.', '', $request->harga),
             'tanggal_datang' => $request->tanggal_datang,
         ]);
 

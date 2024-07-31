@@ -24,7 +24,7 @@ class ModelJadiController extends Controller
         ]);
 
         $modelBarangJadi = ModelBarangJadi::find($request->id);
-        $modelBarangJadi::update([
+        $modelBarangJadi->update([
             'model' => $request->model,
         ]);
         return redirect()->back()->with('success', 'Model Berhasil Diupdate.');
