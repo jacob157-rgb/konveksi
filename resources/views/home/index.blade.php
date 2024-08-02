@@ -72,7 +72,7 @@
         <!-- End Card -->
     </div>
 
-    <!-- Grid for detailed cards -->
+    {{-- <!-- Grid for detailed cards -->
     <div class="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-2">
         <!-- Barang Proses Card -->
         <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-800">
@@ -305,5 +305,5 @@
             </div>
         </div>
         <!-- End Barang Jadi Card -->
-    </div>
+    </div> --}}
 @endsection

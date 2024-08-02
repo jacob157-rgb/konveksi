@@ -10,9 +10,11 @@ use App\Http\Controllers\WarnaController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CuttingController;
+use App\Http\Controllers\DetailOprationalController;
 use App\Http\Controllers\KainMentahController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\ModelJadiController;
+use App\Http\Controllers\OperationalController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\WarnaKainController;
 use App\Http\Controllers\WarnaModelController;
@@ -109,7 +111,6 @@ Route::middleware(ValidateAuth::class)->group(function () {
                 Route::post('/mentah/warna/delete/{id}', 'destroy');
             });
 
-
             // Jadi Controller
             Route::controller(ModelJadiController::class)->group(function () {
                 Route::get('/jadi/model/edit/{id}', 'edit');
@@ -171,14 +172,23 @@ Route::middleware(ValidateAuth::class)->group(function () {
     //     Route::post('/jahit/delete/{id}', 'destroy');
     // });
 
-    Route::controller(PengeluaranController::class)->group(function () {
-        Route::prefix('pengeluaran')->group(function () {
+    Route::controller(OperationalController::class)->group(function () {
+        Route::prefix('operational')->group(function () {
             Route::get('/', 'index');
-            Route::get('/create', 'create');
-            Route::post('/', 'store');
+            Route::post('/store', 'store');
             Route::get('/edit/{id}', 'edit');
-            Route::post('/update/{id}', 'update');
+            Route::post('/update', 'update');
             Route::post('/delete/{id}', 'destroy');
+
+            Route::controller(DetailOprationalController::class)->group(function () {
+                Route::prefix('pemakaian')->group(function () {
+                    Route::get('/{id_operational}', 'index');
+                    Route::post('/store/{id_operational}', 'store');
+                    Route::get('/edit/{id_pemakaian}', 'edit');
+                    Route::post('/update', 'update');
+                    Route::post('/delete/{id_pemakaian}', 'destroy');
+                });
+            });
         });
     });
 });

@@ -2,36 +2,36 @@
 
 @section('content')
     <div
-        class="flex flex-col rounded border border-gray-200 bg-green-600 p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
-        <h2 class="text-center font-bold uppercase text-white">SUPPLYER {{ $supplyer->nama }}</h2>
+        class="flex flex-col p-4 bg-green-600 border border-gray-200 rounded shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
+        <h2 class="font-bold text-center text-white uppercase">SUPPLYER {{ $supplyer->nama }}</h2>
     </div>
     <div
-        class="flex flex-col rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
+        class="flex flex-col p-4 bg-white border border-gray-200 shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
         <div class="flex flex-col">
             <div class="-m-1.5 overflow-x-auto">
                 <form action="/barang/mentah" method="post" id="addBarangMentahForm">
                     @csrf
                     <div class="inline-block min-w-full py-1.5 align-middle">
 
-                        <div class="border-b p-2">
+                        <div class="p-2 border-b">
                             <h2 class="text-2xl font-semibold text-gray-800 dark:text-neutral-200">Tambah Barang Mentah</h2>
                         </div>
 
                         <input type="text" name="supplyer_id" hidden value="{{ $supplyer->id }}">
-                        <div class="kain-container overflow-y-auto px-3 py-4">
-                            <label for="tanggal_datang" class="mb-2 block text-sm font-medium dark:text-white">Tanggal
+                        <div class="px-3 py-4 overflow-y-auto kain-container">
+                            <label for="tanggal_datang" class="block mb-2 text-sm font-medium dark:text-white">Tanggal
                                 Datang</label>
                             <input type="datetime-local" id="tanggal_datang" name="tanggal_datang"
                                 value="{{ \Carbon\Carbon::parse(now())->format('Y-m-d\TH:i') }}"
-                                class="block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
+                                class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
                                 autofocus="">
                             <div class="kain-card">
                                 <div
-                                    class="mt-3 flex flex-col rounded-xl border border-blue-800 bg-white p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
+                                    class="flex flex-col p-4 mt-3 bg-white border border-blue-800 shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
                                     <label for="kain_id"
-                                        class="mb-2 block text-sm font-medium dark:text-white">Kain</label>
+                                        class="block mb-2 text-sm font-medium dark:text-white">Kain</label>
                                     <select name="kain[0][nama]"
-                                        class="block w-full rounded-lg border border-gray-200 px-4 py-3 pe-9 text-sm focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                                        class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg pe-9 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
                                         <option selected value="">Pilih Jenis Kain</option>
                                         @foreach ($kain as $row)
                                             <option value="{{ $row->nama }}">{{ $row->nama }}</option>
@@ -40,11 +40,11 @@
                                     <div class="warna-container">
                                         <div class="warna-card">
                                             <div
-                                                class="mt-3 flex flex-col rounded-xl border border-red-800 bg-white p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
+                                                class="flex flex-col p-4 mt-3 bg-white border border-red-800 shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
                                                 <label for="warna_id"
-                                                    class="mb-2 block text-sm font-medium dark:text-white">Warna</label>
+                                                    class="block mb-2 text-sm font-medium dark:text-white">Warna</label>
                                                 <select name="kain[0][warna][0][warna]"
-                                                    class="block w-full rounded-lg border border-gray-200 px-4 py-3 pe-9 text-sm focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                                                    class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg pe-9 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
                                                     <option selected value="">Pilih Warna</option>
                                                     @foreach ($warna as $row)
                                                         <option value="{{ $row->nama }}">{{ $row->nama }}</option>
@@ -52,52 +52,52 @@
                                                 </select>
                                                 <div class="value-container">
                                                     <label for="hs-inline-leading-pricing-select-label"
-                                                        class="mb-2 block text-sm font-medium dark:text-white">Jml.
+                                                        class="block mb-2 text-sm font-medium dark:text-white">Jml.
                                                         Barang</label>
                                                     <div class="relative">
                                                         <input type="number" id="hs-inline-leading-pricing-select-label"
                                                             name="kain[0][warna][0][jumlah_mentah]"
-                                                            class="jumlah block w-full rounded-lg border border-gray-200 px-4 py-3 pe-20 text-sm shadow-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                            class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg shadow-sm jumlah pe-20 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                             placeholder="Masukan Jumlah Barang">
                                                         <div
-                                                            class="absolute inset-y-0 end-0 flex items-center pe-px text-gray-500">
+                                                            class="absolute inset-y-0 flex items-center text-gray-500 end-0 pe-px">
                                                             <label for="satuan" class="sr-only">Satuan</label>
                                                             <select id="satuan" name="kain[0][warna][0][satuan]"
-                                                                class="block w-full rounded-lg border border-transparent focus:border-blue-600 focus:ring-blue-600 dark:bg-neutral-800 dark:text-neutral-500">
+                                                                class="block w-full border border-transparent rounded-lg focus:border-blue-600 focus:ring-blue-600 dark:bg-neutral-800 dark:text-neutral-500">
                                                                 <option value="kg">Kg</option>
                                                                 <option value="yard" selected>Yard</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <label for="harga"
-                                                        class="mb-2 block text-sm font-medium dark:text-white">Harga
+                                                        class="block mb-2 text-sm font-medium dark:text-white">Harga
                                                         Barang</label>
                                                     <div class="relative rounded-md">
                                                         <input type="text" name="kain[0][warna][0][harga]"
-                                                            class="nominal price block w-full rounded-lg border-gray-200 px-4 py-3 pe-16 ps-10 text-sm shadow-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                                                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm nominal price pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
                                                         <input type="hidden" id="nominal">
                                                         <div
-                                                            class="pointer-events-none absolute inset-y-0 start-0 z-20 flex items-center ps-4">
+                                                            class="absolute inset-y-0 z-20 flex items-center pointer-events-none start-0 ps-4">
                                                             <span class="text-gray-500 dark:text-neutral-500">Rp.</span>
                                                         </div>
                                                         <div
-                                                            class="pointer-events-none absolute inset-y-0 end-0 z-20 flex items-center pe-4">
+                                                            class="absolute inset-y-0 z-20 flex items-center pointer-events-none end-0 pe-4">
                                                             <span class="text-gray-500 dark:text-neutral-500">IDR</span>
                                                         </div>
                                                     </div>
                                                     <label for="total"
-                                                        class="mb-2 block text-sm font-medium dark:text-white">Total
+                                                        class="block mb-2 text-sm font-medium dark:text-white">Total
                                                         Harga</label>
                                                     <div class="relative rounded-md">
                                                         <input type="text" readonly name="kain[0][warna][0][total]"
-                                                            class="total price block w-full rounded-lg border-gray-200 px-4 py-3 pe-16 ps-10 text-sm shadow-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                                                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm total price pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
                                                         <input type="hidden" id="total" readonly>
                                                         <div
-                                                            class="pointer-events-none absolute inset-y-0 start-0 z-20 flex items-center ps-4">
+                                                            class="absolute inset-y-0 z-20 flex items-center pointer-events-none start-0 ps-4">
                                                             <span class="text-gray-500 dark:text-neutral-500">Rp.</span>
                                                         </div>
                                                         <div
-                                                            class="pointer-events-none absolute inset-y-0 end-0 z-20 flex items-center pe-4">
+                                                            class="absolute inset-y-0 z-20 flex items-center pointer-events-none end-0 pe-4">
                                                             <span class="text-gray-500 dark:text-neutral-500">IDR</span>
                                                         </div>
                                                     </div>
@@ -106,9 +106,9 @@
                                         </div>
                                     </div>
                                     <div
-                                        class="mt-4 flex items-center justify-start gap-x-2 border-t px-4 pt-3 dark:border-neutral-700">
+                                        class="flex items-center justify-start px-4 pt-3 mt-4 border-t gap-x-2 dark:border-neutral-700">
                                         <button type="button"
-                                            class="tambah-warna inline-flex items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50">
+                                            class="inline-flex items-center px-3 py-2 text-sm font-semibold text-white bg-blue-600 border border-transparent rounded-lg tambah-warna gap-x-2 hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50">
                                             Tambah Warna
                                         </button>
                                     </div>
@@ -118,21 +118,21 @@
                     </div>
             </div>
         </div>
-        <div class="flex items-center justify-between gap-x-2 border-t px-4 pt-3 dark:border-neutral-700">
+        <div class="flex items-center justify-between px-4 pt-3 border-t gap-x-2 dark:border-neutral-700">
             <div>
                 <button type="button"
-                    class="tambah-kain inline-flex items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50">
+                    class="inline-flex items-center px-3 py-2 text-sm font-semibold text-white bg-blue-600 border border-transparent rounded-lg tambah-kain gap-x-2 hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50">
                     Tambah Kain
                 </button>
             </div>
             <div>
                 <button type="button"
-                    class="inline-flex items-center gap-x-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-800 shadow-sm hover:bg-gray-50 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-800 bg-white border border-gray-200 rounded-lg shadow-sm gap-x-2 hover:bg-gray-50 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
                     data-hs-overlay="#tambah-modal">
                     Batal
                 </button>
                 <button type="button" id="submitFormBtn"
-                    class="inline-flex items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50">
+                    class="inline-flex items-center px-3 py-2 text-sm font-semibold text-white bg-blue-600 border border-transparent rounded-lg gap-x-2 hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50">
                     Kirim
                 </button>
             </div>

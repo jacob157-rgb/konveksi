@@ -22,6 +22,7 @@
                             <label for="tanggal_kirim" class="block mb-2 text-sm font-medium dark:text-white">Tanggal
                                 Kirim</label>
                             <input type="datetime-local" id="tanggal_kirim" name="tanggal_kirim"
+                                value="{{ \Carbon\Carbon::parse(now())->format('Y-m-d\TH:i') }}"
                                 class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
                                 autofocus="">
                             <div class="model-card">
