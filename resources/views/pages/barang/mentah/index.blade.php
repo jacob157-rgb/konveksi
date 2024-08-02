@@ -22,6 +22,7 @@
                             <label for="tanggal_datang" class="mb-2 block text-sm font-medium dark:text-white">Tanggal
                                 Datang</label>
                             <input type="datetime-local" id="tanggal_datang" name="tanggal_datang"
+                                value="{{ \Carbon\Carbon::parse(now())->format('Y-m-d\TH:i') }}"
                                 class="block w-full rounded-lg border border-gray-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500"
                                 autofocus="">
                             <div class="kain-card">
@@ -153,14 +154,14 @@
                         <div class="flex items-center justify-start mb-4">
                             <button type="button"
                                 class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-red-500 border border-transparent rounded-lg hapus-kain gap-x-2 hover:bg-red-600 disabled:pointer-events-none disabled:opacity-50">
-                                Hapus Model -
+                                Hapus Kain -
                             </button>
                         </div>
                         <label for="kain_id"
-                            class="block mb-2 text-sm font-medium dark:text-white">Model</label>
+                            class="block mb-2 text-sm font-medium dark:text-white">Kain</label>
                         <select name="kain[${kainCount}][nama]"
                             class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg pe-9 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-                            <option selected value="">Pilih Model</option>
+                            <option selected value="">Pilih Kain</option>
                             @foreach ($kain as $row)
                                 <option value="{{ $row->nama }}">{{ $row->nama }}</option>
                             @endforeach

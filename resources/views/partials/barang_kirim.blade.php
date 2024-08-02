@@ -39,11 +39,11 @@
                         </a>
                     </div>
                 @endif
+
+                @foreach ($barangJadi as $row)
                 @php
                     $totalKeseluruhanHarga = 0;
                 @endphp
-
-                @foreach ($barangJadi as $row)
                     @php
                         $modelBarangJadi = \App\Models\ModelBarangJadi::getByBarangJadi($row?->id);
                     @endphp
@@ -240,13 +240,13 @@
                             </li>
                         </ul>
                     @endforeach
+                    <div
+                        class="flex flex-col p-4 mb-10 bg-green-600 border border-gray-200  shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
+                        <h2 class="font-bold text-center text-white uppercase">Total keseluruhan harga :
+                            {{ formatRupiah($totalKeseluruhanHarga) }}</h2>
+                    </div>
                 @endforeach
 
-                <div
-                    class="flex flex-col p-4 bg-green-600 border border-gray-200 rounded shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
-                    <h2 class="font-bold text-center text-white uppercase">Total keseluruhan harga :
-                        {{ formatRupiah($totalKeseluruhanHarga) }}</h2>
-                </div>
 
             </div>
         </div>

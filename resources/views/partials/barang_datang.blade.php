@@ -39,11 +39,11 @@
                         </a>
                     </div>
                 @endif
-                @php
-                    $totalKeseluruhanHarga = 0;
-                @endphp
 
                 @foreach ($barangMentah as $row)
+                    @php
+                        $totalKeseluruhanHarga = 0;
+                    @endphp
                     @php
                         $modelBarangMentah = \App\Models\KainBarangMentah::getByBarangMentah($row?->id);
                     @endphp
@@ -240,14 +240,12 @@
                             </li>
                         </ul>
                     @endforeach
+                    <div
+                        class="flex flex-col mb-10 p-4 bg-green-600 border border-gray-200  shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
+                        <h2 class="font-bold text-center text-white uppercase">Total keseluruhan harga :
+                            {{ formatRupiah($totalKeseluruhanHarga) }}</h2>
+                    </div>
                 @endforeach
-
-                <div
-                    class="flex flex-col p-4 bg-green-600 border border-gray-200 rounded shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
-                    <h2 class="font-bold text-center text-white uppercase">Total keseluruhan harga :
-                        {{ formatRupiah($totalKeseluruhanHarga) }}</h2>
-                </div>
-
             </div>
         </div>
     </div>
@@ -409,7 +407,7 @@
                     if (modalTitle === 'Edit Tanggal') {
                         $('#tanggal_datang').val(formatDateTime(response.data
                             .tanggal_datang));
-                    } else if (modalTitle === 'Edit Model') {
+                    } else if (modalTitle === 'Edit Kain') {
                         $('#kain').val(response.data.kain);
                     } else if (modalTitle === 'Edit Warna') {
                         $('#warna').val(response.data.warna);

@@ -13,7 +13,7 @@ class KainMentahController extends Controller
     {
         return response()->json([
             'success' => true,
-            'data' => WarnaKain::find($id),
+            'data' => KainBarangMentah::find($id),
         ]);
     }
 
