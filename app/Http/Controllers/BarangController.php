@@ -210,8 +210,6 @@ class BarangController extends Controller
             'model' => Models::all(),
             'warna' => Warna::all(),
             'supplyer' => Supplyer::all(),
-            'jahit' => Jahit::orderBy('id', 'desc')->where('barang_id', $id)->get(),
-            'cutting' => Cutting::orderBy('id', 'desc')->where('barang_id', $id)->get(),
         ];
         return view('barang.print', $data);
     }

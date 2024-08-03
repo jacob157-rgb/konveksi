@@ -6,6 +6,7 @@ use App\Models\Barang;
 use App\Models\BarangMentah;
 use App\Models\Bon;
 use App\Models\Cutting;
+use App\Models\CuttingAmbil;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class KaryawanController extends Controller
     {
         $karyawanJahit = Karyawan::where('jenis_karyawan', '=', 'jahit')->get();
         $karyawanCutting = Karyawan::where('jenis_karyawan', '=', 'cutting')->get();
-        return view('karyawan.index', compact('karyawanJahit', 'karyawanCutting'));
+        return view('pages.karyawan.index', compact('karyawanJahit', 'karyawanCutting'));
     }
 
     public function store(Request $request)
@@ -101,7 +102,7 @@ class KaryawanController extends Controller
     public function getCutting($id)
     {
         $karyawan = Karyawan::find($id);
-        $cutting = Cutting::where('karyawan_id', $id)->get();
+        $cutting = CuttingAmbil::where('karyawan_id', $id)->get();
         $data = [
             'karyawan' => $karyawan,
             'cutting' => $cutting,

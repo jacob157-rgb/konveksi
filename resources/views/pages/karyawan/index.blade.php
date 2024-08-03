@@ -60,20 +60,77 @@
                                             <td
                                                 class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
                                                 {{ $row->alamat }}</td>
-                                            <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
-                                                <button type="button" data-id="{{ $row->id }}"
-                                                    data-hs-overlay="#edit-modal"
-                                                    class="inline-flex items-center text-sm font-semibold text-blue-600 border border-transparent rounded-lg edit gap-x-2 hover:text-blue-800 disabled:pointer-events-none disabled:opacity-50 dark:text-blue-500 dark:hover:text-blue-400">Edit</button>
-                                                <a href="/cutting/{{ $row->id }}"
-                                                    class="inline-flex items-center text-sm font-semibold text-green-600 border border-transparent rounded-lg edit gap-x-2 hover:text-green-800 disabled:pointer-events-none disabled:opacity-50 dark:text-green-500 dark:hover:text-green-400">Detail</a>
-                                                <form action="/karyawan/delete/{{ $row->id }}" method="post"
-                                                    class="inline-flex delete-form">
-                                                    @csrf
-                                                    <button type="button"
-                                                        class="inline-flex items-center text-sm font-semibold text-red-600 border border-transparent rounded-lg delete gap-x-2 hover:text-red-800 disabled:pointer-events-none disabled:opacity-50 dark:text-red-500 dark:hover:text-red-400">
-                                                        Hapus
+                                            <td
+                                                class="flex items-center justify-center px-6 py-4 space-x-2 text-sm font-medium">
+                                                <a href="/karyawan/cutting/ambil/{{ $row->id }}"
+                                                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-full tambah-barang gap-x-2 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+                                                    Ambil Cutting
+                                                    <svg class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg"
+                                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" class="lucide lucide-scissors">
+                                                        <circle cx="6" cy="6" r="3" />
+                                                        <path d="M8.12 8.12 12 12" />
+                                                        <path d="M20 4 8.12 15.88" />
+                                                        <circle cx="6" cy="18" r="3" />
+                                                        <path d="M14.8 14.8 20 20" />
+                                                    </svg>
+                                                </a>
+                                                <a href="/karyawan/cutting/kembali/{{ $row->id }}"
+                                                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-full kirim-barang gap-x-2 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+                                                    Kembalikan Cutting
+                                                    <svg class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg"
+                                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" class="lucide lucide-scissors">
+                                                        <circle cx="6" cy="6" r="3" />
+                                                        <path d="M8.12 8.12 12 12" />
+                                                        <path d="M20 4 8.12 15.88" />
+                                                        <circle cx="6" cy="18" r="3" />
+                                                        <path d="M14.8 14.8 20 20" />
+                                                    </svg>
+                                                </a>
+                                                <a href="/karyawan/detail/{{ $row->id }}"
+                                                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-full gap-x-2 hover:bg-green-700 focus:bg-green-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+                                                    Detail
+                                                </a>
+                                                <div class="inline-block hs-tooltip">
+                                                    <button type="button" data-id="{{ $row->id }}"
+                                                        data-hs-overlay="#edit-modal"
+                                                        class="hs-tooltip-toggle edit-tanggal inline-flex items-center justify-center gap-x-2 rounded-s-md bg-white px-1.5 py-1 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="blue"
+                                                            class="w-4 h-4">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                        </svg>
+                                                        <span
+                                                            class="absolute z-10 invisible inline-block px-4 py-2 font-medium text-white transition-opacity bg-gray-900 rounded shadow-sm opacity-0 hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 dark:bg-neutral-700"
+                                                            role="tooltip">
+                                                            Edit
+                                                        </span>
                                                     </button>
-                                                </form>
+                                                </div>
+                                                <div class="inline-block hs-tooltip">
+                                                    <form action="/karyawan/delete/{{ $row->id }}" method="post"
+                                                        data-id="{{ $row?->id }}" style="display: inline-block;">
+                                                        @csrf
+                                                        <button type="submit"
+                                                            class="hs-tooltip-toggle delete inline-flex items-center justify-center gap-x-2 rounded-e-md bg-white px-1.5 py-1 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="crimson"
+                                                                class="w-4 h-4">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                            </svg>
+                                                            <span
+                                                                class="absolute z-10 invisible inline-block px-4 py-2 font-medium text-white transition-opacity bg-gray-900 rounded shadow-sm opacity-0 delete hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 dark:bg-neutral-700"
+                                                                role="tooltip">
+                                                                Hapus
+                                                            </span>
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -128,20 +185,71 @@
                                             <td
                                                 class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap dark:text-neutral-200">
                                                 {{ $row->alamat }}</td>
-                                            <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
-                                                <button type="button" data-id="{{ $row->id }}"
-                                                    data-hs-overlay="#edit-modal"
-                                                    class="inline-flex items-center text-sm font-semibold text-blue-600 border border-transparent rounded-lg edit gap-x-2 hover:text-blue-800 disabled:pointer-events-none disabled:opacity-50 dark:text-blue-500 dark:hover:text-blue-400">Edit</button>
-                                                <a href="/jahit/{{ $row->id }}"
-                                                    class="inline-flex items-center text-sm font-semibold text-green-600 border border-transparent rounded-lg edit gap-x-2 hover:text-green-800 disabled:pointer-events-none disabled:opacity-50 dark:text-green-500 dark:hover:text-green-400">Detail</a>
-                                                <form action="/karyawan/delete/{{ $row->id }}" method="post"
-                                                    class="inline-flex delete-form">
-                                                    @csrf
-                                                    <button type="button"
-                                                        class="inline-flex items-center text-sm font-semibold text-red-600 border border-transparent rounded-lg delete gap-x-2 hover:text-red-800 disabled:pointer-events-none disabled:opacity-50 dark:text-red-500 dark:hover:text-red-400">
-                                                        Hapus
+                                            <td
+                                                class="flex items-center justify-center px-6 py-4 space-x-2 text-sm font-medium">
+                                                <a href="/barang/mentah/{{ $row->id }}"
+                                                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-full tambah-barang gap-x-2 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+                                                    Ambil Jahit
+                                                    <svg class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="lucide lucide-shirt">
+                                                        <path
+                                                            d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" />
+                                                    </svg>
+                                                </a>
+                                                <a href="/barang/jadi/{{ $row->id }}"
+                                                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-full kirim-barang gap-x-2 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+                                                    Kembalikan Jahit
+                                                    <svg class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="lucide lucide-shirt">
+                                                        <path
+                                                            d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" />
+                                                    </svg>
+                                                </a>
+                                                <a href="/supplyer/detail/{{ $row->id }}"
+                                                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-full gap-x-2 hover:bg-green-700 focus:bg-green-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+                                                    Detail
+                                                </a>
+                                                <div class="inline-block hs-tooltip">
+                                                    <button type="button" data-id="{{ $row->id }}"
+                                                        data-hs-overlay="#edit-modal"
+                                                        class="hs-tooltip-toggle edit-tanggal inline-flex items-center justify-center gap-x-2 rounded-s-md bg-white px-1.5 py-1 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="blue"
+                                                            class="w-4 h-4">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                        </svg>
+                                                        <span
+                                                            class="absolute z-10 invisible inline-block px-4 py-2 font-medium text-white transition-opacity bg-gray-900 rounded shadow-sm opacity-0 hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 dark:bg-neutral-700"
+                                                            role="tooltip">
+                                                            Edit
+                                                        </span>
                                                     </button>
-                                                </form>
+                                                </div>
+                                                <div class="inline-block hs-tooltip">
+                                                    <form action="/karyawan/delete/{{ $row->id }}" method="post"
+                                                        data-id="{{ $row?->id }}" style="display: inline-block;">
+                                                        @csrf
+                                                        <button type="submit"
+                                                            class="hs-tooltip-toggle delete inline-flex items-center justify-center gap-x-2 rounded-e-md bg-white px-1.5 py-1 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="crimson"
+                                                                class="w-4 h-4">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                            </svg>
+                                                            <span
+                                                                class="absolute z-10 invisible inline-block px-4 py-2 font-medium text-white transition-opacity bg-gray-900 rounded shadow-sm opacity-0 delete hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 dark:bg-neutral-700"
+                                                                role="tooltip">
+                                                                Hapus
+                                                            </span>
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -167,9 +275,9 @@
                         class="flex items-center justify-center text-sm font-semibold text-gray-800 border border-transparent rounded-full size-7 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 dark:text-white dark:hover:bg-neutral-700"
                         data-hs-overlay="#tambah-modal">
                         <span class="sr-only">Close</span>
-                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
+                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
                             <path d="M18 6 6 18"></path>
                             <path d="m6 6 12 12"></path>
                         </svg>

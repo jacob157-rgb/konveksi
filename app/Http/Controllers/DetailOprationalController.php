@@ -35,17 +35,18 @@ class DetailOprationalController extends Controller
         ]);
 
         $operational = Operational::find($id);
-
-        if ($operational->sisa_saldo < $request->saldo) {
+        $sisaSaldo = (int) str_replace('.', '', $operational->sisa_saldo);
+        $saldoNew = (int) str_replace('.', '', $request->saldo);
+        if ($sisaSaldo < $saldoNew) {
             return redirect("/operational/pemakaian/{$id}")->with('error', 'Sisa saldo tidak mencukupi');
         }
         DetailOperational::create([
             'operational_id' => $operational->id,
-            'saldo' => str_replace('.', '', $request->saldo),
+            'saldo' => $saldoNew,
             'keterangan' => $request->keterangan,
         ]);
 
-        $kalkulasi = str_replace('.', '', $operational->sisa_saldo) - str_replace('.', '', $request->saldo);
+        $kalkulasi = $sisaSaldo - $saldoNew;
         $operational->update([
             'sisa_saldo' => $kalkulasi,
         ]);

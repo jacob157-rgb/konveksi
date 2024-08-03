@@ -2,94 +2,122 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kain;
-use App\Models\Warna;
-use App\Models\Barang;
-use App\Models\Bon;
-use App\Models\Models;
-use App\Models\Cutting;
+use App\Models\CuttingAmbil;
+use App\Models\CuttingAmbilModel;
+use App\Models\CuttingKembali;
+use App\Models\CuttingWarnaModel;
+use App\Models\KainBarangMentah;
 use App\Models\Karyawan;
-use App\Models\Supplyer;
+use App\Models\Models;
+use App\Models\Warna;
+use App\Models\WarnaKain;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class CuttingController extends Controller
 {
-    public function index()
-    {
-        $datas = Barang::latest()
-                ->join('supplyer', 'barang.supplyer_id', '=', 'supplyer.id')
-                ->join('kain', 'barang.kain_id', '=', 'kain.id')
-                ->join('model', 'barang.model_id', '=', 'model.id')
-                ->join('warna', 'barang.warna_id', '=', 'warna.id')
-                ->select('barang.*', 'supplyer.nama as supplyer_nama', 'kain.nama as kain_nama', 'model.nama as model_nama', 'warna.nama as warna_nama');
-
-        if (request()->input('query')) {
-            $datas->where('supplyer.nama', 'like', '%' . request()->input('query') . '%')
-            ->orWhere('kain.nama', 'like', '%' . request()->input('query') . '%')
-            ->orWhere('tanggal_datang', 'like', '%' . request()->input('query') . '%')
-            ->orWhere('model.nama', 'like', '%' . request()->input('query') . '%');
-        }
-        $data = [
-            'cutting' => Cutting::orderBy('id', 'desc')->get(),
-            'barang' =>  $datas->orderBy('id', 'desc')->get(),
-        ];
-
-        return view('cutting.index', $data);
-    }
-    public function create($id)
+    public function getAmbilCutting($id)
     {
         $data = [
-            'barang' => Barang::find($id),
-            'karyawan' => Karyawan::orderBy('id', 'desc')->where('jenis_karyawan', 'cutting')->get(),
+            'karyawan' => Karyawan::find($id),
+            'model' => Models::all(),
+            'warna' => Warna::all(),
         ];
-        return view('cutting.create', $data);
+        return view('pages.karyawan.cutting.ambil', $data);
+    }
+    public function getKembaliCutting($id)
+    {
+        $data = [
+            'karyawan' => Karyawan::find($id),
+            'cuttingAmbil' => CuttingAmbil::orderBy('id', 'desc')->get(),
+        ];
+        return view('pages.karyawan.cutting.kembali', $data);
     }
 
-    public function store(Request $request)
+    public function postAmbilCutting(Request $request, $id)
     {
-        $request->validate([
-            'barang_id' => 'required',
-            'karyawan_id' => 'required',
-            'jumlah_ambil' => 'required',
-            'satuan' => 'required',
-            'ongkos' => 'required',
+        // dd($request->all());
+        $karyawan = Karyawan::find($id);
+        $validator = Validator::make($request->all(), [
             'tanggal_ambil' => 'required',
+            'karyawan_id' => 'required',
         ]);
 
-        $barang = Barang::find($request->barang_id);
-        if ($barang->jumlah_mentah < $request->jumlah_ambil) {
-            return redirect()->back()->with('error', 'Jumlah ambil melebihi jumlah mentah');
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'errors' => $validator->errors(),
+                ],
+                422,
+            );
         }
-        $cutting = Cutting::create([
-            'barang_id' => $request->barang_id,
-            'karyawan_id' => $request->karyawan_id,
-            'jumlah_ambil' => $request->jumlah_ambil,
-            'jumlah_kembali' => 0,
-            'satuan' => $request->satuan,
-            'ongkos' => str_replace('.', '', $request->ongkos),
+
+        $cutting_ambil = CuttingAmbil::create([
+            'id_karyawan' => $karyawan->id,
             'tanggal_ambil' => $request->tanggal_ambil,
-            'tanggal_kembali' => null,
-            'status' => 'proses',
         ]);
-        if ($request->bon != null) {
-            Bon::create([
-                'karyawan_id' => $request->karyawan_id,
-                'cutting_id' => $cutting->id,
-                'nominal' => str_replace('.', '', $request->bon),
-                'status' => 'belumlunas',
+
+        foreach ($request->model as $modelData) {
+            $ambilModel = CuttingAmbilModel::create([
+                'id_cutting_ambil' => $cutting_ambil->id,
+                'model' => $modelData['nama'],
+            ]);
+
+            foreach ($modelData['warna'] as $warnaData) {
+                CuttingWarnaModel::create([
+                    'id_ambil_model' => $ambilModel->id,
+                    'warna' => $warnaData['warna'],
+                    'jumlah_ambil' => Str::of($warnaData['jumlah_ambil'])->remove('.'),
+                    'satuan_ambil' => Str::of($warnaData['satuan_ambil'])->remove('.'),
+                    'ongkos' => Str::of($warnaData['ongkos'])->remove('.'),
+                ]);
+            }
+        }
+
+        return response()->json(
+            [
+                'success' => true,
+            ],
+            201,
+        );
+    }
+
+    public function postKembaliCutting(Request $request, $id_karyawan, $id_warna)
+    {
+        $warnaModelKembali = CuttingWarnaModel::find($id_warna);
+
+        $cuttingKembali = CuttingKembali::where('id_cutting_warna_model', $warnaModelKembali->id)->first();
+        $kalkulasi = $request->jumlah_kembali * $warnaModelKembali->ongkos;
+
+        if ($cuttingKembali) {
+            // Update existing record
+            $cuttingKembali->update([
+                'jumlah_kembali' => $request->jumlah_kembali,
+                'satuan_kembali' => 'pcs',
+                'total_ongkos' => $kalkulasi,
+                'tanggal_kembali' => $request->tanggal_kembali,
+            ]);
+        } else {
+            // Create a new record
+            CuttingKembali::create([
+                'id_cutting_warna_model' => $warnaModelKembali->id,
+                'jumlah_kembali' => $request->jumlah_kembali,
+                'satuan_kembali' => 'pcs',
+                'total_ongkos' => $kalkulasi,
+                'tanggal_kembali' => $request->tanggal_kembali,
             ]);
         }
-        return redirect('/cutting')->with('success', 'Cutting created successfully.');
-    }
 
-    public function destroy($id)
-    {
-        $cutting = Cutting::find($id);
-        if ($cutting->status == 'jadi' || $cutting->tanggal_kembali || $cutting->jumlah_kembali != 0) {
-            return redirect()->back()->with('error', 'Gagal Menghapus karena barang sudah jadi.');
-        }
-        $cutting->delete();
-        return redirect()->back()->with('success', 'Cutting delete successfully.');
+        return response()->json(
+            [
+                'success' => true,
+                'warna' => CuttingWarnaModel::find($id_warna),
+                'karyawan' => $id_karyawan,
+                'request' => $request->all(),
+            ],
+            201,
+        );
     }
 }
