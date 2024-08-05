@@ -79,6 +79,25 @@ Route::middleware(ValidateAuth::class)->group(function () {
         });
     });
 
+    Route::controller(JahitController::class)->group(function () {
+        Route::prefix('karyawan/jahit/ambil')->group(function () {
+            Route::get('/{id}', 'getAmbilJahit');
+            Route::post('/{id}/store', 'postAmbilJahit');
+            Route::get('/get/{id}', 'getResponseJahit');
+            Route::put('/update/{id}', 'putJahit');
+            Route::get('/detail/{id}', 'detailJahit');
+            Route::delete('/delete/{id}', 'deleteJahit');
+        });
+        Route::prefix('karyawan/jahit/kembali')->group(function () {
+            Route::get('/{id}', 'getKembaliJahit');
+            Route::post('/{id_karyawan}/{id_warna}/store', 'postKembaliJahit');
+            Route::get('/get/{id}', 'getResponseJahit');
+            Route::put('/update/{id}', 'putJahit');
+            Route::get('/detail/{id}', 'detailJahit');
+            Route::delete('/delete/{id}', 'deleteJahit');
+        });
+    });
+
     // Route::prefix('jahit')->group(function () {
     //     Route::get('/{id}', 'getJahit');
     //     Route::post('/store', 'postJahit');

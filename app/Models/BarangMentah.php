@@ -17,11 +17,4 @@ class BarangMentah extends Model
     public function kain() {
         return $this->belongsTo(Kain::class);
     }
-
-    public function cutting() {
-        return $this->hasMany(Cutting::class);
-    }
-    public function jahit() {
-        return $this->hasMany(Jahit::class);
-    }
 }

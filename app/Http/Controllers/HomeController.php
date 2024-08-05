@@ -27,6 +27,7 @@ class HomeController extends Controller
             'cutting' => Karyawan::where('jenis_karyawan', 'cutting')->count(),
             'jahit' => Karyawan::where('jenis_karyawan', 'jahit')->count(),
         ];
+        // dd($data);
         return view('home.index', $data);
     }
     public function getProfil()

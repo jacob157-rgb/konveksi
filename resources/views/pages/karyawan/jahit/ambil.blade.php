@@ -9,12 +9,12 @@
         class="flex flex-col p-4 bg-white border border-gray-200 shadow-sm rounded-xl dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
         <div class="flex flex-col">
             <div class="-m-1.5 overflow-x-auto">
-                <form action="/karyawan/cutting/ambil/{{ $karyawan->id }}/store" method="post" id="addBarangJadiForm">
+                <form action="/karyawan/jahit/ambil/{{ $karyawan->id }}/store" method="post" id="addBarangJadiForm">
                     @csrf
                     <div class="inline-block min-w-full py-1.5 align-middle">
 
                         <div class="p-2 border-b">
-                            <h2 class="text-2xl font-semibold text-gray-800 dark:text-neutral-200">Ambil Cutting</h2>
+                            <h2 class="text-2xl font-semibold text-gray-800 dark:text-neutral-200">Ambil Jahit</h2>
                         </div>
 
                         <input type="text" name="karyawan_id" hidden value="{{ $karyawan->id }}">
@@ -64,8 +64,7 @@
                                                             <label for="satuan" class="sr-only">Satuan</label>
                                                             <select id="satuan" name="model[0][warna][0][satuan_ambil]"
                                                                 class="block w-full border border-transparent rounded-lg focus:border-blue-600 focus:ring-blue-600 dark:bg-neutral-800 dark:text-neutral-500">
-                                                                <option value="yard" selected>Yard</option>
-                                                                <option value="kg">Kg</option>
+                                                                <option value="pcs" selected>Pcs</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -194,8 +193,7 @@
                                                 <label for="satuan" class="sr-only">Satuan</label>
                                                 <select id="satuan" name="model[${modelCount}][warna][${warnaCount}][satuan_ambil]"
                                                     class="block w-full border border-transparent rounded-lg focus:border-blue-600 focus:ring-blue-600 dark:bg-neutral-800 dark:text-neutral-500">
-                                                    <option value="yard" selected>Yard</option>
-                                                                <option value="kg">Kg</option>
+                                                    <option value="pcs" selected>Pcs</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -307,8 +305,7 @@
                                     <label for="satuan" class="sr-only">Satuan</label>
                                     <select id="satuan" name="model[${modelCount}][warna][${warnaCount}][satuan_ambil]"
                                         class="block w-full border border-transparent rounded-lg focus:border-blue-600 focus:ring-blue-600 dark:bg-neutral-800 dark:text-neutral-500">
-                                        <option value="yard" selected>Yard</option>
-                                                                <option value="kg">Kg</option>
+                                        <option value="pcs" selected>Pcs</option>
                                     </select>
                                 </div>
                             </div>
@@ -368,7 +365,7 @@
 
             Swal.fire({
                 title: 'Proses..',
-                text: 'Proses ambil Cutting.',
+                text: 'Proses ambil Jahit.',
                 didOpen: () => {
                     Swal.showLoading();
                 },
@@ -388,7 +385,7 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'Success',
-                            text: 'Ambil Barang Cutting disimpan.',
+                            text: 'Ambil Barang Jahit disimpan.',
                         }).then(() => {
                             window.location.href = '/karyawan';
                         });

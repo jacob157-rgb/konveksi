@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CuttingAmbil;
-use App\Models\CuttingAmbilModel;
-use App\Models\CuttingKembali;
-use App\Models\CuttingWarnaModel;
+use App\Models\JahitAmbil;
+use App\Models\JahitAmbilModel;
+use App\Models\JahitKembali;
+use App\Models\JahitWarnaModel;
 use App\Models\KainBarangMentah;
 use App\Models\Karyawan;
 use App\Models\Models;
@@ -15,27 +15,27 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class CuttingController extends Controller
+class JahitController extends Controller
 {
-    public function getAmbilCutting($id)
+    public function getAmbilJahit($id)
     {
         $data = [
             'karyawan' => Karyawan::find($id),
             'model' => Models::all(),
             'warna' => Warna::all(),
         ];
-        return view('pages.karyawan.cutting.ambil', $data);
+        return view('pages.karyawan.jahit.ambil', $data);
     }
-    public function getKembaliCutting($id)
+    public function getKembaliJahit($id)
     {
         $data = [
             'karyawan' => Karyawan::find($id),
-            'cuttingAmbil' => CuttingAmbil::orderBy('id', 'desc')->get(),
+            'jahitAmbil' => JahitAmbil::orderBy('id', 'desc')->get(),
         ];
-        return view('pages.karyawan.cutting.kembali', $data);
+        return view('pages.karyawan.jahit.kembali', $data);
     }
 
-    public function postAmbilCutting(Request $request, $id)
+    public function postAmbilJahit(Request $request, $id)
     {
         // dd($request->all());
         $karyawan = Karyawan::find($id);
@@ -54,19 +54,19 @@ class CuttingController extends Controller
             );
         }
 
-        $cutting_ambil = CuttingAmbil::create([
+        $jahit_ambil = JahitAmbil::create([
             'id_karyawan' => $karyawan->id,
             'tanggal_ambil' => $request->tanggal_ambil,
         ]);
 
         foreach ($request->model as $modelData) {
-            $ambilModel = CuttingAmbilModel::create([
-                'id_cutting_ambil' => $cutting_ambil->id,
+            $ambilModel = JahitAmbilModel::create([
+                'id_jahit_ambil' => $jahit_ambil->id,
                 'model' => $modelData['nama'],
             ]);
 
             foreach ($modelData['warna'] as $warnaData) {
-                CuttingWarnaModel::create([
+                JahitWarnaModel::create([
                     'id_ambil_model' => $ambilModel->id,
                     'warna' => $warnaData['warna'],
                     'jumlah_ambil' => Str::of($warnaData['jumlah_ambil'])->remove('.'),
@@ -84,28 +84,28 @@ class CuttingController extends Controller
         );
     }
 
-    public function postKembaliCutting(Request $request, $id_karyawan, $id_warna)
+    public function postKembaliJahit(Request $request, $id_karyawan, $id_warna)
     {
-        $warnaModelKembali = CuttingWarnaModel::find($id_warna);
+        $warnaModelKembali = JahitWarnaModel::find($id_warna);
 
         if (!$warnaModelKembali) {
             return response()->json(['error' => 'Warna model tidak ditemukan'], 404);
         }
 
-        $cuttingKembali = CuttingKembali::where('id_cutting_warna_model', $warnaModelKembali->id)->first();
+        $jahitKembali = JahitKembali::where('id_jahit_warna_model', $warnaModelKembali->id)->first();
         $kalkulasi = $request?->jumlah_kembali * $warnaModelKembali->ongkos;
 
-        if ($cuttingKembali) {
-            $cuttingKembali->update([
-                'jumlah_kembali' => $request?->jumlah_kembali == null ? $cuttingKembali->jumlah_kembali : $request->jumlah_kembali,
+        if ($jahitKembali) {
+            $jahitKembali->update([
+                'jumlah_kembali' => $request?->jumlah_kembali == null ? $jahitKembali->jumlah_kembali : $request->jumlah_kembali,
                 'satuan_kembali' => 'pcs',
-                'total_ongkos' => $request?->jumlah_kembali == null ?  $cuttingKembali->total_ongkos : $kalkulasi,
-                'tanggal_kembali' => $request->tanggal_kembali ?? $cuttingKembali->tanggal_kembali,
-                'id_cutting_warna_model' => $warnaModelKembali->id,
+                'total_ongkos' => $request?->jumlah_kembali == null ?  $jahitKembali->total_ongkos : $kalkulasi,
+                'tanggal_kembali' => $request->tanggal_kembali ?? $jahitKembali->tanggal_kembali,
+                'id_jahit_warna_model' => $warnaModelKembali->id,
             ]);
         } else {
-            CuttingKembali::create([
-                'id_cutting_warna_model' => $warnaModelKembali->id,
+            JahitKembali::create([
+                'id_jahit_warna_model' => $warnaModelKembali->id,
                 'jumlah_kembali' => $request->jumlah_kembali,
                 'satuan_kembali' => 'pcs',
                 'total_ongkos' => $kalkulasi,
@@ -116,10 +116,10 @@ class CuttingController extends Controller
         return response()->json(
             [
                 'success' => true,
-                'warna' => CuttingWarnaModel::find($id_warna),
+                'warna' => JahitWarnaModel::find($id_warna),
                 'karyawan' => $id_karyawan,
                 'request' => $request->all(),
-                'kalkulasi' => $request?->jumlah_kembali == null ?  $cuttingKembali->total_ongkos : $kalkulasi,
+                'kalkulasi' => $request?->jumlah_kembali == null ?  $jahitKembali->total_ongkos : $kalkulasi,
             ],
             201,
         );

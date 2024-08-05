@@ -23,11 +23,4 @@ class BarangJadi extends Model
     public function model() {
         return $this->belongsTo(Models::class);
     }
-
-    public function cutting() {
-        return $this->hasMany(Cutting::class);
-    }
-    public function jahit() {
-        return $this->hasMany(Jahit::class);
-    }
 }
