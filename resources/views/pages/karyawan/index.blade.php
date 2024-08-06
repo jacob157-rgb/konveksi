@@ -97,7 +97,7 @@
                                                 <div class="inline-block hs-tooltip">
                                                     <button type="button" data-id="{{ $row->id }}"
                                                         data-hs-overlay="#edit-modal"
-                                                        class="hs-tooltip-toggle edit-tanggal inline-flex items-center justify-center gap-x-2 rounded-s-md bg-white px-1.5 py-1 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
+                                                        class="hs-tooltip-toggle edit inline-flex items-center justify-center gap-x-2 rounded-s-md bg-white px-1.5 py-1 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="blue"
                                                             class="w-4 h-4">
@@ -209,14 +209,14 @@
                                                             d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" />
                                                     </svg>
                                                 </a>
-                                                <a href="/supplyer/detail/{{ $row->id }}"
+                                                <a href="/karyawan/detail/{{ $row->id }}"
                                                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-full gap-x-2 hover:bg-green-700 focus:bg-green-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
                                                     Detail
                                                 </a>
                                                 <div class="inline-block hs-tooltip">
                                                     <button type="button" data-id="{{ $row->id }}"
                                                         data-hs-overlay="#edit-modal"
-                                                        class="hs-tooltip-toggle edit-tanggal inline-flex items-center justify-center gap-x-2 rounded-s-md bg-white px-1.5 py-1 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
+                                                        class="hs-tooltip-toggle edit inline-flex items-center justify-center gap-x-2 rounded-s-md bg-white px-1.5 py-1 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="blue"
                                                             class="w-4 h-4">
@@ -397,9 +397,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).on('click', '.edit', function(e) {
-            let model_id = $(this).data('id');
+            let karyawan_id = $(this).data('id');
             $.ajax({
-                url: `/karyawan/edit/${model_id}`,
+                url: `/karyawan/edit/${karyawan_id}`,
                 type: "GET",
                 success: function(response) {
                     $('#id_model').val(response.data.id);

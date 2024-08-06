@@ -49,48 +49,11 @@
                     @endphp
                     <div
                         class="mx-8 mb-2 flex flex-row items-center justify-between whitespace-nowrap rounded-lg bg-blue-500 px-4 py-2 text-xs font-semibold text-white">
-                        Tanggal:
+                        <span
+                            class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-lg text-xs font-medium bg-blue-100 text-blue-800">No. {{ $loop->iteration }}
+                        </span>
                         {{ \Carbon\Carbon::parse($row?->tanggal_ambil)?->setTimezone('Asia/Jakarta')->translatedFormat('l, d F Y H:i:s') }}
 
-                        {{--  awal action tanggal  --}}
-                        <span class="flex text-sm text-gray-600 dark:text-neutral-400">
-                            <div class="hs-tooltip inline-block">
-                                <button type="button" data-hs-overlay="#edit-modal-tanggal"
-                                    data-id="{{ $row?->id }}"
-                                    class="hs-tooltip-toggle edit-tanggal inline-flex items-center justify-center gap-x-2 rounded-s-md bg-white px-1.5 py-1 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="blue" class="h-4 w-4">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                    </svg>
-                                    <span
-                                        class="hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 invisible absolute z-10 inline-block rounded bg-gray-900 px-2 py-1 text-xs font-medium text-white opacity-0 shadow-sm transition-opacity dark:bg-neutral-700"
-                                        role="tooltip">
-                                        Edit
-                                    </span>
-                                </button>
-                            </div>
-                            <div class="hs-tooltip inline-block">
-                                <form action="/barang/jadi/delete/{{ $row?->id }}" method="post"
-                                    data-id="{{ $row?->id }}" style="display: inline-block;">
-                                    @csrf
-                                    <button type="submit"
-                                        class="hs-tooltip-toggle delete inline-flex items-center justify-center gap-x-2 rounded-e-md bg-white px-1.5 py-1 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="crimson" class="h-4 w-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                        </svg>
-                                        <span
-                                            class="delete hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 invisible absolute z-10 inline-block rounded bg-gray-900 px-2 py-1 text-xs font-medium text-white opacity-0 shadow-sm transition-opacity dark:bg-neutral-700"
-                                            role="tooltip">
-                                            Hapus
-                                        </span>
-                                    </button>
-                                </form>
-                            </div>
-                        </span>
-                        {{--  akhir aktion tanggal  --}}
                     </div>
                     @foreach ($jahitModel as $item)
                         @php
@@ -100,54 +63,12 @@
                             style="font-family: Raleway">
                             <li class="grid w-full grid-cols-12 items-center gap-2 py-2">
                                 <div
-                                    class="flex w-fit flex-col items-center justify-center justify-self-center whitespace-nowrap rounded-lg bg-pink-500 p-2 text-xs font-semibold text-white">
+                                    class="flex w-fit flex-col items-center justify-center justify-self-center whitespace-nowrap rounded-lg bg-orange-100 text-orange-800  p-2 text-xs font-semibold ">
                                     {{ $item?->model }}
-                                    {{-- Awal action model --}}
-                                    <div
-                                        class="group mt-1 inline-flex items-center divide-x divide-gray-300 rounded-lg border border-gray-300 bg-white shadow-sm transition-all dark:divide-neutral-700 dark:border-neutral-700 dark:bg-neutral-700">
-                                        <div class="hs-tooltip inline-block">
-                                            <button type="button" data-hs-overlay="#edit-modal-model"
-                                                data-id="{{ $item?->id }}"
-                                                class="hs-tooltip-toggle edit-model inline-flex items-center justify-center gap-x-2 rounded-s-md bg-white px-1.5 py-1 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="blue"
-                                                    class="h-4 w-4">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                                </svg>
-                                                <span
-                                                    class="hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 invisible absolute z-10 inline-block rounded bg-gray-900 px-2 py-1 text-xs font-medium text-white opacity-0 shadow-sm transition-opacity dark:bg-neutral-700"
-                                                    role="tooltip">
-                                                    Edit
-                                                </span>
-                                            </button>
-                                        </div>
-                                        <div class="hs-tooltip inline-block">
-                                            <form action="/barang/jadi/model/delete/{{ $item?->id }}" method="post"
-                                                data-id="{{ $item?->id }}" style="display: inline-block;">
-                                                @csrf
-                                                <button type="submit"
-                                                    class="hs-tooltip-toggle delete inline-flex items-center justify-center gap-x-2 rounded-e-md bg-white px-1.5 py-1 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="crimson"
-                                                        class="h-4 w-4">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                                    </svg>
-                                                    <span
-                                                        class="delete hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 invisible absolute z-10 inline-block rounded bg-gray-900 px-2 py-1 text-xs font-medium text-white opacity-0 shadow-sm transition-opacity dark:bg-neutral-700"
-                                                        role="tooltip">
-                                                        Hapus
-                                                    </span>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
                                 </div>
-                                {{--  akhir aktion model  --}}
                                 <div class="col-span-11">
                                     <table class="min-w-full divide-y divide-gray-200">
-                                        <thead class="bg-blue-800">
+                                        <thead class="bg-blue-900">
                                             <tr>
                                                 <th
                                                     class="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider text-white">
@@ -170,16 +91,10 @@
                                                 <th
                                                     class="px-4 py-2 text-left text-xs font-medium uppercase tracking-wider text-white">
                                                     Total Ongkos</th>
-                                                <th
-                                                    class="px-4 py-2 text-center text-xs font-medium uppercase tracking-wider text-white">
-                                                    Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody class="divide-y divide-purple-500 bg-white">
                                             @foreach ($warnaModel as $indexWarna => $rowItem)
-                                                @php
-                                                    $totalKeseluruhanHarga += $rowItem?->total;
-                                                @endphp
                                                 <tr>
                                                     <td class="px-4 py-2 text-xs text-purple-700">
                                                         {{ $indexWarna + 1 }}.</td>
@@ -196,19 +111,20 @@
                                                         $getJahitWarnaModel = \App\Models\JahitKembali::getJahitWarnaModel(
                                                             $rowItem->id,
                                                         );
+                                                        $totalKeseluruhanHarga += $getJahitWarnaModel?->total_ongkos;
                                                     @endphp
                                                     <td class="px-4 py-2 text-xs">
                                                         <input type="datetime-local" name="tanggal_kembali"
                                                             value="{{ $getJahitWarnaModel?->tanggal_kembali }}"
                                                             data-id="{{ $rowItem->id }}"
-                                                            class="block w-full rounded-lg border-gray-200 px-2 py-1 ps-9 text-sm shadow-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                            class="block w-full rounded {{ !$getJahitWarnaModel->tanggal_kembali ? 'border-2 border-red-600' : ' border-1 border-green-500' }} px-2 py-1 ps-9 text-sm shadow-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                             placeholder="Cari barang datang">
                                                     </td>
                                                     <td class="px-4 py-2 text-xs">
                                                         <div class="flex items-center">
                                                             <input type="number" name="jumlah_kembali"
                                                                 data-id="{{ $rowItem->id }}"
-                                                                class="block w-full rounded-lg border-gray-200 px-2 py-1 text-sm focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                                                                class="block w-full rounded {{ !$getJahitWarnaModel->tanggal_kembali ? 'border-2 border-red-600' : ' border-1 border-green-500' }} px-2 py-1 text-sm focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                                                                 placeholder="Masukan Jumlah Kembali"
                                                                 value="{{ $getJahitWarnaModel?->jumlah_kembali }}">
                                                             <p class="ps-2">(Pcs)</p>
@@ -218,51 +134,7 @@
                                                         <span
                                                             class="kalkulasi-{{ $rowItem?->id }}">{{ formatRupiah($getJahitWarnaModel?->total_ongkos) }}</span>
                                                     </td>
-                                                    <td class="flex items-center justify-center px-4 py-2 text-xs">
-                                                        <div class="hs-tooltip inline-block">
-                                                            <button type="button" type="button"
-                                                                data-hs-overlay="#edit-modal-warna"
-                                                                data-id="{{ $rowItem?->id }}"
-                                                                class="edit-warna hs-tooltip-toggle inline-flex items-center justify-center gap-x-2 rounded-s-md border bg-white px-2 py-2 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                    viewBox="0 0 24 24" stroke-width="1.5"
-                                                                    stroke="blue" class="h-4 w-4">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round"
-                                                                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                                                </svg>
-                                                                <span
-                                                                    class="hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 invisible absolute z-10 inline-block rounded bg-gray-900 px-2 py-1 text-xs font-medium text-white opacity-0 shadow-sm transition-opacity dark:bg-neutral-700"
-                                                                    role="tooltip">
-                                                                    Edit
-                                                                </span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="hs-tooltip inline-block">
-                                                            <form
-                                                                action="/barang/jadi/warna/delete/{{ $rowItem?->id }}"
-                                                                method="post" data-id="{{ $rowItem?->id }}"
-                                                                style="display: inline-block;">
-                                                                @csrf
-                                                                <button type="submit"
-                                                                    class="hs-tooltip-toggle delete inline-flex items-center justify-center gap-x-2 rounded-e-md border bg-white px-2 py-2 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        fill="none" viewBox="0 0 24 24"
-                                                                        stroke-width="1.5" stroke="crimson"
-                                                                        class="h-4 w-4">
-                                                                        <path stroke-linecap="round"
-                                                                            stroke-linejoin="round"
-                                                                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                                                    </svg>
-                                                                    <span
-                                                                        class="delete hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 invisible absolute z-10 inline-block rounded bg-gray-900 px-2 py-1 text-xs font-medium text-white opacity-0 shadow-sm transition-opacity dark:bg-neutral-700"
-                                                                        role="tooltip">
-                                                                        Hapus
-                                                                    </span>
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    </td>
+
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -271,11 +143,11 @@
                             </li>
                         </ul>
                     @endforeach
-                    {{-- <div
-                        class="flex flex-col p-4 mb-10 bg-green-600 border border-gray-200 shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
-                        <h2 class="font-bold text-center text-white uppercase">Total keseluruhan harga :
+                    <div
+                        class="flex flex-col p-4 mb-10 {{ $totalKeseluruhanHarga == 0 ? 'bg-red-100 text-red-800' : 'bg-teal-100 text-teal-800'  }}  border border-gray-200 shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
+                        <h2 class="font-bold text-center  uppercase">Total keseluruhan ongkos :
                             {{ formatRupiah($totalKeseluruhanHarga) }}</h2>
-                    </div> --}}
+                    </div>
                 @endforeach
             </div>
         </div>
@@ -283,6 +155,10 @@
 
     <script>
         $(document).ready(function() {
+            $('input[name="date"]').on('change', function() {
+                $(this).closest('form').submit();
+            });
+
             function formatNominal(value) {
                 let formattedValue = new Intl.NumberFormat("id-ID").format(value);
                 return 'Rp.' + formattedValue;

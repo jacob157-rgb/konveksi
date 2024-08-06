@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Barang;
-use App\Models\BarangMentah;
 use App\Models\Bon;
+use App\Models\Barang;
 use App\Models\Cutting;
-use App\Models\CuttingAmbil;
 use App\Models\Karyawan;
+use App\Models\JahitAmbil;
+use App\Models\BarangMentah;
+use App\Models\CuttingAmbil;
 use Illuminate\Http\Request;
 
 class KaryawanController extends Controller
@@ -16,6 +17,7 @@ class KaryawanController extends Controller
     {
         $karyawanJahit = Karyawan::where('jenis_karyawan', '=', 'jahit')->get();
         $karyawanCutting = Karyawan::where('jenis_karyawan', '=', 'cutting')->get();
+
         return view('pages.karyawan.index', compact('karyawanJahit', 'karyawanCutting'));
     }
 
@@ -43,25 +45,42 @@ class KaryawanController extends Controller
         $bon = Bon::findOrFail($id);
         return response()->json(['data' => $bon]);
     }
-    public function show($id)
+    public function detail(Request $request, $id)
     {
         $karyawan = Karyawan::findOrFail($id);
-        $bon = Bon::where('karyawan_id', $id)->get();
+        $jahitAmbil = collect();
+        $cuttingAmbil = collect();
 
-        $belumLunasBon = $bon->where('status', 'belumlunas');
-        $lunasBon = $bon->where('status', 'lunas');
+        if ($karyawan->jenis_karyawan == 'cutting') {
+            $cuttingAmbil = CuttingAmbil::orderBy('id', 'desc')->where('id_karyawan', $id);
 
-        $totalBelumLunas = $belumLunasBon->sum('nominal');
-        $totalLunas = $lunasBon->sum('nominal');
+            if ($request->query('date')) {
+                $tanggal = $request->query('date');
+                $cuttingAmbil->whereDate('tanggal_ambil', $tanggal);
+            }
+
+            $cuttingAmbil = $cuttingAmbil->latest()->get();
+        } else {
+            $jahitAmbil = JahitAmbil::orderBy('id', 'desc')->where('id_karyawan', $id);
+
+            if ($request->query('date')) {
+                $tanggal = $request->query('date');
+                $jahitAmbil->whereDate('tanggal_ambil', $tanggal);
+            }
+
+            $jahitAmbil = $jahitAmbil->latest()->get();
+        }
 
         $data = [
             'karyawan' => $karyawan,
-            'bon' => $bon,
-            'totalBelumLunas' => $totalBelumLunas,
-            'totalLunas' => $totalLunas,
+            'cuttingAmbil' => $cuttingAmbil,
+            'jahitAmbil' => $jahitAmbil,
         ];
+
+        // dd($data);
         return view('karyawan.show', $data);
     }
+
     public function print($id)
     {
         $karyawan = Karyawan::findOrFail($id);
@@ -106,7 +125,7 @@ class KaryawanController extends Controller
         $data = [
             'karyawan' => $karyawan,
             'cutting' => $cutting,
-            'barang' => BarangMentah::orderBy('id', 'desc')->get()
+            'barang' => BarangMentah::orderBy('id', 'desc')->get(),
         ];
 
         // dd($data);

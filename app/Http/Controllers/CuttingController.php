@@ -26,11 +26,17 @@ class CuttingController extends Controller
         ];
         return view('pages.karyawan.cutting.ambil', $data);
     }
-    public function getKembaliCutting($id)
+    public function getKembaliCutting(Request $request, $id)
     {
+        $cuttingAmbil = CuttingAmbil::orderBy('id', 'desc')->where('id_karyawan', $id)->latest();
+        if ($request->query('date')) {
+            $tanggal = $request->query('date');
+            $cuttingAmbil->whereDate('tanggal_ambil', $tanggal);
+        }
+
         $data = [
             'karyawan' => Karyawan::find($id),
-            'cuttingAmbil' => CuttingAmbil::orderBy('id', 'desc')->get(),
+            'cuttingAmbil' => $cuttingAmbil->get(),
         ];
         return view('pages.karyawan.cutting.kembali', $data);
     }
@@ -99,7 +105,7 @@ class CuttingController extends Controller
             $cuttingKembali->update([
                 'jumlah_kembali' => $request?->jumlah_kembali == null ? $cuttingKembali->jumlah_kembali : $request->jumlah_kembali,
                 'satuan_kembali' => 'pcs',
-                'total_ongkos' => $request?->jumlah_kembali == null ?  $cuttingKembali->total_ongkos : $kalkulasi,
+                'total_ongkos' => $request?->jumlah_kembali == null ? $cuttingKembali->total_ongkos : $kalkulasi,
                 'tanggal_kembali' => $request->tanggal_kembali ?? $cuttingKembali->tanggal_kembali,
                 'id_cutting_warna_model' => $warnaModelKembali->id,
             ]);
@@ -119,7 +125,7 @@ class CuttingController extends Controller
                 'warna' => CuttingWarnaModel::find($id_warna),
                 'karyawan' => $id_karyawan,
                 'request' => $request->all(),
-                'kalkulasi' => $request?->jumlah_kembali == null ?  $cuttingKembali->total_ongkos : $kalkulasi,
+                'kalkulasi' => $request?->jumlah_kembali == null ? $cuttingKembali->total_ongkos : $kalkulasi,
             ],
             201,
         );

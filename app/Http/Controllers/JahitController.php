@@ -26,11 +26,16 @@ class JahitController extends Controller
         ];
         return view('pages.karyawan.jahit.ambil', $data);
     }
-    public function getKembaliJahit($id)
+    public function getKembaliJahit(Request $request, $id)
     {
+        $jahitAmbil = JahitAmbil::orderBy('id', 'desc')->where('id_karyawan', $id)->latest();
+        if ($request->query('date')) {
+            $tanggal = $request->query('date');
+            $jahitAmbil->whereDate('tanggal_ambil', $tanggal);
+        }
         $data = [
             'karyawan' => Karyawan::find($id),
-            'jahitAmbil' => JahitAmbil::orderBy('id', 'desc')->get(),
+            'jahitAmbil' => $jahitAmbil->get(),
         ];
         return view('pages.karyawan.jahit.kembali', $data);
     }
@@ -99,7 +104,7 @@ class JahitController extends Controller
             $jahitKembali->update([
                 'jumlah_kembali' => $request?->jumlah_kembali == null ? $jahitKembali->jumlah_kembali : $request->jumlah_kembali,
                 'satuan_kembali' => 'pcs',
-                'total_ongkos' => $request?->jumlah_kembali == null ?  $jahitKembali->total_ongkos : $kalkulasi,
+                'total_ongkos' => $request?->jumlah_kembali == null ? $jahitKembali->total_ongkos : $kalkulasi,
                 'tanggal_kembali' => $request->tanggal_kembali ?? $jahitKembali->tanggal_kembali,
                 'id_jahit_warna_model' => $warnaModelKembali->id,
             ]);
@@ -119,7 +124,7 @@ class JahitController extends Controller
                 'warna' => JahitWarnaModel::find($id_warna),
                 'karyawan' => $id_karyawan,
                 'request' => $request->all(),
-                'kalkulasi' => $request?->jumlah_kembali == null ?  $jahitKembali->total_ongkos : $kalkulasi,
+                'kalkulasi' => $request?->jumlah_kembali == null ? $jahitKembali->total_ongkos : $kalkulasi,
             ],
             201,
         );

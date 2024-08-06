@@ -55,7 +55,8 @@ Route::middleware(ValidateAuth::class)->group(function () {
         Route::get('karyawan', 'index');
         Route::post('/karyawan', 'store');
         Route::get('/karyawan/edit/{id}', 'edit');
-        Route::get('/karyawan/print/{id}', 'print');
+        // Route::get('/karyawan/print/{id}', 'print');
+        Route::get('/karyawan/detail/{id}', 'detail');
         Route::post('/karyawan/update', 'update');
         Route::post('/karyawan/delete/{id}', 'destroy');
     });
@@ -97,17 +98,6 @@ Route::middleware(ValidateAuth::class)->group(function () {
             Route::delete('/delete/{id}', 'deleteJahit');
         });
     });
-
-    // Route::prefix('jahit')->group(function () {
-    //     Route::get('/{id}', 'getJahit');
-    //     Route::post('/store', 'postJahit');
-    //     Route::get('/get/{id}', 'getResponseJahit');
-    //     Route::put('/update/{id}', 'putJahit');
-
-    //     //halaman histori pengambilan
-    //     Route::get('/detail/{id}', 'detailJahit');
-    //     Route::delete('/delete/{id}', 'deleteJahit');
-    // });
 
     Route::controller(BarangController::class)->group(function () {
         Route::prefix('barang')->group(function () {
