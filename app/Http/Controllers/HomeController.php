@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Barang;
 use App\Models\BarangJadi;
 use App\Models\BarangMentah;
 use App\Models\Karyawan;
@@ -10,6 +9,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 
 class HomeController extends Controller
 {
@@ -39,21 +40,22 @@ class HomeController extends Controller
     }
     public function postProfil(Request $request)
     {
-        $request->validate([
-            'nama' => 'required|string',
-            'username' => 'required|string',
-            'password_old' => 'required|string',
-            'password_new' => 'required|string',
+        Validator::make($request->all(), [
+            'nama' => ['required', 'string'],
+            'username' => ['required', 'string'],
+            'password_old' => ['required', 'string'],
+            'password' => ['required', 'confirmed', 'string']
         ]);
-        $user = Auth::user();
-        if (!Hash::check($request->password_old, $user->password)) {
+
+        if (Hash::check($request->password_old, auth()->user()->password)) {
+            User::whereId(auth()->user()->id)->update([
+                'nama' => $request->nama,
+                'username' => $request->username,
+                'password' => Hash::make($request->password)
+            ]);
+            return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
+        } else {
             return redirect()->back()->with('error', 'Password lama tidak sesuai.');
         }
-        $user->nama = $request->nama;
-        $user->username = $request->username;
-        $user->password = Hash::make($request->password_new);
-        $user->save();
-
-        return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
     }
 }

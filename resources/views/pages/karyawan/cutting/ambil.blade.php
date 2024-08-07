@@ -119,6 +119,38 @@
                     </div>
             </div>
         </div>
+        <div class="grid grid-cols-2 mb-2 space-x-2">
+            <div>
+                <label for="nominal_bon" class="block mb-2 text-sm font-medium dark:text-white">Nominal Bon</label>
+                <div class="relative rounded-md">
+                    <input type="text" name="nominal_bon"
+                        class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm nominal price pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                    <input type="hidden" id="nominal">
+                    <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none start-0 ps-4">
+                        <span class="text-gray-500 dark:text-neutral-500">Rp.</span>
+                    </div>
+                    <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none end-0 pe-4">
+                        <span class="text-gray-500 dark:text-neutral-500">IDR</span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label for="total" class="block mb-2 text-sm font-medium dark:text-white">Estimasi
+                    Total
+                    Ongkos Keseluruhan</label>
+                <div class="relative rounded-md">
+                    <input type="text" readonly id="est-all-total"
+                        class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm total price pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                    <input type="hidden" id="total" readonly>
+                    <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none start-0 ps-4">
+                        <span class="text-gray-500 dark:text-neutral-500">Rp.</span>
+                    </div>
+                    <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none end-0 pe-4">
+                        <span class="text-gray-500 dark:text-neutral-500">IDR</span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="flex items-center justify-between px-4 pt-3 border-t gap-x-2 dark:border-neutral-700">
             <div>
                 <button type="button"

@@ -15,14 +15,6 @@ class Bon extends Model
         return $this->belongsTo(Karyawan::class);
     }
 
-    public function cutting() {
-        return $this->belongsTo(Cutting::class);
-    }
-
-    public function jahit() {
-        return $this->belongsTo(Jahit::class);
-    }
-
     static function getCutting($karyawan, $cutting) {
         return static::where('karyawan_id', $karyawan)->where('cutting_id', $cutting)->first();
     }

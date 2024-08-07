@@ -15,10 +15,12 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('id_karyawan');
             $table->unsignedBigInteger('cutting_ambil');
+            $table->unsignedBigInteger('jahit_ambil');
             $table->decimal('nominal', 15,2);
             $table->enum('status', ['lunas', 'belumlunas']);
             $table->timestamps();
             $table->foreign('cutting_ambil')->references('id')->on('cutting_ambil')->onDelete('cascade');
+            $table->foreign('jahit_ambil')->references('id')->on('jahit_ambil')->onDelete('cascade');
             $table->foreign('id_karyawan')->references('id')->on('karyawan')->onDelete('cascade');
 
         });

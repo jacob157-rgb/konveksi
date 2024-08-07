@@ -83,9 +83,22 @@ document.addEventListener("input", function (e) {
             container.querySelector(".total").value = new Intl.NumberFormat(
                 "id-ID"
             ).format(total);
+            allTotal();
         } else {
             console.error("Container not found");
         }
+    }
+
+    function allTotal() {
+        const totalInputs = document.querySelectorAll('input[name*="model"][name*="[total]"]');
+        let totalValue = 0;
+
+        totalInputs.forEach((input) => {
+            totalValue += parseFloat(input.value.replace(/\D/g, "")) || 0;
+        });
+
+        // Tampilkan total keseluruhan di elemen dengan id="est-all-total"
+        document.getElementById("est-all-total").value = new Intl.NumberFormat("id-ID").format(totalValue);
     }
 });
 
