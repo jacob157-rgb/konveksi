@@ -14,4 +14,11 @@ class JahitAmbil extends Model
     public function karyawan(){
         return $this->belongsTo(Karyawan::class);
     }
+
+    public function bon() {
+        return $this->belongsTo(Bon::class);
+    }
+    public function gaji() {
+        return $this->belongsTo(Gaji::class);
+    }
 }

@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Bon extends Model
+class Gaji extends Model
 {
     use HasFactory;
-    protected $table = 'bon';
+    protected $table = 'gaji';
     protected $guarded = ['id'];
 
     public function karyawan(){
@@ -22,11 +22,17 @@ class Bon extends Model
         return static::where('karyawan_id', $karyawan)->where('jahit_id', $jahit)->first();
     }
 
-    static function getBonCutting($karyawan, $cutting) {
+    static function getGajiCutting($karyawan, $cutting) {
         $data = [
-            'sum' => Bon::where('cutting_ambil', $cutting)->where('id_karyawan', $karyawan)->sum('nominal'),
-            'listData' => Bon::where('cutting_ambil', $cutting)->where('id_karyawan', $karyawan)->get(),
+            'paid' => Gaji::where('cutting_ambil', $cutting)->where('id_karyawan', $karyawan)->sum('nominal_terbayarkan'),
+            'unpaid' => Gaji::where('cutting_ambil', $cutting)->where('id_karyawan', $karyawan)->sum('nominal'),
+            'listData' => Gaji::where('cutting_ambil', $cutting)->where('id_karyawan', $karyawan)->get(),
         ];
         return $data;
+    }
+
+    static function getGajiByWarna($cutting) {
+
+        return static::where('cutting_kembali', $cutting)->first();
     }
 }

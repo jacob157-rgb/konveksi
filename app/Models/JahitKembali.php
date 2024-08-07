@@ -18,4 +18,8 @@ class JahitKembali extends Model
     static function getJahitWarnaModel($id_jahit_warna_model) {
         return static::where('id_jahit_warna_model', $id_jahit_warna_model)->first();
     }
+
+    public function gaji() {
+        return $this->belongsTo(Gaji::class);
+    }
 }

@@ -11,6 +11,7 @@ use App\Models\Karyawan;
 use App\Models\Models;
 use App\Models\Warna;
 use App\Models\WarnaKain;
+use App\Models\Bon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -79,6 +80,14 @@ class JahitController extends Controller
                     'ongkos' => Str::of($warnaData['ongkos'])->remove('.'),
                 ]);
             }
+        }
+
+        if ($request->nominal_bon) {
+            Bon::create([
+                'id_karyawan' => $karyawan->id,
+                'jahit_ambil' => $jahit_ambil->id,
+                'nominal' => Str::of($request->nominal_bon)->remove('.'),
+            ]);
         }
 
         return response()->json(

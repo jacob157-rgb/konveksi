@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bon;
+use App\Models\Gaji;
 use App\Models\Barang;
 use App\Models\Cutting;
 use App\Models\Karyawan;
@@ -77,7 +78,6 @@ class KaryawanController extends Controller
             'jahitAmbil' => $jahitAmbil,
         ];
 
-        // dd($data);
         return view('karyawan.show', $data);
     }
 

@@ -18,4 +18,8 @@ class CuttingKembali extends Model
     static function getCuttingWarnaModel($id_cutting_warna_model) {
         return static::where('id_cutting_warna_model', $id_cutting_warna_model)->first();
     }
+
+    public function gaji() {
+        return $this->belongsTo(Gaji::class);
+    }
 }

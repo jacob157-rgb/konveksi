@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CuttingAmbil;
-use App\Models\CuttingAmbilModel;
-use App\Models\CuttingKembali;
-use App\Models\CuttingWarnaModel;
-use App\Models\KainBarangMentah;
-use App\Models\Karyawan;
-use App\Models\Models;
+use App\Models\Bon;
+use App\Models\Gaji;
 use App\Models\Warna;
+use App\Models\Models;
+use App\Models\Karyawan;
 use App\Models\WarnaKain;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Models\CuttingAmbil;
+use Illuminate\Http\Request;
+use App\Models\CuttingKembali;
+use App\Models\KainBarangMentah;
+use App\Models\CuttingAmbilModel;
+use App\Models\CuttingWarnaModel;
+use Illuminate\Support\Facades\Validator;
 
 class CuttingController extends Controller
 {
@@ -72,7 +74,7 @@ class CuttingController extends Controller
             ]);
 
             foreach ($modelData['warna'] as $warnaData) {
-                CuttingWarnaModel::create([
+                $cuttingWarnaModel = CuttingWarnaModel::create([
                     'id_ambil_model' => $ambilModel->id,
                     'warna' => $warnaData['warna'],
                     'jumlah_ambil' => Str::of($warnaData['jumlah_ambil'])->remove('.'),
@@ -80,6 +82,14 @@ class CuttingController extends Controller
                     'ongkos' => Str::of($warnaData['ongkos'])->remove('.'),
                 ]);
             }
+        }
+
+        if ($request->nominal_bon) {
+            Bon::create([
+                'id_karyawan' => $karyawan->id,
+                'cutting_ambil' => $cutting_ambil->id,
+                'nominal' => Str::of($request->nominal_bon)->remove('.'),
+            ]);
         }
 
         return response()->json(
@@ -93,13 +103,15 @@ class CuttingController extends Controller
     public function postKembaliCutting(Request $request, $id_karyawan, $id_warna)
     {
         $warnaModelKembali = CuttingWarnaModel::find($id_warna);
-
         if (!$warnaModelKembali) {
             return response()->json(['error' => 'Warna model tidak ditemukan'], 404);
         }
 
         $cuttingKembali = CuttingKembali::where('id_cutting_warna_model', $warnaModelKembali->id)->first();
         $kalkulasi = $request?->jumlah_kembali * $warnaModelKembali->ongkos;
+        $cuttingAmbilModel = CuttingAmbilModel::whereId($warnaModelKembali?->id_ambil_model)->first();
+        $cuttingAmbil = CuttingAmbil::whereId($cuttingAmbilModel?->id_cutting_ambil)->first();
+        $gaji = Gaji::where('cutting_kembali', $cuttingKembali?->id)->first();
 
         if ($cuttingKembali) {
             $cuttingKembali->update([
@@ -109,14 +121,51 @@ class CuttingController extends Controller
                 'tanggal_kembali' => $request->tanggal_kembali ?? $cuttingKembali->tanggal_kembali,
                 'id_cutting_warna_model' => $warnaModelKembali->id,
             ]);
+
+            if ($gaji) {
+                if ($gaji->status != 'terbayarkan') {
+                    $gaji->update([
+                        'id_karyawan' => $id_karyawan,
+                        'cutting_ambil' => $cuttingAmbil->id,
+                        'cutting_kembali' => $cuttingKembali->id,
+                        'nominal' => $kalkulasi,
+                    ]);
+                }
+            } else {
+                Gaji::create([
+                    'id_karyawan' => $id_karyawan,
+                    'cutting_ambil' => $cuttingAmbil->id,
+                    'cutting_kembali' => $cuttingKembali->id,
+                    'nominal' => $kalkulasi,
+                    'nominal_terbayarkan' => '0',
+                ]);
+            }
         } else {
-            CuttingKembali::create([
+            $cuttingKembali = CuttingKembali::create([
                 'id_cutting_warna_model' => $warnaModelKembali->id,
                 'jumlah_kembali' => $request->jumlah_kembali,
                 'satuan_kembali' => 'pcs',
                 'total_ongkos' => $kalkulasi,
                 'tanggal_kembali' => $request->tanggal_kembali,
             ]);
+            if ($gaji) {
+                if ($gaji->status != 'terbayarkan') {
+                    $gaji->update([
+                        'id_karyawan' => $id_karyawan,
+                        'cutting_ambil' => $cuttingAmbil->id,
+                        'cutting_kembali' => $cuttingKembali->id,
+                        'nominal' => $kalkulasi,
+                    ]);
+                }
+            } else {
+                Gaji::create([
+                    'id_karyawan' => $id_karyawan,
+                    'cutting_ambil' => $cuttingAmbil->id,
+                    'cutting_kembali' => $cuttingKembali->id,
+                    'nominal' => $kalkulasi,
+                    'nominal_terbayarkan' => '0',
+                ]);
+            }
         }
 
         return response()->json(
@@ -129,5 +178,14 @@ class CuttingController extends Controller
             ],
             201,
         );
+    }
+
+    public function statusGaji(Request $request) {
+        $gaji = Gaji::find($request->bayar_id);
+        $gaji->update([
+            'status' => $request->status,
+            'nominal_terbayarkan' => Str::of($request->nominal_bayar)->remove('.'),
+        ]);
+        return redirect()->back()->with('success', 'Gaji berhasil disimpan');
     }
 }

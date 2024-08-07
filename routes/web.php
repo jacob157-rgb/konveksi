@@ -78,6 +78,11 @@ Route::middleware(ValidateAuth::class)->group(function () {
             Route::get('/detail/{id}', 'detailCutting');
             Route::delete('/delete/{id}', 'deleteCutting');
         });
+
+        Route::prefix('karyawan/cutting/gaji')->group(function () {
+            Route::get('/{id}', 'getGajiCutting');
+            Route::post('/status', 'statusGaji');
+        });
     });
 
     Route::controller(JahitController::class)->group(function () {
