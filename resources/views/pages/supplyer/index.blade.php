@@ -41,7 +41,7 @@
                                                 {{ $row->nama }}</td>
                                             <td class="px-3 py-4 space-x-1 text-sm font-medium whitespace-nowrap">
                                                 <a href="/barang/mentah/{{ $row->id }}"
-                                                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-full tambah-barang gap-x-2 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+                                                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-full text-nowrap tambah-barang gap-x-2 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
                                                     Tambah
                                                     Barang Mentah
                                                     <svg class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@
                                                     </svg>
                                                 </a>
                                                 <a href="/barang/jadi/{{ $row->id }}"
-                                                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-full kirim-barang gap-x-2 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+                                                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-full text-nowrap kirim-barang gap-x-2 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
                                                     Kirim
                                                     Barang Jadi
                                                     <svg class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg"

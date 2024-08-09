@@ -16,6 +16,7 @@ use App\Models\KainBarangMentah;
 use App\Models\CuttingAmbilModel;
 use App\Models\CuttingWarnaModel;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class CuttingController extends Controller
 {
@@ -84,11 +85,13 @@ class CuttingController extends Controller
             }
         }
 
-        if ($request->nominal_bon) {
+        if ($request->nominal_bon && $request->nominal_bon != 0) {
             Bon::create([
                 'id_karyawan' => $karyawan->id,
                 'cutting_ambil' => $cutting_ambil->id,
                 'nominal' => Str::of($request->nominal_bon)->remove('.'),
+                'nominal_belum_terbayarkan' => Str::of($request->nominal_bon)->remove('.'),
+                'nominal_terbayarkan' => '0',
             ]);
         }
 
@@ -107,85 +110,173 @@ class CuttingController extends Controller
             return response()->json(['error' => 'Warna model tidak ditemukan'], 404);
         }
 
-        $cuttingKembali = CuttingKembali::where('id_cutting_warna_model', $warnaModelKembali->id)->first();
-        $kalkulasi = $request?->jumlah_kembali * $warnaModelKembali->ongkos;
-        $cuttingAmbilModel = CuttingAmbilModel::whereId($warnaModelKembali?->id_ambil_model)->first();
-        $cuttingAmbil = CuttingAmbil::whereId($cuttingAmbilModel?->id_cutting_ambil)->first();
-        $gaji = Gaji::where('cutting_kembali', $cuttingKembali?->id)->first();
+        $validator = Validator::make($request->all(), [
+            'post_id' => 'required|exists:cutting_warna_model,id',
+            'jumlah_kembali' => 'required|integer',
+            'satuan_kembali' => 'required|string',
+            'tanggal_kembali' => 'required|date',
+        ]);
 
-        if ($cuttingKembali) {
-            $cuttingKembali->update([
-                'jumlah_kembali' => $request?->jumlah_kembali == null ? $cuttingKembali->jumlah_kembali : $request->jumlah_kembali,
-                'satuan_kembali' => 'pcs',
-                'total_ongkos' => $request?->jumlah_kembali == null ? $cuttingKembali->total_ongkos : $kalkulasi,
-                'tanggal_kembali' => $request->tanggal_kembali ?? $cuttingKembali->tanggal_kembali,
-                'id_cutting_warna_model' => $warnaModelKembali->id,
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $kalkulasi = $request->jumlah_kembali * $warnaModelKembali->ongkos;
+
+        $cuttingKembali = CuttingKembali::create([
+            'id_cutting_warna_model' => $warnaModelKembali->id,
+            'jumlah_kembali' => $request->jumlah_kembali,
+            'satuan_kembali' => $request->satuan_kembali ?: 'pcs',
+            'total_ongkos' => $kalkulasi,
+            'tanggal_kembali' => $request->tanggal_kembali,
+        ]);
+
+        $cuttingAmbilModel = CuttingAmbilModel::whereId($warnaModelKembali->id_ambil_model)->first();
+        $cuttingAmbil = CuttingAmbil::whereId($cuttingAmbilModel->id_cutting_ambil)->first();
+
+        $bonCuttingAmbil = Bon::where('cutting_ambil', $cuttingAmbil->id)
+            ->whereIn('status', ['terbayarkan', 'belum terbayarkan'])
+            ->first();
+
+        if ($request->boolean('bbon')) {
+            $validator = Validator::make($request->all(), [
+                'nominal_bayar_bon' => 'required|decimal:3',
+                'nominal_bayar' => 'required|decimal:3',
             ]);
 
-            if ($gaji) {
-                if ($gaji->status != 'terbayarkan') {
-                    $gaji->update([
-                        'id_karyawan' => $id_karyawan,
-                        'cutting_ambil' => $cuttingAmbil->id,
-                        'cutting_kembali' => $cuttingKembali->id,
-                        'nominal' => $kalkulasi,
-                    ]);
-                }
-            } else {
-                Gaji::create([
-                    'id_karyawan' => $id_karyawan,
-                    'cutting_ambil' => $cuttingAmbil->id,
-                    'cutting_kembali' => $cuttingKembali->id,
-                    'nominal' => $kalkulasi,
-                    'nominal_terbayarkan' => '0',
-                ]);
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 422);
             }
-        } else {
-            $cuttingKembali = CuttingKembali::create([
-                'id_cutting_warna_model' => $warnaModelKembali->id,
-                'jumlah_kembali' => $request->jumlah_kembali,
-                'satuan_kembali' => 'pcs',
-                'total_ongkos' => $kalkulasi,
-                'tanggal_kembali' => $request->tanggal_kembali,
-            ]);
-            if ($gaji) {
-                if ($gaji->status != 'terbayarkan') {
-                    $gaji->update([
-                        'id_karyawan' => $id_karyawan,
-                        'cutting_ambil' => $cuttingAmbil->id,
-                        'cutting_kembali' => $cuttingKembali->id,
-                        'nominal' => $kalkulasi,
+
+            $nominalBayarBon = (int) Str::of($request->nominal_bayar_bon)->remove('.')->toString();
+            if ($bonCuttingAmbil) {
+                $hitungBon = $bonCuttingAmbil->nominal_belum_terbayarkan - $nominalBayarBon;
+                if ($hitungBon == 0) {
+                    $bonCuttingAmbil->update([
+                        'nominal_belum_terbayarkan' => $hitungBon,
+                        'nominal_terbayarkan' => $bonCuttingAmbil->nominal_terbayarkan + $nominalBayarBon,
+                        'status' => 'lunas',
                     ]);
+                } else if ($hitungBon > 0) {
+                    $bonCuttingAmbil->update([
+                        'nominal_belum_terbayarkan' => $bonCuttingAmbil->nominal_belum_terbayarkan - $nominalBayarBon,
+                        'nominal_terbayarkan' => $bonCuttingAmbil->nominal_terbayarkan + $nominalBayarBon,
+                        'status' => 'terbayarkan',
+                    ]);
+                } else {
+                    $bonCuttingAmbil->update([
+                        'nominal_belum_terbayarkan' => '0',
+                        'nominal_terbayarkan' => $bonCuttingAmbil->nominal_terbayarkan + abs(abs($hitungBon) - $nominalBayarBon),
+                        'status' => 'lunas',
+                    ]);
+                    $messages[] = 'Ada sisa kembalian bon sebesar ' . formatRupiah(abs($hitungBon));
                 }
             } else {
-                Gaji::create([
-                    'id_karyawan' => $id_karyawan,
-                    'cutting_ambil' => $cuttingAmbil->id,
-                    'cutting_kembali' => $cuttingKembali->id,
-                    'nominal' => $kalkulasi,
-                    'nominal_terbayarkan' => '0',
-                ]);
+                $bonKeseluruhan = Bon::where('id_karyawan', $id_karyawan)
+                    ->whereIn('status', ['terbayarkan', 'belum terbayarkan'])
+                    ->get();
+                $hitungBon = $bonKeseluruhan->nominal_belum_terbayarkan - $nominalBayarBon;
+                if ($hitungBon == 0) {
+                    $bonKeseluruhan->update([
+                        'nominal_belum_terbayarkan' => $hitungBon,
+                        'nominal_terbayarkan' => $bonKeseluruhan->nominal_terbayarkan + $nominalBayarBon,
+                        'status' => 'lunas',
+                    ]);
+                } else if ($hitungBon > 0) {
+                    $bonKeseluruhan->update([
+                        'nominal_belum_terbayarkan' => $bonKeseluruhan->nominal_belum_terbayarkan - $nominalBayarBon,
+                        'nominal_terbayarkan' => $bonKeseluruhan->nominal_terbayarkan + $nominalBayarBon,
+                        'status' => 'terbayarkan',
+                    ]);
+                } else {
+                    $bonKeseluruhan->update([
+                        'nominal_belum_terbayarkan' => '0',
+                        'nominal_terbayarkan' => $bonKeseluruhan->nominal_terbayarkan + abs(abs($hitungBon) - $nominalBayarBon),
+                        'status' => 'lunas',
+                    ]);
+                    $messages[] = 'Ada sisa kembalian bon sebesar ' . formatRupiah(abs($hitungBon));
+                }
             }
         }
 
-        return response()->json(
-            [
-                'success' => true,
-                'warna' => CuttingWarnaModel::find($id_warna),
-                'karyawan' => $id_karyawan,
-                'request' => $request->all(),
-                'kalkulasi' => $request?->jumlah_kembali == null ? $cuttingKembali->total_ongkos : $kalkulasi,
-            ],
-            201,
-        );
+        if ($request->boolean('lbayar')) {
+            $validator = Validator::make($request->all(), [
+                'nominal_bayar' => 'required|decimal:3',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            }
+
+            $nominalBayar = (int) Str::of($request->nominal_bayar)->remove('.')->toString();
+
+            if ($nominalBayar > $kalkulasi) {
+                return response()->json(['errors' => 'Nominal bayar tidak boleh melebihi kalkulasi'], 422);
+            }
+
+            $nominalTerbayarkan = $request->boolean('allbayar') || $nominalBayar == $kalkulasi ? $kalkulasi : $nominalBayar;
+
+            Gaji::create([
+                'id_karyawan' => $id_karyawan,
+                'cutting_ambil' => $cuttingAmbil->id,
+                'cutting_kembali' => $cuttingKembali->id,
+                'nominal' => $kalkulasi,
+                'nominal_terbayarkan' => $nominalTerbayarkan,
+                'nominal_belum_terbayarkan' => $kalkulasi - $nominalTerbayarkan,
+                'status' => $nominalTerbayarkan == $kalkulasi ? 'lunas' : 'terbayarkan',
+            ]);
+        } else {
+            $nominalBayar = (int) Str::of($request->nominal_bayar)->remove('.')->toString();
+
+            if ($nominalBayar > $kalkulasi) {
+                return response()->json(['errors' => 'Nominal bayar tidak boleh melebihi kalkulasi'], 422);
+            }
+
+            Gaji::create([
+                'id_karyawan' => $id_karyawan,
+                'cutting_ambil' => $cuttingAmbil->id,
+                'cutting_kembali' => $cuttingKembali->id,
+                'nominal' => $kalkulasi,
+                'nominal_terbayarkan' => '0',
+                'nominal_belum_terbayarkan' => $kalkulasi,
+                'status' => 'belum terbayarkan',
+            ]);
+        }
+
+        $messages[] = 'Data berhasil disimpan';
+        return response()->json(['success' => $messages], 200);
     }
 
-    public function statusGaji(Request $request) {
-        $gaji = Gaji::find($request->bayar_id);
-        $gaji->update([
-            'status' => $request->status,
-            'nominal_terbayarkan' => Str::of($request->nominal_bayar)->remove('.'),
+    public function statusGaji(Request $request)
+    {
+        dd($request);
+        $gaji = Gaji::find($request->post_id);
+
+        $validator = Validator::make($request->all(), [
+            'post_id' => 'required|exists:cutting_warna_model,id',
+            'nominal_bayar_gaji' => 'required|decimal:3',
         ]);
-        return redirect()->back()->with('success', 'Gaji berhasil disimpan');
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        $nominalBayar = (int) Str::of($request->nominal_bayar_gaji)->remove('.')->toString();
+        $kalkulasi = $gaji->nominal_belum_terbayarkan - $nominalBayar;
+        if ($request->boolean('allbayar') || $kalkulasi == 0) {
+            $gaji->update([
+                'nominal_terbayarkan' => $gaji->nominal_terbayarkan + $nominalBayar,
+                'nominal_belum_terbayarkan' => '0',
+                'status' => 'lunas',
+            ]);
+        } else if ($kalkulasi > 0 ) {
+            $gaji->update([
+                'nominal_terbayarkan' => $gaji->nominal_terbayarkan + $nominalBayar,
+                'nominal_belum_terbayarkan' => '0',
+                'status' => 'lunas',
+            ]);
+        }
+
+        $messages[] = 'Data berhasil disimpan';
+        return response()->json(['success' => $messages], 200);
     }
 }

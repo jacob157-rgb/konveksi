@@ -8,7 +8,7 @@
                         <label class="sr-only">Search</label>
                         <input type="hidden" name="barang" value="kirim">
                         <input type="date" name="date" value="{{ request()?->query('date') }}"
-                            class="block w-full px-3 py-2 text-sm border-gray-200 rounded-lg shadow-sm ps-9 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                            class="block w-full px-3 py-2 text-sm border-gray-200 rounded-lg shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 ps-9 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
                             placeholder="Cari barang datang">
                         <div class="absolute inset-y-0 flex items-center pointer-events-none start-0 ps-3">
                             <svg class="text-gray-400 size-4 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +50,7 @@
                     @endphp
 
                     <div
-                        class="flex flex-row items-center justify-between px-4 py-2 mx-8 mb-2 text-xs font-semibold text-white bg-blue-500 rounded-lg whitespace-nowrap">
+                        class="flex flex-row items-center justify-between p-2 mx-4 mb-2 text-xs font-semibold text-white bg-blue-500 rounded-lg whitespace-nowrap">
                         <span
                             class="inline-flex items-center gap-x-1.5 rounded-lg bg-blue-100 px-3 py-1.5 text-xs font-medium text-blue-800">No.
                             {{ $loop->iteration }}
@@ -64,7 +64,7 @@
                         @endphp
                         <ul class="container mx-auto divide-y divide-gray-400 divide-dotted"
                             style="font-family: Raleway">
-                            <li class="grid items-center w-full grid-cols-12 gap-2 py-2 overflow-x-auto">
+                            <li class="grid items-center w-full grid-cols-12 gap-2 py-2 mx-4 overflow-x-auto">
                                 <div
                                     class="flex flex-col items-center justify-center p-2 text-xs font-semibold text-orange-800 bg-orange-100 rounded-lg w-fit justify-self-center whitespace-nowrap">
                                     {{ $item?->model }}
@@ -90,17 +90,14 @@
                                                     class="px-4 py-2 text-xs font-medium tracking-wider text-left text-white uppercase">
                                                     Tanggal Kembali</th>
                                                 <th
-                                                    class="px-4 py-2 text-xs font-medium tracking-wider text-left text-white uppercase">
+                                                    class="px-1 py-2 text-xs font-medium tracking-wider text-left text-white uppercase">
                                                     Jumlah Kembali</th>
                                                 <th
                                                     class="px-4 py-2 text-xs font-medium tracking-wider text-left text-white uppercase">
                                                     Total Ongkos</th>
                                                 <th
-                                                    class="px-4 py-2 text-xs font-medium tracking-wider text-left text-white uppercase">
-                                                    Status</th>
-                                                <th
-                                                    class="px-4 py-2 text-xs font-medium tracking-wider text-left text-white uppercase">
-                                                    Aksi</th>
+                                                    class="px-4 py-2 text-xs font-medium tracking-wider text-center text-white uppercase">
+                                                    Status Pembayaran</th>
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-purple-500">
@@ -110,57 +107,67 @@
                                                         {{ $indexWarna + 1 }}.</td>
                                                     <td class="px-4 py-2 text-xs text-purple-700">
                                                         {{ $rowItem?->warna }}</td>
-                                                    <td class="px-4 py-2 text-xs">{{ $rowItem?->jumlah_ambil }}
+                                                    <td class="px-4 py-2 text-xs text-nowrap">
+                                                        {{ $rowItem?->jumlah_ambil }}
                                                         ({{ $rowItem?->satuan_ambil }})
                                                     </td>
-                                                    <td class="px-4 py-2 text-xs">
+                                                    <td class="px-4 py-2 text-xs text-nowrap">
                                                         {{ formatRupiah($rowItem?->ongkos) }}
                                                         / {{ $rowItem?->satuan_ambil }}
                                                     </td>
                                                     @php
-                                                        $getCuttingWarnaModel = \App\Models\CuttingKembali::getCuttingWarnaModel(
-                                                            $rowItem->id,
-                                                        );
-                                                        $totalKeseluruhanHarga += $getCuttingWarnaModel?->total_ongkos;
-                                                    @endphp
-                                                    <td class="px-4 py-2 text-xs">
-                                                        <input type="datetime-local" name="tanggal_kembali"
-                                                            value="{{ $getCuttingWarnaModel?->tanggal_kembali }}"
-                                                            data-id="{{ $rowItem->id }}"
-                                                            class="{{ !$getCuttingWarnaModel?->tanggal_kembali ? 'border-2 border-red-600' : ' border-1 border-green-500' }} block w-full rounded px-2 py-1 ps-9 text-sm shadow-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                                            placeholder="Cari barang datang">
-                                                    </td>
-                                                    <td class="px-4 py-2 text-xs">
-                                                        <div class="flex items-center">
-                                                            <input type="number" name="jumlah_kembali"
-                                                                data-id="{{ $rowItem->id }}"
-                                                                class="{{ !$getCuttingWarnaModel?->jumlah_kembali ? 'border-2 border-red-600' : ' border-1 border-green-500' }} block w-full rounded px-2 py-1 text-sm focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                                                placeholder="Masukan Jumlah Kembali"
-                                                                value="{{ $getCuttingWarnaModel?->jumlah_kembali }}">
-                                                            <p class="ps-2">
-                                                                ({{ $getCuttingWarnaModel?->satuan_kembali }})</p>
-                                                        </div>
-                                                    </td>
-                                                    <td class="px-4 py-2 text-xs total_ongkos">
-                                                        <span
-                                                            class="kalkulasi-{{ $rowItem?->id }}">{{ formatRupiah($getCuttingWarnaModel?->total_ongkos) }}</span>
-                                                    </td>
-                                                    @php
-                                                        $getGajiByWarna = App\Models\Gaji::getGajiByWarna(
-                                                            $getCuttingWarnaModel?->id,
+                                                        $isitReturn = \App\Models\CuttingKembali::isitReturn(
+                                                            $rowItem?->id,
                                                         );
                                                     @endphp
-                                                    <td>
-                                                        <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-green-500 text-white text-nowrap">{{$getGajiByWarna?->status ?? 'Belum mengembalikan'}}</span>
-                                                    </td>
-                                                    <td>
-                                                        @if ($getGajiByWarna?->id)
-                                                            <button type="button" data-id="{{ $getGajiByWarna?->id }}"
-                                                                class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg bayar gap-x-2 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
-                                                                Bayar
-                                                            </button>
-                                                        @endif
-                                                    </td>
+                                                    @if ($isitReturn == null)
+                                                        <td colspan="2">
+                                                            <div class="flex items-center justify-center py-2">
+                                                                <button data-id="{{ $rowItem->id }}"
+                                                                    data-ongkos="{{ formatNominal($rowItem->ongkos) }}"
+                                                                    class="text-nowrap kembaliBtn inline-flex items-center gap-x-1.5 rounded-full bg-red-500 px-3 py-1.5 text-xs font-medium text-white">Belum
+                                                                    Dikembalikan</button>
+                                                            </div>
+                                                        </td>
+                                                    @else
+                                                        @php
+                                                            $getCuttingWarnaModel = \App\Models\CuttingKembali::getCuttingWarnaModel(
+                                                                $rowItem->id,
+                                                            );
+                                                            $totalKeseluruhanHarga +=
+                                                                $getCuttingWarnaModel?->total_ongkos;
+                                                            $getGajiByWarna = App\Models\Gaji::getGajiByWarna(
+                                                                $getCuttingWarnaModel?->id,
+                                                            );
+                                                        @endphp
+                                                        <td class="px-4 py-2 text-xs">
+                                                            {{ $getCuttingWarnaModel?->tanggal_kembali }}
+                                                        </td>
+                                                        <td class="px-1 py-2 text-xs">
+                                                            {{ $getCuttingWarnaModel?->jumlah_kembali }}
+                                                            ({{ $getCuttingWarnaModel?->satuan_kembali }})
+                                                        </td>
+                                                        <td class="px-4 py-2 text-xs total_ongkos">
+                                                            {{ formatRupiah($getCuttingWarnaModel?->total_ongkos) }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <div
+                                                                class="flex items-center justify-center py-2 hs-tooltip">
+                                                                <button
+                                                                    @if ($getGajiByWarna?->status == 'belum terbayarkan' || $getGajiByWarna?->status === 'terbayarkan') data-id="{{ $getGajiByWarna?->id }}"
+                                                                        data-ongkos="{{ formatNominal($getGajiByWarna?->nominal_belum_terbayarkan) }}" @endif
+                                                                    class="{{ $getGajiByWarna?->status === 'lunas' ? 'bg-green-500' : ($getGajiByWarna?->status === 'belum terbayarkan' ? 'bg-red-500 bayarBtn' : 'bg-yellow-500 bayarBtn') }} hs-tooltip-toggle text-nowrap inline-flex items-center gap-x-1.5 rounded-full px-3 py-1.5 text-xs font-medium text-white">
+                                                                    {{ $getGajiByWarna?->status }}
+                                                                    @if ($getGajiByWarna->nominal_belum_terbayarkan > 0)
+                                                                        <span role="tooltip"
+                                                                            class="absolute z-10 invisible inline-block px-2 py-1 text-white transition-opacity bg-gray-900 rounded-md opacity-0 hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100">
+                                                                            {{ formatRupiah($getGajiByWarna->nominal_belum_terbayarkan) }}
+                                                                            Belum Terbayarkan</span>
+                                                                    @endif
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    @endif
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -174,58 +181,114 @@
                         $GajiCutting = App\Models\Gaji::getGajiCutting($karyawan->id, $row->id);
                     @endphp
                     <div
-                        class="{{ $totalKeseluruhanHarga == 0 ? 'bg-red-100 text-red-800' : 'bg-teal-100 text-teal-800' }} mb-5 flex flex-col border border-gray-200 p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 md:p-5">
-                        <h2 class="font-bold uppercase">Total keseluruhan Ongkos :
-                            {{ formatRupiah($totalKeseluruhanHarga) }}</h2>
-                        @if ($GajiCutting['paid'] != 0)
-                            <h2 class="font-bold uppercase">Total Ongkos Terbayarkan:
+                        class="{{ $totalKeseluruhanHarga == 0 ? 'bg-red-100 text-red-800' : 'bg-teal-100 text-teal-800' }} dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 mb-5 grid grid-cols-2 border border-gray-200 p-4 shadow-sm md:p-5">
+                        <div>
+                            <h2 class="font-bold uppercase">Total Ongkos Terbayarkan :
                                 {{ formatRupiah($GajiCutting['paid']) }}</h2>
-                        @endif
-                        @if ($GajiCutting['unpaid'] != 0)
-                            <h2 class="font-bold uppercase">Total Ongkos Belum Terbayarkan:
-                                {{ formatRupiah($GajiCutting['unpaid']-$GajiCutting['paid']) }}</h2>
-                        @endif
-                        @if ($BonCutting['sum'] != 0)
-                            <h2 class="font-bold uppercase">Total keseluruhan Bon :
+                            <h2 class="font-bold uppercase">Total Ongkos Belum Terbayarkan :
+                                @if ($GajiCutting['unpaid'] == 0)
+                                    LUNAS
+                                @else
+                                    {{ formatRupiah($GajiCutting['unpaid']) }}
+                                @endif
+                            </h2>
+                            <h2 class="font-bold uppercase">Total Ongkos keseluruhan :
+                                {{ formatRupiah($GajiCutting['sum']) }}</h2>
+                        </div>
+                        <div>
+                            <h2 class="font-bold uppercase">Total Bon Terbayarkan :
+                                {{ formatRupiah($BonCutting['paid']) }}</h2>
+                            <h2 class="font-bold uppercase">Total Bon Belum Terbayarkan :
+                                @if ($BonCutting['unpaid'] == 0)
+                                    LUNAS
+                                @else
+                                    {{ formatRupiah($BonCutting['unpaid']) }}
+                                @endif
+                            </h2>
+                            <h2 class="font-bold uppercase">Total Bon keseluruhan :
                                 {{ formatRupiah($BonCutting['sum']) }}</h2>
-                        @endif
+                        </div>
                     </div>
                 @endforeach
             </div>
         </div>
     </div>
-    <div id="bayar-modal"
-        class="hs-overlay size-full pointer-events-none fixed start-0 top-0 z-[80] hidden overflow-y-auto overflow-x-hidden"
-        role="dialog" tabindex="-1" aria-labelledby="bayar-modal-label">
-        <div
-            class="m-3 mt-0 transition-all ease-out opacity-0 hs-overlay-animation-target hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 sm:mx-auto sm:w-full sm:max-w-lg">
-            <div
-                class="flex flex-col bg-white border shadow-sm pointer-events-auto rounded-xl dark:border-neutral-700 dark:bg-neutral-800 dark:shadow-neutral-700/70">
-                <div class="flex items-center justify-between px-4 py-3 border-b dark:border-neutral-700">
-                    <h3 id="bayar-modal-label" class="font-bold text-gray-800 dark:text-white">
-                        Bayar Ongkos
-                    </h3>
-                    <button type="button"
-                        class="inline-flex items-center justify-center text-gray-800 bg-gray-100 border border-transparent rounded-full size-8 gap-x-2 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none disabled:pointer-events-none disabled:opacity-50 dark:bg-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600"
-                        aria-label="Close" data-hs-overlay="#bayar-modal">
-                        <span class="sr-only">Close</span>
-                        <svg class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 6 6 18"></path>
-                            <path d="m6 6 12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-                <form action="/karyawan/cutting/gaji/status" method="post">
-                    @csrf
-                    <div class="p-4 overflow-y-auto">
-                        <input type="hidden" name="bayar_id" id="bayar_id">
-                        <label for="nominal_bayar" class="block mb-2 text-sm font-medium dark:text-white">Nominal
-                            Bayar</label>
+
+    @include('partials.kembali_modal')
+
+    <script>
+        function getCurrentDateTime() {
+            const now = new Date();
+            const options = {
+                timeZone: "Asia/Jakarta",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+            };
+            const formatter = new Intl.DateTimeFormat("en-GB", options);
+            const formattedDate = formatter.format(now).split(", ");
+            const [day, month, year] = formattedDate[0].split("/");
+            const [hour, minute] = formattedDate[1].split(":");
+            return `${year}-${month}-${day}T${hour}:${minute}`;
+        }
+        $(document).ready(function() {
+            $('input[name="date"]').on('change', function() {
+                $(this).closest('form').submit();
+            });
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "bottom-end",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                },
+            });
+
+
+            $(document).on('click', '.kembaliBtn', function(e) {
+                e.preventDefault();
+                let post_id = $(this).data('id');
+                let dataOngkos = $(this).data('ongkos');
+                let modalTitle = '';
+                let modalContent = '';
+
+                if ($(this).hasClass('kembaliBtn')) {
+                    postUrl = `/karyawan/cutting/kembali/{{ $karyawan->id }}/${post_id}/store`;
+                    modalTitle = 'Pengembalian Cutting';
+                    modalContent = `
+                    <label for="tanggal_kembali" class="block mb-2 text-sm font-medium dark:text-white">Tanggal Kembali</label>
+                    <input type="datetime-local" id="tanggal_kembali" name="tanggal_kembali"
+                        value="${getCurrentDateTime()}"
+                        class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 focus:border-blue-500 focus:ring-blue-500"
+                        autofocus="" required>
+                    <div class="space-y-2 value-container">
+                        <label for="hs-inline-leading-pricing-select-label"
+                            class="block mb-2 text-sm font-medium dark:text-white">Jml.
+                            Barang Kembali</label>
+                        <div class="relative">
+                            <input type="number" required id="hs-inline-leading-pricing-select-label" name="jumlah_kembali"
+                                class="block w-full px-4 py-3 text-sm border border-gray-200 rounded-lg shadow-sm jumlah dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 pe-20 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
+                                placeholder="Masukan Jumlah Barang">
+                            <div class="absolute inset-y-0 flex items-center text-gray-500 end-0 pe-px">
+                                <label for="satuan" class="sr-only">Satuan</label>
+                                <select id="satuan" name="satuan_kembali"
+                                    class="block w-full border border-transparent rounded-lg dark:bg-neutral-800 dark:text-neutral-500 focus:border-blue-600 focus:ring-blue-600">
+                                    <option value="pcs" selected>Pcs</option>
+                                </select>
+                            </div>
+                        </div>
+                        <label for="harga" class="block mb-2 text-sm font-medium dark:text-white">Ongkos
+                            Satuan</label>
                         <div class="relative rounded-md">
-                            <input type="text" name="nominal_bayar"
-                                class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm nominal price pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+                            <input type="text" readonly name="" id="ongkos_satuan"
+                                class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm nominal price dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50">
                             <input type="hidden" id="nominal">
                             <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none start-0 ps-4">
                                 <span class="text-gray-500 dark:text-neutral-500">Rp.</span>
@@ -234,118 +297,216 @@
                                 <span class="text-gray-500 dark:text-neutral-500">IDR</span>
                             </div>
                         </div>
-                        <label for="nominal_bayar" class="block mb-2 text-sm font-medium dark:text-white">Status
-                            Bayar</label>
-                        <select name="status"
-                            class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg pe-9 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-                            <option selected="" value="">Pilih Status Bayar</option>
-                            <option value="lunas">Lunas</option>
-                            <option value="terbayarkan">Terbayarkan</option>
-                        </select>
+                        <label for="total" class="block mb-2 text-sm font-medium dark:text-white">
+                            Total
+                            Ongkos</label>
+                        <div class="relative rounded-md">
+                            <input type="text" readonly name="" id="total_ongkos"
+                                class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm total price dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50">
+                            <input type="hidden" id="total" readonly>
+                            <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none start-0 ps-4">
+                                <span class="text-gray-500 dark:text-neutral-500">Rp.</span>
+                            </div>
+                            <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none end-0 pe-4">
+                                <span class="text-gray-500 dark:text-neutral-500">IDR</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex items-center justify-end px-4 py-3 border-t gap-x-2 dark:border-neutral-700">
-                        <button type="button"
-                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-800 bg-white border border-gray-200 rounded-lg shadow-sm gap-x-2 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-                            data-hs-overlay="#bayar-modal">
-                            Batal
-                        </button>
-                        <button type="submit"
-                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg gap-x-2 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
-                            Simpan
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+                    <label for="hs-checkbox-in-form" class="flex w-full p-3 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                        <input id="hs-checkbox-in-form" name="lbayar" type="checkbox" class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800">
+                        <span class="text-sm text-gray-500 ms-3 dark:text-neutral-400">Langsung Bayar?</span>
+                    </label>
+                    <div id="nominal-bayar-section" class="space-y-2"></div>
+                `;
 
-        <script>
-            $(document).ready(function() {
-                $('input[name="date"]').on('change', function() {
-                    $(this).closest('form').submit();
-                });
+                    $('#modal-title').text(modalTitle);
+                    $('#modal-form').attr('action', postUrl);
+                    $('#modal-content').html(modalContent);
+                    $('#post_id').val(post_id);
+                    $('#ongkos_satuan').val(dataOngkos);
+                    HSOverlay.open('#kembali-modal');
 
-                function formatNominal(value) {
-                    let formattedValue = new Intl.NumberFormat("id-ID").format(value);
-                    return 'Rp.' + formattedValue;
+                    // Checkbox functionality
+                    $('#hs-checkbox-in-form').on('change', function() {
+                        if ($(this).is(':checked')) {
+                            $('#nominal-bayar-section').html(`
+                        <label for="nominal_bayar" class="block mb-2 text-sm font-medium dark:text-white">Nominal Bayar</label>
+                        <div class="flex space-x-2">
+                            <div class="relative w-9/12 rounded-md">
+                                <input type="text" name="nominal_bayar" id="nominal_bayar"
+                                    class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm nominal price dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50">
+                                <input type="hidden" id="nominal">
+                                <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none start-0 ps-4">
+                                    <span class="text-gray-500 dark:text-neutral-500">Rp.</span>
+                                </div>
+                                <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none end-0 pe-4">
+                                    <span class="text-gray-500 dark:text-neutral-500">IDR</span>
+                                </div>
+                            </div>
+                            <label for="hs-checkbox-in-form-all-in" class="flex w-3/12 p-3 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                                <input id="hs-checkbox-in-form-all-in" name="allbayar" type="checkbox" class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800">
+                                <span class="text-sm text-gray-500 ms-3 dark:text-neutral-400">Semua?</span>
+                            </label>
+                        </div>
+                        <label for="hs-checkbox-in-bon" class="flex w-full p-3 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                            <input id="hs-checkbox-in-bon" name="bbon" type="checkbox" class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800">
+                            <span class="text-sm text-gray-500 ms-3 dark:text-neutral-400">Bayar Bon?</span>
+                        </label>
+                        <div id="nominal-bon-section" class="space-y-2"></div>
+                    `);
+                            $('#hs-checkbox-in-form-all-in').on('change', function() {
+                                if ($(this).is(':checked')) {
+                                    let totalOngkos = $('#total_ongkos').val();
+                                    $('#nominal_bayar').val(totalOngkos);
+                                } else {
+                                    $('#nominal_bayar').val('');
+                                }
+                            });
+                            $('#hs-checkbox-in-bon').on('change', function() {
+                                if ($(this).is(':checked')) {
+                                    $('#nominal-bon-section').html(`
+                                        <label for="nominal_bayar_bon" class="block mb-2 text-sm font-medium dark:text-white">Nominal Bayar Bon</label>
+                                        <div class="flex space-x-2">
+                                            <div class="relative w-9/12 rounded-md">
+                                                <input type="text" name="nominal_bayar_bon" id="nominal_bayar_bon"
+                                                    class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm nominal price dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50">
+                                                <input type="hidden" id="nominal">
+                                                <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none start-0 ps-4">
+                                                    <span class="text-gray-500 dark:text-neutral-500">Rp.</span>
+                                                </div>
+                                                <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none end-0 pe-4">
+                                                    <span class="text-gray-500 dark:text-neutral-500">IDR</span>
+                                                </div>
+                                            </div>
+                                            <label for="hs-checkbox-in-bon-all-in" class="flex w-3/12 p-3 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                                                <input id="hs-checkbox-in-bon-all-in" name="allbon" type="checkbox" class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800">
+                                                <span class="text-sm text-gray-500 ms-3 dark:text-neutral-400">Semua?</span>
+                                            </label>
+                                        </div>
+                                    `);
+                                    $('#hs-checkbox-in-bon-all-in').on('change',
+                                        function() {
+                                            if ($(this).is(':checked')) {
+                                                let totalOngkos = $('#total_ongkos')
+                                                    .val();
+                                                $('#nominal_bayar_bon').val(
+                                                    totalOngkos);
+                                            } else {
+                                                $('#nominal_bayar_bon').val('');
+                                            }
+                                        });
+                                } else {
+                                    $('#nominal-bon-section').html('');
+                                }
+                            });
+                        } else {
+                            $('#nominal-bayar-section').html('');
+                        }
+                    });
                 }
+            });
 
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "bottom-end",
-                    showConfirmButton: false,
-                    timer: 1200,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.onmouseenter = Swal.stopTimer;
-                        toast.onmouseleave = Swal.resumeTimer;
+            $(document).on('click', '.bayarBtn', function(e) {
+                e.preventDefault();
+                let post_id = $(this).data('id');
+                let dataOngkos = $(this).data('ongkos');
+
+                postUrl = `/karyawan/cutting/gaji/status`;
+                modalTitle = 'Bayar Sisa Gaji';
+                modalContent = `
+        <label for="nominal_bayar_gaji" class="block mb-2 text-sm font-medium dark:text-white">Nominal Bayar</label>
+        <div class="flex space-x-2">
+            <div class="relative w-9/12 rounded-md">
+                <input type="text" name="nominal_bayar_gaji" id="nominal_bayar_gaji"
+                    class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm nominal price dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50">
+                <input type="hidden" id="nominal">
+                <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none start-0 ps-4">
+                    <span class="text-gray-500 dark:text-neutral-500">Rp.</span>
+                </div>
+                <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none end-0 pe-4">
+                    <span class="text-gray-500 dark:text-neutral-500">IDR</span>
+                </div>
+            </div>
+            <label for="hs-checkbox-in-form-bayar-in" class="flex w-3/12 p-3 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                <input id="hs-checkbox-in-form-bayar-in" name="allbayar" type="checkbox" class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800">
+                <span class="text-sm text-gray-500 ms-3 dark:text-neutral-400">Semua?</span>
+            </label>
+        </div>`;
+
+                $('#modal-title').text(modalTitle);
+                $('#modal-form').attr('action', postUrl);
+                $('#modal-content').html(modalContent);
+                $('#post_id').val(post_id);
+
+                // Open the modal after setting the content
+                HSOverlay.open('#kembali-modal');
+
+                // Attach event handler after modal content is rendered
+                $(document).on('change', '#hs-checkbox-in-form-bayar-in', function() {
+                    if ($(this).is(':checked')) {
+                        $('#nominal_bayar_gaji').val(dataOngkos);
+                    } else {
+                        $('#nominal_bayar_gaji').val('');
                     }
                 });
+            });
 
+            $(document).on('submit', '#modal-form', function(e) {
+                e.preventDefault();
+                let formData = $(this).serialize();
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        // Cek apakah ada pesan success dalam bentuk array
+                        if (response.success && Array.isArray(response.success)) {
+                            // Iterasi pesan dan tampilkan satu per satu
+                            response.success.forEach(function(message, index) {
+                                setTimeout(function() {
+                                    Toast.fire({
+                                        icon: "success",
+                                        title: message
+                                    });
+                                }, index * 2000);
+                            });
 
-                $('input[name="tanggal_kembali"]').on('input', function(e) {
-
-                    let post_id = $(this).data('id');
-                    let value = $(this).val();
-                    $.ajax({
-                        url: `/karyawan/cutting/kembali/{{ $karyawan->id }}/${post_id}/store`,
-                        type: "POST",
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            tanggal_kembali: value,
-                            jumlah_kembali: null,
-                        },
-                        success: function(response) {
-                            console.log(response)
-                            $('.kalkulasi-' + response.warna.id).html(formatNominal(response
-                                .kalkulasi));
+                            setTimeout(function() {
+                                    location
+                                        .reload();
+                                }, response.success.length *
+                                2000);
+                        } else {
                             Toast.fire({
                                 icon: "success",
                                 title: "Berhasil Menyimpan data"
                             });
-                        },
-                        error: function(xhr) {
-                            Toast.fire({
-                                icon: "error",
-                                title: "Gagal Menyimpan data"
-                            });
+
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000);
                         }
-                    });
-                });
 
-                $('input[name="jumlah_kembali"]').on('input', function(e) {
+                        HSOverlay.close('#kembali-modal');
+                    },
+                    error: function(xhr) {
+                        let errorMessage = "Gagal Menyimpan data";
 
-                    let post_id = $(this).data('id');
-                    let value = $(this).val();
-
-                    $.ajax({
-                        url: `/karyawan/cutting/kembali/{{ $karyawan->id }}/${post_id}/store`,
-                        type: "POST",
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            jumlah_kembali: value,
-                        },
-                        success: function(response) {
-                            console.log(response)
-                            $('.kalkulasi-' + response.warna.id).html(formatNominal(response
-                                .kalkulasi));
-                            Toast.fire({
-                                icon: "success",
-                                title: "Berhasil Menyimpan data"
-                            });
-                        },
-                        error: function(xhr) {
-                            Toast.fire({
-                                icon: "error",
-                                title: "Gagal Menyimpan data"
-                            });
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            errorMessage = Object.values(xhr.responseJSON.errors).map(function(
+                                value) {
+                                return value.join(', ');
+                            }).join('<br>');
+                        } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
                         }
-                    });
+
+                        Toast.fire({
+                            icon: "error",
+                            title: errorMessage
+                        });
+                    }
                 });
             });
-
-            $(document).on('click', '.bayar', function(e) {
-                let bayar_id = $(this).data('id');
-                $('#bayar_id').val(bayar_id);
-                HSOverlay.open('#bayar-modal');
-            });
-        </script>
+        });
+    </script>

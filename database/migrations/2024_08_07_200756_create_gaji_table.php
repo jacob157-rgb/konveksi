@@ -18,9 +18,10 @@ return new class extends Migration
             $table->unsignedBigInteger('jahit_ambil')->nullable();
             $table->unsignedBigInteger('cutting_kembali')->nullable();
             $table->unsignedBigInteger('jahit_kembali')->nullable();
-            $table->decimal('nominal', 15,2);
-            $table->decimal('nominal_terbayarkan', 15,2);
-            $table->enum('status', ['lunas','terbayarkan', 'belum terbayarkan'])->default('belum terbayarkan');
+            $table->decimal('nominal', 15, 2);
+            $table->decimal('nominal_belum_terbayarkan', 15, 2);
+            $table->decimal('nominal_terbayarkan', 15, 2);
+            $table->enum('status', ['lunas', 'terbayarkan', 'belum terbayarkan'])->default('belum terbayarkan');
             $table->timestamps();
             $table->foreign('cutting_ambil')->references('id')->on('cutting_ambil')->onDelete('cascade');
             $table->foreign('jahit_ambil')->references('id')->on('jahit_ambil')->onDelete('cascade');

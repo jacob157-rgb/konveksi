@@ -90,7 +90,9 @@ document.addEventListener("input", function (e) {
     }
 
     function allTotal() {
-        const totalInputs = document.querySelectorAll('input[name*="model"][name*="[total]"]');
+        const totalInputs = document.querySelectorAll(
+            'input[name*="model"][name*="[total]"]'
+        );
         let totalValue = 0;
 
         totalInputs.forEach((input) => {
@@ -98,41 +100,43 @@ document.addEventListener("input", function (e) {
         });
 
         // Tampilkan total keseluruhan di elemen dengan id="est-all-total"
-        document.getElementById("est-all-total").value = new Intl.NumberFormat("id-ID").format(totalValue);
+        document.getElementById("est-all-total").value = new Intl.NumberFormat(
+            "id-ID"
+        ).format(totalValue);
     }
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const tambahBarangButtons = document.querySelectorAll(".tambah-barang");
-    const kirimBarangButtons = document.querySelectorAll(".kirim-barang");
+// document.addEventListener("DOMContentLoaded", function () {
+//     const tambahBarangButtons = document.querySelectorAll(".tambah-barang");
+//     const kirimBarangButtons = document.querySelectorAll(".kirim-barang");
 
-    if (tambahBarangButtons.length === 0 || kirimBarangButtons.length === 0) {
-        console.error(
-            "No elements with the class 'tambah-barang' or 'kirim-barang' found."
-        );
-        return;
-    }
+//     if (tambahBarangButtons.length === 0 || kirimBarangButtons.length === 0) {
+//         console.error(
+//             "No elements with the class 'tambah-barang' or 'kirim-barang' found."
+//         );
+//         return;
+//     }
 
-    function setSupplyerId(event) {
-        const supplyerId = event.currentTarget.getAttribute("data-supplyer-id");
-        const hiddenInputs = document.querySelectorAll(".supplyer_id");
+//     function setSupplyerId(event) {
+//         const supplyerId = event.currentTarget.getAttribute("data-supplyer-id");
+//         const hiddenInputs = document.querySelectorAll(".supplyer_id");
 
-        if (hiddenInputs.length === 0) {
-            console.error("No elements with the class 'supplyer_id' found.");
-            return;
-        }
+//         if (hiddenInputs.length === 0) {
+//             console.error("No elements with the class 'supplyer_id' found.");
+//             return;
+//         }
 
-        hiddenInputs.forEach((hiddenInput) => {
-            hiddenInput.value = supplyerId;
-            console.log(hiddenInput.value);
-        });
-    }
+//         hiddenInputs.forEach((hiddenInput) => {
+//             hiddenInput.value = supplyerId;
+//             console.log(hiddenInput.value);
+//         });
+//     }
 
-    tambahBarangButtons.forEach((button) => {
-        button.addEventListener("click", setSupplyerId);
-    });
+//     tambahBarangButtons.forEach((button) => {
+//         button.addEventListener("click", setSupplyerId);
+//     });
 
-    kirimBarangButtons.forEach((button) => {
-        button.addEventListener("click", setSupplyerId);
-    });
-});
+//     kirimBarangButtons.forEach((button) => {
+//         button.addEventListener("click", setSupplyerId);
+//     });
+// });

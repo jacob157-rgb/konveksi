@@ -152,4 +152,9 @@ class KaryawanController extends Controller
         $karyawan->delete();
         return redirect()->back()->with('success', 'Karyawan Dihapus.');
     }
+
+    public function gaji()
+    {
+        return view('pages.gaji.index');
+    }
 }

@@ -23,33 +23,9 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     {{-- End Font --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script>
-        document.getElementById("theme-toggle").addEventListener("click", function() {
-            const html = document.querySelector("html");
-            const currentTheme = localStorage.getItem("hs_theme") || "auto";
-            let newTheme;
-
-            if (currentTheme === "light") {
-                newTheme = "dark";
-            } else if (currentTheme === "dark") {
-                newTheme = "light";
-            } else {
-                newTheme = html.classList.contains("dark") ? "light" : "dark";
-            }
-
-            localStorage.setItem("hs_theme", newTheme);
-            if (newTheme === "light") {
-                html.classList.remove("dark");
-                html.classList.add("light");
-            } else {
-                html.classList.remove("light");
-                html.classList.add("dark");
-            }
-        });
-    </script>
 </head>
 
-<body class="flex h-screen items-center justify-center bg-gray-100 dark:bg-neutral-800">
+<body class="flex items-center justify-center h-screen bg-gray-100 dark:bg-neutral-800">
     <!-- ========== MAIN CONTENT ========== -->
     @yield('auth')
     <!-- ========== END MAIN CONTENT ========== -->

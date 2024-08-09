@@ -59,6 +59,11 @@ Route::middleware(ValidateAuth::class)->group(function () {
         Route::get('/karyawan/detail/{id}', 'detail');
         Route::post('/karyawan/update', 'update');
         Route::post('/karyawan/delete/{id}', 'destroy');
+
+        Route::prefix('gaji')->group(function () {
+            Route::get('/', 'gaji');
+
+        });
     });
 
     Route::controller(CuttingController::class)->group(function () {

@@ -24,15 +24,15 @@ class Gaji extends Model
 
     static function getGajiCutting($karyawan, $cutting) {
         $data = [
+            'sum' => Gaji::where('cutting_ambil', $cutting)->where('id_karyawan', $karyawan)->sum('nominal'),
             'paid' => Gaji::where('cutting_ambil', $cutting)->where('id_karyawan', $karyawan)->sum('nominal_terbayarkan'),
-            'unpaid' => Gaji::where('cutting_ambil', $cutting)->where('id_karyawan', $karyawan)->sum('nominal'),
+            'unpaid' => Gaji::where('cutting_ambil', $cutting)->where('id_karyawan', $karyawan)->sum('nominal_belum_terbayarkan'),
             'listData' => Gaji::where('cutting_ambil', $cutting)->where('id_karyawan', $karyawan)->get(),
         ];
         return $data;
     }
 
     static function getGajiByWarna($cutting) {
-
         return static::where('cutting_kembali', $cutting)->first();
     }
 }

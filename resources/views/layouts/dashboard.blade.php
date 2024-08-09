@@ -25,43 +25,19 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script>
-        document.getElementById("theme-toggle").addEventListener("click", function() {
-            const html = document.querySelector("html");
-            const currentTheme = localStorage.getItem("hs_theme") || "auto";
-            let newTheme;
-
-            if (currentTheme === "light") {
-                newTheme = "dark";
-            } else if (currentTheme === "dark") {
-                newTheme = "light";
-            } else {
-                newTheme = html.classList.contains("dark") ? "light" : "dark";
-            }
-
-            localStorage.setItem("hs_theme", newTheme);
-            if (newTheme === "light") {
-                html.classList.remove("dark");
-                html.classList.add("light");
-            } else {
-                html.classList.remove("light");
-                html.classList.add("dark");
-            }
-        });
-    </script>
 </head>
 
 <body class="light dark:bg-black dark:text-white">
     <!-- ========== HEADER ========== -->
     <header
-        class="sticky inset-x-0 top-0 z-[48] flex w-full flex-wrap border-b bg-white py-2.5 text-sm dark:border-neutral-700 dark:bg-neutral-800 sm:flex-nowrap sm:justify-start sm:py-4 lg:ps-64">
+        class="dark:border-neutral-700 dark:bg-neutral-800 sticky inset-x-0 top-0 z-[48] flex w-full flex-wrap border-b bg-white py-2.5 text-sm sm:flex-nowrap sm:justify-start sm:py-4 lg:ps-64">
         <nav class="flex items-center w-full px-4 mx-auto basis-full sm:px-6" aria-label="Global">
             <div class="me-5 lg:me-0 lg:hidden">
                 <!-- Logo -->
                 <a class="flex-none inline-block text-xl font-semibold rounded-xl focus:opacity-80 focus:outline-none"
                     href="/">
-                    <img class="h-auto w-28 dark:hidden" src="{{ asset('assets/logo-light.png') }}" alt="">
-                    <img class="hidden h-auto w-28 dark:block" src="{{ asset('assets/logo-dark.png') }}" alt="">
+                    <img class="h-auto dark:hidden w-28" src="{{ asset('assets/logo-light.png') }}" alt="">
+                    <img class="hidden h-auto dark:block w-28" src="{{ asset('assets/logo-dark.png') }}" alt="">
                 </a>
                 <!-- End Logo -->
             </div>
@@ -98,17 +74,24 @@
                 </div> --}}
 
                 <div class="flex flex-row items-center justify-end gap-2">
-                    <div class="hs-dropdown">
-                        <button type="button"
-                            class="flex items-center font-medium text-gray-600 hs-dropdown-toggle hs-dark-mode group me-2 hover:text-blue-600 dark:text-neutral-400 dark:hover:text-neutral-500">
-                            <svg class="block size-4 hs-dark-mode-active:hidden" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <button type="button"
+                        class="block font-medium text-gray-800 rounded-full hs-dark-mode dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none hs-dark-mode-active:hidden"
+                        data-hs-theme-click-value="dark">
+                        <span class="inline-flex items-center justify-center size-9 group shrink-0">
+                            <svg class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
                             </svg>
-                            <svg class="hidden size-4 hs-dark-mode-active:block" xmlns="http://www.w3.org/2000/svg"
-                                width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        </span>
+                    </button>
+                    <button type="button"
+                        class="hidden font-medium text-gray-800 rounded-full hs-dark-mode dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none hs-dark-mode-active:block"
+                        data-hs-theme-click-value="light">
+                        <span class="inline-flex items-center justify-center size-9 group shrink-0">
+                            <svg class="size-4 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="4"></circle>
                                 <path d="M12 2v2"></path>
                                 <path d="M12 20v2"></path>
@@ -119,37 +102,18 @@
                                 <path d="m6.34 17.66-1.41 1.41"></path>
                                 <path d="m19.07 4.93-1.41 1.41"></path>
                             </svg>
-                        </button>
-
-                        <div id="selectThemeDropdown"
-                            class="hs-dropdown-menu z-10 mb-2 mt-2 hidden origin-bottom-left space-y-1 rounded-lg bg-white p-2 opacity-0 shadow-md transition-[margin,opacity] duration-300 hs-dropdown-open:opacity-100 dark:divide-neutral-700 dark:border dark:border-neutral-700 dark:bg-neutral-800">
-                            <button type="button"
-                                class="flex w-full items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300"
-                                data-hs-theme-click-value="default">
-                                Default (Light)
-                            </button>
-                            <button type="button"
-                                class="flex w-full items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300"
-                                data-hs-theme-click-value="dark">
-                                Dark
-                            </button>
-                            <button type="button"
-                                class="flex w-full items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300"
-                                data-hs-theme-click-value="auto">
-                                Auto (System)
-                            </button>
-                        </div>
-                    </div>
+                        </span>
+                    </button>
 
                     <div class="hs-dropdown relative inline-flex [--placement:bottom-right]">
                         <button id="hs-dropdown-with-header" type="button"
-                            class="inline-flex h-[2.375rem] w-[2.375rem] items-center justify-center gap-x-2 rounded-full border border-transparent text-sm font-semibold text-gray-800 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 dark:text-white dark:hover:bg-neutral-700">
-                            <img class="size-[38px] inline-block rounded-full ring-2 ring-white dark:ring-neutral-800"
+                            class="dark:text-white dark:hover:bg-neutral-700 inline-flex h-[2.375rem] w-[2.375rem] items-center justify-center gap-x-2 rounded-full border border-transparent text-sm font-semibold text-gray-800 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50">
+                            <img class="size-[38px] dark:ring-neutral-800 inline-block rounded-full ring-2 ring-white"
                                 src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80"
                                 alt="Image Description">
                         </button>
 
-                        <div class="hs-dropdown-menu duration min-w-60 hidden rounded-lg bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] hs-dropdown-open:opacity-100 dark:border dark:border-neutral-700 dark:bg-neutral-900"
+                        <div class="hs-dropdown-menu duration min-w-60 dark:border dark:border-neutral-700 dark:bg-neutral-900 hidden rounded-lg bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] hs-dropdown-open:opacity-100"
                             aria-labelledby="hs-dropdown-with-header">
                             <div class="px-5 py-3 -m-2 bg-gray-100 rounded-t-lg dark:bg-neutral-800">
                                 <p class="text-sm text-gray-500 dark:text-neutral-400">Masuk sebagai</p>
@@ -157,7 +121,7 @@
                                     {{ auth()->user()->nama }}</p>
                             </div>
                             <div class="py-2 mt-2 first:pt-0 last:pb-0">
-                                <a class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300"
+                                <a class="dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500"
                                     href="/profil">
                                     <svg class="flex-shrink-0 size-4" width="24" height="24"
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -170,7 +134,7 @@
                                 <form method="post" action="/logout">
                                     @csrf
                                     <button type="submit"
-                                        class="flex w-full items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300">
+                                        class="dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 flex w-full items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500">
                                         <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg"
                                             width="24" height="24" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -193,11 +157,11 @@
     <!-- ========== MAIN CONTENT ========== -->
     <!-- Breadcrumb -->
     <div
-        class="sticky inset-x-0 top-0 z-20 px-4 bg-white border-y dark:border-neutral-700 dark:bg-neutral-800 sm:px-6 md:px-8 lg:hidden">
+        class="sticky inset-x-0 top-0 z-20 px-4 bg-white dark:border-neutral-700 dark:bg-neutral-800 border-y sm:px-6 md:px-8 lg:hidden">
         <div class="flex items-center justify-between py-2">
             <!-- Sidebar -->
             <button type="button"
-                class="flex items-center justify-center gap-x-1.5 rounded-lg border border-gray-200 px-3 py-2 text-xs text-gray-500 hover:text-gray-600 dark:border-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
+                class="dark:border-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 flex items-center justify-center gap-x-1.5 rounded-lg border border-gray-200 px-3 py-2 text-xs text-gray-500 hover:text-gray-600"
                 data-hs-overlay="#application-sidebar" aria-controls="application-sidebar" aria-label="Sidebar">
                 <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -213,14 +177,14 @@
 
     <!-- Sidebar -->
     <div id="application-sidebar"
-        class="hs-overlay fixed inset-y-0 start-0 z-[60] hidden w-[260px] -translate-x-full transform border-e border-gray-200 bg-white transition-all duration-300 [--auto-close:lg] hs-overlay-open:translate-x-0 dark:border-neutral-700 dark:bg-neutral-800 lg:bottom-0 lg:end-auto lg:block lg:translate-x-0">
+        class="hs-overlay dark:border-neutral-700 dark:bg-neutral-800 fixed inset-y-0 start-0 z-[60] hidden w-[260px] -translate-x-full transform border-e border-gray-200 bg-white transition-all duration-300 [--auto-close:lg] hs-overlay-open:translate-x-0 lg:bottom-0 lg:end-auto lg:block lg:translate-x-0">
         <div class="px-8 pt-4">
             <!-- Logo -->
             <a href="/home"
                 class="justify-center flex-none inline-block text-xl font-semibold rounded-xl focus:opacity-80 focus:outline-none"
                 href="../templates/admin/index.html" aria-label="Preline">
-                <img class="h-auto w-28 dark:hidden" src="{{ asset('assets/logo-light.png') }}" alt="">
-                <img class="hidden h-auto w-28 dark:block" src="{{ asset('assets/logo-dark.png') }}" alt="">
+                <img class="h-auto dark:hidden w-28" src="{{ asset('assets/logo-light.png') }}" alt="">
+                <img class="hidden h-auto dark:block w-28" src="{{ asset('assets/logo-dark.png') }}" alt="">
             </a>
             <!-- End Logo -->
         </div>
@@ -324,7 +288,7 @@
 
                 <li class="hs-accordion" id="pengeluaran-accordion">
                     <button type="button"
-                        class="hs-accordion-toggle flex w-full items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-start text-sm text-neutral-700 hover:bg-gray-100 hs-accordion-active:text-blue-600 hs-accordion-active:hover:bg-transparent dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:hs-accordion-active:text-white">
+                        class="hs-accordion-toggle dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:hs-accordion-active:text-white flex w-full items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-start text-sm text-neutral-700 hover:bg-gray-100 hs-accordion-active:text-blue-600 hs-accordion-active:hover:bg-transparent">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round" class="lucide lucide-candlestick-chart">
@@ -386,7 +350,7 @@
     <!-- ========== END MAIN CONTENT ========== -->
 </body>
 
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
         const searchInput = document.getElementById('global-search');
         const tables = document.querySelectorAll('.search-table');
@@ -410,6 +374,6 @@
             });
         });
     });
-</script>
+</script> --}}
 
 </html>

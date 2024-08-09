@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -16,15 +17,15 @@ return new class extends Migration {
             $table->unsignedBigInteger('id_karyawan');
             $table->unsignedBigInteger('cutting_ambil')->nullable();
             $table->unsignedBigInteger('jahit_ambil')->nullable();
-            $table->decimal('nominal', 15,2);
-            $table->enum('status', ['lunas', 'belum lunas'])->default('belum lunas');
+            $table->decimal('nominal', 15, 2);
+            $table->decimal('nominal_belum_terbayarkan', 15, 2);
+            $table->decimal('nominal_terbayarkan', 15, 2);
+            $table->enum('status', ['lunas', 'terbayarkan',  'belum terbayarkan'])->default('belum terbayarkan');
             $table->timestamps();
             $table->foreign('cutting_ambil')->references('id')->on('cutting_ambil')->onDelete('cascade');
             $table->foreign('jahit_ambil')->references('id')->on('jahit_ambil')->onDelete('cascade');
             $table->foreign('id_karyawan')->references('id')->on('karyawan')->onDelete('cascade');
         });
-
-
     }
 
     /**
