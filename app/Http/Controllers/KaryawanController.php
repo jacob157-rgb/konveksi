@@ -78,7 +78,7 @@ class KaryawanController extends Controller
             'jahitAmbil' => $jahitAmbil,
         ];
 
-        return view('karyawan.show', $data);
+        return view('pages.karyawan.show', $data);
     }
 
     public function print($id)

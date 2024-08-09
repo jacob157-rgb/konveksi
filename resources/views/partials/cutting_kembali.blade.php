@@ -459,9 +459,7 @@
                     method: 'POST',
                     data: formData,
                     success: function(response) {
-                        // Cek apakah ada pesan success dalam bentuk array
                         if (response.success && Array.isArray(response.success)) {
-                            // Iterasi pesan dan tampilkan satu per satu
                             response.success.forEach(function(message, index) {
                                 setTimeout(function() {
                                     Toast.fire({

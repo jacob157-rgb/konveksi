@@ -249,11 +249,10 @@ class CuttingController extends Controller
 
     public function statusGaji(Request $request)
     {
-        dd($request);
         $gaji = Gaji::find($request->post_id);
 
         $validator = Validator::make($request->all(), [
-            'post_id' => 'required|exists:cutting_warna_model,id',
+            'post_id' => 'required|exists:gaji,id',
             'nominal_bayar_gaji' => 'required|decimal:3',
         ]);
 
@@ -262,18 +261,29 @@ class CuttingController extends Controller
         }
         $nominalBayar = (int) Str::of($request->nominal_bayar_gaji)->remove('.')->toString();
         $kalkulasi = $gaji->nominal_belum_terbayarkan - $nominalBayar;
+        if ($nominalBayar >  $gaji->nominal_belum_terbayarkan) {
+            return response()->json(['errors' => 'Nominal bayar tidak boleh melebihi kalkulasi'], 422);
+        }
+
         if ($request->boolean('allbayar') || $kalkulasi == 0) {
             $gaji->update([
                 'nominal_terbayarkan' => $gaji->nominal_terbayarkan + $nominalBayar,
                 'nominal_belum_terbayarkan' => '0',
                 'status' => 'lunas',
             ]);
-        } else if ($kalkulasi > 0 ) {
+        } else if ($kalkulasi > 0) {
             $gaji->update([
                 'nominal_terbayarkan' => $gaji->nominal_terbayarkan + $nominalBayar,
+                'nominal_belum_terbayarkan' => $gaji->nominal_belum_terbayarkan - $nominalBayar,
+                'status' => 'terbayarkan',
+            ]);
+        } else {
+            $gaji->update([
+                'nominal_terbayarkan' => $gaji->nominal_terbayarkan + abs(abs($kalkulasi) - $kalkulasi),
                 'nominal_belum_terbayarkan' => '0',
                 'status' => 'lunas',
             ]);
+            $messages[] = 'Ada sisa lebih bayar sebesar ' . formatRupiah(abs($kalkulasi));
         }
 
         $messages[] = 'Data berhasil disimpan';
