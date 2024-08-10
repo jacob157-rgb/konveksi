@@ -136,7 +136,7 @@
                                                             );
                                                             $totalKeseluruhanHarga +=
                                                                 $getCuttingWarnaModel?->total_ongkos;
-                                                            $getGajiByWarna = App\Models\Gaji::getGajiByWarna(
+                                                            $getGajiByWarnaCutting = App\Models\Gaji::getGajiByWarnaCutting(
                                                                 $getCuttingWarnaModel?->id,
                                                             );
                                                         @endphp
@@ -154,14 +154,14 @@
                                                             <div
                                                                 class="flex items-center justify-center py-2 hs-tooltip">
                                                                 <button
-                                                                    @if ($getGajiByWarna?->status == 'belum terbayarkan' || $getGajiByWarna?->status === 'terbayarkan') data-id="{{ $getGajiByWarna?->id }}"
-                                                                        data-ongkos="{{ formatNominal($getGajiByWarna?->nominal_belum_terbayarkan) }}" @endif
-                                                                    class="{{ $getGajiByWarna?->status === 'lunas' ? 'bg-green-500' : ($getGajiByWarna?->status === 'belum terbayarkan' ? 'bg-red-500 bayarBtn' : 'bg-yellow-500 bayarBtn') }} hs-tooltip-toggle text-nowrap inline-flex items-center gap-x-1.5 rounded-full px-3 py-1.5 text-xs font-medium text-white">
-                                                                    {{ $getGajiByWarna?->status }}
-                                                                    @if ($getGajiByWarna->nominal_belum_terbayarkan > 0)
+                                                                    @if ($getGajiByWarnaCutting?->status == 'belum terbayarkan' || $getGajiByWarnaCutting?->status === 'terbayarkan') data-id="{{ $getGajiByWarnaCutting?->id }}"
+                                                                        data-ongkos="{{ formatNominal($getGajiByWarnaCutting?->nominal_belum_terbayarkan) }}" @endif
+                                                                    class="{{ $getGajiByWarnaCutting?->status === 'lunas' ? 'bg-green-500' : ($getGajiByWarnaCutting?->status === 'belum terbayarkan' ? 'bg-red-500 bayarBtn' : 'bg-yellow-500 bayarBtn') }} hs-tooltip-toggle text-nowrap inline-flex items-center gap-x-1.5 rounded-full px-3 py-1.5 text-xs font-medium capitalize text-white">
+                                                                    {{ $getGajiByWarnaCutting?->status }}
+                                                                    @if ($getGajiByWarnaCutting->nominal_belum_terbayarkan > 0)
                                                                         <span role="tooltip"
                                                                             class="absolute z-10 invisible inline-block px-2 py-1 text-white transition-opacity bg-gray-900 rounded-md opacity-0 hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100">
-                                                                            {{ formatRupiah($getGajiByWarna->nominal_belum_terbayarkan) }}
+                                                                            {{ formatRupiah($getGajiByWarnaCutting->nominal_belum_terbayarkan) }}
                                                                             Belum Terbayarkan</span>
                                                                     @endif
                                                                 </button>

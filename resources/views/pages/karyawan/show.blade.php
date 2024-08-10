@@ -9,7 +9,7 @@
             </tr>
             <tr>
                 <td class="font-medium">Jenis Karyawan</td>
-                <td>&nbsp; : &nbsp;{{ $karyawan->jenis_karyawan }}</td>
+                <td class="capitalize">&nbsp; : &nbsp;{{ $karyawan->jenis_karyawan }}</td>
             </tr>
             <tr>
                 <td class="font-medium">No. Tlp</td>
@@ -25,6 +25,14 @@
 
         @php
             $gaji = App\Models\Gaji::getGaji($karyawan->id);
+
+            $notLunasId = [];
+
+            foreach ($gaji['listData'] as $data) {
+                if ($data->status !== 'lunas') {
+                    array_push($notLunasId, $data->id);
+                }
+            }
         @endphp
         <div class="flex flex-col mt-2">
             <div class="-m-1.5 overflow-x-auto">
@@ -36,9 +44,12 @@
                                 <form action="" id="lunasForm">
                                     <div class="relative flex items-start">
                                         <div class="flex items-center h-5 mt-1">
-                                            <input id="checkbox-lunas" name="lunas" value="{{ request()->query('lunas') == 'true' ? 'false' : 'true' }}" type="checkbox"
+                                            <input id="checkbox-lunas" name="lunas"
+                                                value="{{ request()->query('lunas') == 'true' ? 'false' : 'true' }}"
+                                                type="checkbox"
                                                 class="text-blue-600 border-gray-200 rounded lunas dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
-                                                aria-describedby="checkbox-lunas-description" {{ request()->query('lunas') ? 'checked' : '' }}>
+                                                aria-describedby="checkbox-lunas-description"
+                                                {{ request()->query('lunas') ? 'checked' : '' }}>
                                         </div>
                                         <label for="checkbox-lunas" class="ms-3">
                                             <span
@@ -99,9 +110,6 @@
                                         <th scope="col"
                                             class="px-6 py-3 text-xs font-medium text-center text-gray-500 uppercase dark:text-neutral-500">
                                             Status</th>
-                                        <th scope="col"
-                                            class="px-6 py-3 text-xs font-medium text-center text-gray-500 uppercase dark:text-neutral-500">
-                                            Action</th>
                                     </tr>
                                 </thead>
                                 @php
@@ -123,7 +131,7 @@
                                             </td>
                                             <td
                                                 class="px-6 py-4 text-sm font-medium text-gray-800 dark:text-neutral-200 whitespace-nowrap">
-                                                {{ \Carbon\Carbon::parse($row->created_at)->locale('id')->translatedFormat('l, d F Y') }}
+                                                {{ \Carbon\Carbon::parse($row->created_at)->locale('id')->translatedFormat('l, d F Y H:i') }}
                                             </td>
                                             <td
                                                 class="px-6 py-4 text-sm text-gray-800 dark:text-neutral-200 whitespace-nowrap">
@@ -135,17 +143,18 @@
                                             <td
                                                 class="px-6 py-4 text-sm text-gray-800 dark:text-neutral-200 whitespace-nowrap">
                                                 {{ formatRupiah($row->nominal_belum_terbayarkan) }}</td>
-                                            <td
-                                                class="px-6 py-4 text-sm text-center text-gray-800 dark:text-neutral-200 whitespace-nowrap">
-                                                <span
-                                                    class="{{ $row?->status === 'lunas' ? 'bg-green-500' : ($row?->status === 'belum terbayarkan' ? 'bg-red-500 ' : 'bg-yellow-500 ') }} hs-tooltip-toggle text-nowrap inline-flex items-center gap-x-1.5 rounded-full px-3 py-1.5 text-xs font-medium text-white">
-                                                    {{ $row?->status }}
-                                                </span>
-                                            </td>
                                             <td class="px-6 py-4 text-sm font-medium text-center whitespace-nowrap">
-                                                <button type="button" data-id="{{ $row->id }}"
-                                                    data-ongkos="{{ formatNominal($row->nominal_belum_terbayarkan) }}"
-                                                    class="inline-flex items-center text-sm font-semibold text-blue-600 border border-transparent rounded-lg bayarBtn dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400 gap-x-2 hover:text-blue-800 focus:text-blue-800 focus:outline-none disabled:pointer-events-none disabled:opacity-50">Bayar</button>
+                                                <button
+                                                    @if ($row->status != 'lunas') data-id="{{ $row->id }}" data-ongkos="{{ formatNominal($row->nominal_belum_terbayarkan) }}" @endif
+                                                    class="{{ $row?->status === 'lunas' ? 'bg-green-500' : ($row?->status === 'belum terbayarkan' ? 'bg-red-500 bayarBtn' : 'bg-yellow-500 bayarBtn') }} hs-tooltip-toggle text-nowrap inline-flex items-center gap-x-1.5 rounded-full px-3 py-1.5 text-xs font-medium capitalize text-white">
+                                                    {{ $row?->status }}
+                                                    @if ($row->nominal_belum_terbayarkan > 0)
+                                                        <span role="tooltip"
+                                                            class="absolute z-10 invisible inline-block px-2 py-1 text-white transition-opacity bg-gray-900 rounded-md opacity-0 hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100">
+                                                            {{ formatRupiah($row->nominal_belum_terbayarkan) }}
+                                                            Belum Terbayarkan</span>
+                                                    @endif
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -163,16 +172,29 @@
                                         <td class="px-6 py-4 text-sm text-gray-800 dark:text-neutral-200 whitespace-nowrap">
                                             {{ formatRupiah($nominal_terbayarkan) }}</td>
                                         <td class="px-6 py-4 text-sm text-gray-800 dark:text-neutral-200 whitespace-nowrap">
-                                            {{ formatRupiah($nominal_belum_terbayarkan) }}</td>
-                                        <td class="px-6 py-4 text-sm text-gray-800 dark:text-neutral-200 whitespace-nowrap">
-                                            {{-- <span
-                                                class="{{ $row?->status === 'lunas' ? 'bg-green-500' : ($row?->status === 'belum terbayarkan' ? 'bg-red-500 ' : 'bg-yellow-500 ') }} hs-tooltip-toggle text-nowrap inline-flex items-center gap-x-1.5 rounded-full px-3 py-1.5 text-xs font-medium text-white">
-                                                {{ $row?->status }}
-                                            </span> --}}
+                                            @if ($nominal_belum_terbayarkan == 0)
+                                                <div>
+                                                    <span
+                                                        class="inline-flex items-center px-2 py-1 text-xs font-medium text-teal-800 bg-teal-100 rounded-full dark:bg-teal-500/10 dark:text-teal-500 gap-x-1">
+                                                        <svg class="size-3 shrink-0" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path
+                                                                d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z">
+                                                            </path>
+                                                            <path d="m9 12 2 2 4-4"></path>
+                                                        </svg>
+                                                        Lunas
+                                                    </span>
+                                                </div>
+                                            @else
+                                                {{ formatRupiah($nominal_belum_terbayarkan) }}
+                                            @endif
                                         </td>
-                                        <td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-end">
-                                            <button type="button"
-                                                class="inline-flex items-center px-4 py-3 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg gap-x-2 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">Bayar
+                                        <td class="px-6 py-4 text-sm font-medium text-center whitespace-nowrap">
+                                            <button type="button" id="bayarSemuaButton"
+                                                class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg gap-x-2 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">Bayar
                                                 Semua</button>
                                         </td>
                                     </tr>
@@ -184,9 +206,35 @@
             </div>
         </div>
     </div>
+    <form action="/gaji/bayarall" method="POST" id="bayarSemuaForm">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+        <input type="hidden" name="not_lunas_id" id="notLunasIdInput" value="">
+    </form>
 
     @include('partials.kembali_modal')
     <script>
+        document.getElementById('bayarSemuaButton').addEventListener('click', function() {
+
+            const notLunasIdArray = @json($notLunasId);
+
+            const form = document.getElementById('bayarSemuaForm');
+
+            document.querySelectorAll('input[name="not_lunas_id[]"]').forEach(input => input.remove());
+
+            notLunasIdArray.forEach((id, index) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'not_lunas_id[]';
+                input.value = id;
+                form.appendChild(input);
+            });
+
+            form.submit();
+        });
+
+
+
+
         $(function() {
             $("#datepicker").datepicker({
                 beforeShowDay: function(date) {

@@ -140,8 +140,8 @@ class CuttingController extends Controller
 
         if ($request->boolean('bbon')) {
             $validator = Validator::make($request->all(), [
-                'nominal_bayar_bon' => 'required|decimal:3',
-                'nominal_bayar' => 'required|decimal:3',
+                'nominal_bayar_bon' => 'required',
+                'nominal_bayar' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -201,7 +201,7 @@ class CuttingController extends Controller
 
         if ($request->boolean('lbayar')) {
             $validator = Validator::make($request->all(), [
-                'nominal_bayar' => 'required|decimal:3',
+                'nominal_bayar' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -253,7 +253,7 @@ class CuttingController extends Controller
 
         $validator = Validator::make($request->all(), [
             'post_id' => 'required|exists:gaji,id',
-            'nominal_bayar_gaji' => 'required|decimal:3',
+            'nominal_bayar_gaji' => 'required',
         ]);
 
         if ($validator->fails()) {

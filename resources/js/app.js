@@ -42,6 +42,7 @@ $(document).on("click", ".selesaikan-btn", function (e) {
     });
 });
 
+
 document.addEventListener("input", function (e) {
     if (e.target.classList.contains("price")) {
         // Menghapus karakter non-numerik

@@ -36,4 +36,15 @@ class Bon extends Model
         // dd($data['listData'][0]['nominal']);
         return $data;
     }
+    static function getBonJahit($karyawan, $jahit)
+    {
+        $data = [
+            'sum' => Bon::where('jahit_ambil', $jahit)->where('id_karyawan', $karyawan)->sum('nominal'),
+            'paid' => Bon::where('jahit_ambil', $jahit)->where('id_karyawan', $karyawan)->sum('nominal_terbayarkan'),
+            'unpaid' => Bon::where('jahit_ambil', $jahit)->where('id_karyawan', $karyawan)->sum('nominal_belum_terbayarkan'),
+            'listData' => Bon::where('jahit_ambil', $jahit)->where('id_karyawan', $karyawan)->get(),
+        ];
+        // dd($data['listData'][0]['nominal']);
+        return $data;
+    }
 }

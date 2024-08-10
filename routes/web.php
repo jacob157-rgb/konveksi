@@ -62,7 +62,7 @@ Route::middleware(ValidateAuth::class)->group(function () {
 
         Route::prefix('gaji')->group(function () {
             Route::get('/', 'gaji');
-
+            Route::post('/bayarall', 'bayarGajiAll');
         });
     });
 
@@ -89,7 +89,6 @@ Route::middleware(ValidateAuth::class)->group(function () {
             Route::post('/status', 'statusGaji');
         });
     });
-
     Route::controller(JahitController::class)->group(function () {
         Route::prefix('karyawan/jahit/ambil')->group(function () {
             Route::get('/{id}', 'getAmbilJahit');
@@ -106,6 +105,11 @@ Route::middleware(ValidateAuth::class)->group(function () {
             Route::put('/update/{id}', 'putJahit');
             Route::get('/detail/{id}', 'detailJahit');
             Route::delete('/delete/{id}', 'deleteJahit');
+        });
+
+        Route::prefix('karyawan/jahit/gaji')->group(function () {
+            Route::get('/{id}', 'getGajiJahit');
+            Route::post('/status', 'statusGaji');
         });
     });
 

@@ -11,6 +11,7 @@ use App\Models\JahitAmbil;
 use App\Models\BarangMentah;
 use App\Models\CuttingAmbil;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class KaryawanController extends Controller
 {
@@ -156,5 +157,25 @@ class KaryawanController extends Controller
     public function gaji()
     {
         return view('pages.gaji.index');
+    }
+
+    public function bayarGajiAll(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'not_lunas_id' => 'required|array',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->with('error', 'Ada kesalahan.');
+        }
+        $notLunasId = $request->input('not_lunas_id');
+        foreach ($notLunasId as $id) {
+            $gaji = Gaji::findOrFail($id);
+            $gaji->update([
+                'nominal_terbayarkan' => $gaji->nominal,
+                'nominal_belum_terbayarkan' => 0,
+                'status' => 'lunas',
+            ]);
+        }
+        return redirect()->back()->with('success', 'Gaji berhasil diperbarui menjadi lunas.');
     }
 }

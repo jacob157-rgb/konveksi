@@ -119,7 +119,7 @@
                     </div>
             </div>
         </div>
-        <div class="grid grid-cols-2 mb-2 space-x-2">
+        <div class="grid grid-cols-1 mb-2 space-y-2 md:space-y-0 md:space-x-2 md:grid-cols-2">
             <div>
                 <label for="nominal_bon" class="block mb-2 text-sm font-medium dark:text-white">Nominal Bon</label>
                 <div class="relative rounded-md">
