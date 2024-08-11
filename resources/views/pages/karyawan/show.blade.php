@@ -63,7 +63,7 @@
                                 </form>
                                 <form class="relative w-full" id="dateForm" method="GET" action="">
                                     <label class="sr-only">Search</label>
-                                    <input type="text" id="datepicker" name="days"
+                                    <input type="text" id="datepicker" name="days" autocomplete="off"
                                         value="{{ request()?->query('days') }}"
                                         class="block w-full px-3 py-2 text-sm border-gray-200 rounded-lg shadow-sm date dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 ps-9 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
                                         placeholder="Pilih Tanggal">
@@ -205,6 +205,11 @@
                 </div>
             </div>
         </div>
+
+        <div class="mt-5">
+            @include('partials.bon_cutting')
+        </div>
+
     </div>
     <form action="/gaji/bayarall" method="POST" id="bayarSemuaForm">
         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
@@ -212,6 +217,8 @@
     </form>
 
     @include('partials.kembali_modal')
+    @include('partials.bon_modal')
+
     <script>
         document.getElementById('bayarSemuaButton').addEventListener('click', function() {
 
@@ -246,11 +253,21 @@
                     $('#dateForm').submit();
                 }
             });
+            $("#datepickerBon").datepicker({
+                dateFormat: 'yy-mm-dd',
+                onSelect: function(dateText, inst) {
+                    $('#dateFormBon').submit();
+                }
+            });
         });
         $(document).ready(function() {
 
             $('.lunas').on('change', function() {
                 $('#lunasForm').submit();
+            });
+
+            $('.bon').on('change', function() {
+                $('#BonlunasForm').submit();
             });
             const Toast = Swal.mixin({
                 toast: true,
@@ -364,6 +381,108 @@
                     }
                 });
             });
+
+
+            $(document).on('click', '.bonBtn', function(e) {
+                e.preventDefault();
+                let post_id = $(this).data('id');
+                let dataBon = $(this).data('bon');
+
+                let postUrl =
+                `/karyawan/cutting/bon/status`; // Pastikan URL ini benar dan rutenya ada di Laravel
+                let modalTitle = 'Bayar Sisa Bon';
+                let modalContent = `
+                    <label for="nominal_bayar_bon" class="block mb-2 text-sm font-medium dark:text-white">Nominal Bayar</label>
+                    <div class="flex space-x-2">
+                        <div class="relative w-9/12 rounded-md">
+                            <input type="text" name="nominal_bayar_bon" id="nominal_bayar_bon"
+                                class="block w-full px-4 py-3 text-sm border-gray-200 rounded-lg shadow-sm nominal price dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600 pe-16 ps-10 focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50">
+                            <input type="hidden" id="nominal_bon">
+                            <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none start-0 ps-4">
+                                <span class="text-gray-500 dark:text-neutral-500">Rp.</span>
+                            </div>
+                            <div class="absolute inset-y-0 z-20 flex items-center pointer-events-none end-0 pe-4">
+                                <span class="text-gray-500 dark:text-neutral-500">IDR</span>
+                            </div>
+                        </div>
+                        <label for="hs-checkbox-in-form-bayar-in" class="flex w-3/12 p-3 text-sm bg-white border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                            <input id="hs-checkbox-in-form-bayar-in" name="allbayar" type="checkbox" class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800">
+                            <span class="text-sm text-gray-500 ms-3 dark:text-neutral-400">Semua?</span>
+                        </label>
+                    </div>`;
+
+                $('#modal-title').text(modalTitle);
+                $('#bon-form').attr('action', postUrl);
+                $('#modal-bon-content').html(modalContent);
+                $('#post_id_bon').val(post_id);
+
+                HSOverlay.open('#bon-modal');
+
+                $(document).on('change', '#hs-checkbox-in-form-bayar-in', function() {
+                    if ($(this).is(':checked')) {
+                        $('#nominal_bayar_bon').val(dataBon);
+                    } else {
+                        $('#nominal_bayar_bon').val('');
+                    }
+                });
+            });
+
+            $(document).on('submit', '#bon-form', function(e) {
+                e.preventDefault();
+                let formData = $(this).serialize();
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        console.log(response);
+                        if (response.success && Array.isArray(response.success)) {
+                            response.success.forEach(function(message, index) {
+                                setTimeout(function() {
+                                    Toast.fire({
+                                        icon: "success",
+                                        title: message
+                                    });
+                                }, index * 2000);
+                            });
+
+                            setTimeout(function() {
+                                location.reload();
+                            }, response.success.length * 2000);
+                        } else {
+                            Toast.fire({
+                                icon: "success",
+                                title: "Berhasil Menyimpan data"
+                            });
+
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000);
+                        }
+
+                        HSOverlay.close('#bon-modal');
+                    },
+                    error: function(xhr) {
+                        let errorMessage = "Gagal Menyimpan data";
+
+                        if (xhr.responseJSON && xhr.responseJSON.errors) {
+                            errorMessage = Object.values(xhr.responseJSON.errors).map(function(
+                                value) {
+                                return value.join(', ');
+                            }).join('<br>');
+                        } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+
+                        Toast.fire({
+                            icon: "error",
+                            title: errorMessage
+                        });
+                    }
+                });
+            });
+
+
         });
     </script>
 @endsection

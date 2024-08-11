@@ -121,10 +121,17 @@
                                                         );
                                                     @endphp
                                                     @if ($isitReturn == null)
+                                                        @php
+                                                            $BonJahitInCheck = App\Models\Bon::getBonJahit(
+                                                                $karyawan->id,
+                                                                $row->id,
+                                                            );
+                                                        @endphp
                                                         <td colspan="2">
                                                             <div class="flex items-center justify-center py-2">
                                                                 <button data-id="{{ $rowItem->id }}"
                                                                     data-ongkos="{{ formatNominal($rowItem->ongkos) }}"
+                                                                    data-bon="{{ formatNominal($BonJahitInCheck['unpaid']) }}"
                                                                     class="text-nowrap kembaliBtn inline-flex items-center gap-x-1.5 rounded-full bg-red-500 px-3 py-1.5 text-xs font-medium text-white">Belum
                                                                     Dikembalikan</button>
                                                             </div>
@@ -218,22 +225,22 @@
 
     <script>
         function getCurrentDateTime() {
-        const now = new Date();
-        const options = {
-            timeZone: "Asia/Jakarta",
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false,
-        };
-        const formatter = new Intl.DateTimeFormat("en-GB", options);
-        const formattedDate = formatter.format(now).split(", ");
-        const [day, month, year] = formattedDate[0].split("/");
-        const [hour, minute] = formattedDate[1].split(":");
-        return `${year}-${month}-${day}T${hour}:${minute}`;
-    }
+            const now = new Date();
+            const options = {
+                timeZone: "Asia/Jakarta",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+            };
+            const formatter = new Intl.DateTimeFormat("en-GB", options);
+            const formattedDate = formatter.format(now).split(", ");
+            const [day, month, year] = formattedDate[0].split("/");
+            const [hour, minute] = formattedDate[1].split(":");
+            return `${year}-${month}-${day}T${hour}:${minute}`;
+        }
         $(document).ready(function() {
             $('input[name="date"]').on('change', function() {
                 $(this).closest('form').submit();
@@ -256,6 +263,7 @@
                 e.preventDefault();
                 let post_id = $(this).data('id');
                 let dataOngkos = $(this).data('ongkos');
+                let dataBon = $(this).data('bon');
                 let modalTitle = '';
                 let modalContent = '';
 

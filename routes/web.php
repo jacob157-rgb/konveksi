@@ -88,6 +88,9 @@ Route::middleware(ValidateAuth::class)->group(function () {
             Route::get('/{id}', 'getGajiCutting');
             Route::post('/status', 'statusGaji');
         });
+        Route::prefix('karyawan/cutting/bon')->group(function () {
+            Route::post('/status', 'statusBon');
+        });
     });
     Route::controller(JahitController::class)->group(function () {
         Route::prefix('karyawan/jahit/ambil')->group(function () {

@@ -148,7 +148,9 @@ class CuttingController extends Controller
                 return response()->json(['errors' => $validator->errors()], 422);
             }
 
-            $nominalBayarBon = (int) Str::of($request->nominal_bayar_bon)->remove('.')->toString();
+            $nominalBayarBon = (int) Str::of($request->nominal_bayar_bon)
+                ->remove('.')
+                ->toString();
             if ($bonCuttingAmbil) {
                 $hitungBon = $bonCuttingAmbil->nominal_belum_terbayarkan - $nominalBayarBon;
                 if ($hitungBon == 0) {
@@ -157,7 +159,7 @@ class CuttingController extends Controller
                         'nominal_terbayarkan' => $bonCuttingAmbil->nominal_terbayarkan + $nominalBayarBon,
                         'status' => 'lunas',
                     ]);
-                } else if ($hitungBon > 0) {
+                } elseif ($hitungBon > 0) {
                     $bonCuttingAmbil->update([
                         'nominal_belum_terbayarkan' => $bonCuttingAmbil->nominal_belum_terbayarkan - $nominalBayarBon,
                         'nominal_terbayarkan' => $bonCuttingAmbil->nominal_terbayarkan + $nominalBayarBon,
@@ -182,7 +184,7 @@ class CuttingController extends Controller
                         'nominal_terbayarkan' => $bonKeseluruhan->nominal_terbayarkan + $nominalBayarBon,
                         'status' => 'lunas',
                     ]);
-                } else if ($hitungBon > 0) {
+                } elseif ($hitungBon > 0) {
                     $bonKeseluruhan->update([
                         'nominal_belum_terbayarkan' => $bonKeseluruhan->nominal_belum_terbayarkan - $nominalBayarBon,
                         'nominal_terbayarkan' => $bonKeseluruhan->nominal_terbayarkan + $nominalBayarBon,
@@ -208,7 +210,9 @@ class CuttingController extends Controller
                 return response()->json(['errors' => $validator->errors()], 422);
             }
 
-            $nominalBayar = (int) Str::of($request->nominal_bayar)->remove('.')->toString();
+            $nominalBayar = (int) Str::of($request->nominal_bayar)
+                ->remove('.')
+                ->toString();
 
             if ($nominalBayar > $kalkulasi) {
                 return response()->json(['errors' => 'Nominal bayar tidak boleh melebihi kalkulasi'], 422);
@@ -226,7 +230,9 @@ class CuttingController extends Controller
                 'status' => $nominalTerbayarkan == $kalkulasi ? 'lunas' : 'terbayarkan',
             ]);
         } else {
-            $nominalBayar = (int) Str::of($request->nominal_bayar)->remove('.')->toString();
+            $nominalBayar = (int) Str::of($request->nominal_bayar)
+                ->remove('.')
+                ->toString();
 
             if ($nominalBayar > $kalkulasi) {
                 return response()->json(['errors' => 'Nominal bayar tidak boleh melebihi kalkulasi'], 422);
@@ -259,9 +265,11 @@ class CuttingController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-        $nominalBayar = (int) Str::of($request->nominal_bayar_gaji)->remove('.')->toString();
+        $nominalBayar = (int) Str::of($request->nominal_bayar_gaji)
+            ->remove('.')
+            ->toString();
         $kalkulasi = $gaji->nominal_belum_terbayarkan - $nominalBayar;
-        if ($nominalBayar >  $gaji->nominal_belum_terbayarkan) {
+        if ($nominalBayar > $gaji->nominal_belum_terbayarkan) {
             return response()->json(['errors' => 'Nominal bayar tidak boleh melebihi kalkulasi'], 422);
         }
 
@@ -271,7 +279,7 @@ class CuttingController extends Controller
                 'nominal_belum_terbayarkan' => '0',
                 'status' => 'lunas',
             ]);
-        } else if ($kalkulasi > 0) {
+        } elseif ($kalkulasi > 0) {
             $gaji->update([
                 'nominal_terbayarkan' => $gaji->nominal_terbayarkan + $nominalBayar,
                 'nominal_belum_terbayarkan' => $gaji->nominal_belum_terbayarkan - $nominalBayar,
@@ -288,5 +296,80 @@ class CuttingController extends Controller
 
         $messages[] = 'Data berhasil disimpan';
         return response()->json(['success' => $messages], 200);
+    }
+
+    public function statusBon(Request $request)
+    {
+        $bonCutting = Bon::find($request->post_id);
+
+        $validator = Validator::make($request->all(), [
+            'post_id' => 'required|exists:bon,id',
+            'nominal_bayar_bon' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $nominalBayarBon = (int) Str::of($request->nominal_bayar_bon)
+            ->remove('.')
+            ->toString();
+        if ($bonCutting) {
+            $hitungBon = $bonCutting->nominal_belum_terbayarkan - $nominalBayarBon;
+            if ($hitungBon == 0) {
+                $bonCutting->update([
+                    'nominal_belum_terbayarkan' => $hitungBon,
+                    'nominal_terbayarkan' => $bonCutting->nominal_terbayarkan + $nominalBayarBon,
+                    'status' => 'lunas',
+                ]);
+            } elseif ($hitungBon > 0) {
+                $bonCutting->update([
+                    'nominal_belum_terbayarkan' => $bonCutting->nominal_belum_terbayarkan - $nominalBayarBon,
+                    'nominal_terbayarkan' => $bonCutting->nominal_terbayarkan + $nominalBayarBon,
+                    'status' => 'terbayarkan',
+                ]);
+            } else {
+                $bonCutting->update([
+                    'nominal_belum_terbayarkan' => '0',
+                    'nominal_terbayarkan' => $bonCutting->nominal_terbayarkan + abs(abs($hitungBon) - $nominalBayarBon),
+                    'status' => 'lunas',
+                ]);
+                $messages[] = 'Ada sisa kembalian bon sebesar ' . formatRupiah(abs($hitungBon));
+            }
+        } else {
+            $bonKeseluruhan = Bon::where('id_karyawan', $bonCutting->id_karyawan)
+                ->whereIn('status', ['terbayarkan', 'belum terbayarkan'])
+                ->get();
+            $hitungBon = $bonKeseluruhan->nominal_belum_terbayarkan - $nominalBayarBon;
+            if ($hitungBon == 0) {
+                $bonKeseluruhan->update([
+                    'nominal_belum_terbayarkan' => $hitungBon,
+                    'nominal_terbayarkan' => $bonKeseluruhan->nominal_terbayarkan + $nominalBayarBon,
+                    'status' => 'lunas',
+                ]);
+            } elseif ($hitungBon > 0) {
+                $bonKeseluruhan->update([
+                    'nominal_belum_terbayarkan' => $bonKeseluruhan->nominal_belum_terbayarkan - $nominalBayarBon,
+                    'nominal_terbayarkan' => $bonKeseluruhan->nominal_terbayarkan + $nominalBayarBon,
+                    'status' => 'terbayarkan',
+                ]);
+            } else {
+                $bonKeseluruhan->update([
+                    'nominal_belum_terbayarkan' => '0',
+                    'nominal_terbayarkan' => $bonKeseluruhan->nominal_terbayarkan + abs(abs($hitungBon) - $nominalBayarBon),
+                    'status' => 'lunas',
+                ]);
+                $messages[] = 'Ada sisa kembalian bon sebesar ' . formatRupiah(abs($hitungBon));
+            }
+        }
+
+        $messages[] = 'Data berhasil disimpan';
+        return response()->json(
+            [
+                'success' => $messages,
+                'hitungBon' => $hitungBon,
+            ],
+            200,
+        );
     }
 }

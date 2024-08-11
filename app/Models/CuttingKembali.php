@@ -25,7 +25,6 @@ class CuttingKembali extends Model
     {
         $result = static::where('id_cutting_warna_model', $id_cutting_warna_model)
             ->first();
-        // dd($result);
         return $result;
     }
 

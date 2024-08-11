@@ -24,6 +24,29 @@ class Bon extends Model
     {
         return static::where('karyawan_id', $karyawan)->where('jahit_id', $jahit)->first();
     }
+    static function getAllCutting($karyawan)
+    {
+        $queryDate = request()->query('bonDays');
+        $queryLunas = request()->query('bon');
+
+        $bonQuery = static::where('id_karyawan', $karyawan)->latest();
+        if ($queryDate) {
+            $queryDate = \Carbon\Carbon::parse($queryDate)->format('Y-m-d');
+            $bonQuery->whereDate('created_at', $queryDate);
+        } 
+
+        if ($queryLunas) {
+            $bonQuery->where('status', 'lunas');
+        } else {
+            $bonQuery->whereIn('status', ['terbayarkan', 'belum terbayarkan']);
+        }
+
+        $data = [
+            'listData' => $bonQuery->get(),
+        ];
+
+        return $data;
+    }
 
     static function getBonCutting($karyawan, $cutting)
     {
