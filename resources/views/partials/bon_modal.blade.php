@@ -6,7 +6,7 @@
         <div
             class="flex flex-col bg-white border shadow-sm pointer-events-auto dark:border-neutral-700 dark:bg-neutral-800 dark:shadow-neutral-700/70 rounded-xl">
             <div class="flex items-center justify-between px-4 py-3 border-b dark:border-neutral-700">
-                <h3 id="modal-title" class="font-bold text-gray-800 dark:text-white"></h3>
+                <h3 id="modal-bon-title" class="font-bold text-gray-800 dark:text-white"></h3>
                 <button type="button"
                     class="inline-flex items-center justify-center text-gray-800 bg-gray-100 border border-transparent rounded-full size-8 dark:bg-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600 gap-x-2 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
                     aria-label="Close" data-hs-overlay="#bon-modal">

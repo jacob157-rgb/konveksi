@@ -411,7 +411,7 @@
                         </label>
                     </div>`;
 
-                $('#modal-title').text(modalTitle);
+                $('#modal-bon-title').text(modalTitle);
                 $('#bon-form').attr('action', postUrl);
                 $('#modal-bon-content').html(modalContent);
                 $('#post_id_bon').val(post_id);
