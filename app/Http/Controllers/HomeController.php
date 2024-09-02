@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\BarangJadi;
 use App\Models\BarangMentah;
+use App\Models\Kain;
 use App\Models\Karyawan;
+use App\Models\Models;
+use App\Models\Supplyer;
 use App\Models\User;
+use App\Models\Warna;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,16 +21,14 @@ class HomeController extends Controller
     public function index()
     {
         $data = [
-            'barang_sedang_proses' => [
-                'data' => BarangMentah::get(),
-                'count' => BarangMentah::count(),
-            ],
-            'barang_sudah_jadi' => [
-                'data' => BarangJadi::get(),
-                'count' => BarangJadi::count(),
-            ],
+            'mentah' => BarangMentah::count(),
+            'jadi' => BarangJadi::count(),
             'cutting' => Karyawan::where('jenis_karyawan', 'cutting')->count(),
             'jahit' => Karyawan::where('jenis_karyawan', 'jahit')->count(),
+            'kain' => Kain::count(),
+            'model' => Models::count(),
+            'warna' => Warna::count(),
+            'supplyer' => Supplyer::count(),
         ];
         // dd($data);
         return view('home.index', $data);

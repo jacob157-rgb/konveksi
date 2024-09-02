@@ -30,7 +30,6 @@ class BarangController extends Controller
     {
         $data = [
             'supplyer' => Supplyer::find($id),
-            'warna' => Warna::orderBy('id', 'desc')->get(),
             'kain' => Kain::orderBy('id', 'desc')->get(),
         ];
         return view('pages.barang.mentah.index', $data);
@@ -40,6 +39,7 @@ class BarangController extends Controller
         $validator = Validator::make($request->all(), [
             'tanggal_datang' => 'required',
             'supplyer_id' => 'required',
+            'unique_id' => 'required|unique:barang_mentah,unique_id'
         ]);
 
         if ($validator->fails()) {
@@ -55,6 +55,7 @@ class BarangController extends Controller
         $barang_mentah = BarangMentah::create([
             'supplyer_id' => $request->supplyer_id,
             'tanggal_datang' => $request->tanggal_datang,
+            'unique_id' => $request->unique_id,
         ]);
 
         foreach ($request->kain as $kainData) {
@@ -118,6 +119,7 @@ class BarangController extends Controller
     {
         $data = [
             'supplyer' => Supplyer::find($id),
+            'unique_id' => BarangMentah::orderBy('id','desc')->take(20)->get(),
             'model' => Models::orderBy('id', 'desc')->get(),
             'warna' => Warna::orderBy('id', 'desc')->get(),
         ];

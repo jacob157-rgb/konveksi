@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('barang_mentah', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('supplyer_id');
+            $table->string('unique_id');
             $table->dateTime('tanggal_datang');
             $table->timestamps();
             $table->foreign('supplyer_id')->references('id')->on('supplyer')->onDelete('cascade');
@@ -43,6 +44,7 @@ return new class extends Migration {
         Schema::create('barang_jadi', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('supplyer_id');
+            $table->string('unique_id');
             $table->dateTime('tanggal_kirim');
             $table->timestamps();
             $table->foreign('supplyer_id')->references('id')->on('supplyer')->onDelete('cascade');

@@ -144,7 +144,7 @@
                                         Saldo awal</th>
                                     <th scope="col"
                                         class="px-6 py-3 text-xs font-medium text-gray-500 uppercase text-start dark:text-neutral-500">
-                                        Terpakai</th>
+                                        Sisa Saldo</th>
                                     <th scope="col"
                                         class="px-6 py-3 text-xs font-medium text-gray-500 uppercase text-start dark:text-neutral-500">
                                         Keterangan</th>
