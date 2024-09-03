@@ -50,7 +50,7 @@
                     <div
                         class="flex flex-row items-center justify-between px-4 py-2 mx-8 mb-2 text-xs font-semibold text-white bg-blue-500 rounded-lg whitespace-nowrap">
                         Tanggal:
-                        {{ \Carbon\Carbon::parse($row?->tanggal_datang)?->setTimezone('Asia/Jakarta')->translatedFormat('l, d F Y H:i:s') }}
+                        {{ \Carbon\Carbon::parse($row?->tanggal_datang)?->setTimezone('Asia/Jakarta')->translatedFormat('l, d F Y H:i:s') }} - (  {{ $row?->unique_id }} )
 
                         {{--  awal action tanggal  --}}
                         <span class="flex text-sm text-gray-600 dark:text-neutral-400">
@@ -152,9 +152,9 @@
                                                 <th
                                                     class="px-4 py-2 text-xs font-medium tracking-wider text-left text-white uppercase">
                                                     No.</th>
-                                                <th
+                                                {{--  <th
                                                     class="px-4 py-2 text-xs font-medium tracking-wider text-left text-white uppercase">
-                                                    Warna</th>
+                                                    Warna</th>  --}}
                                                 <th
                                                     class="px-4 py-2 text-xs font-medium tracking-wider text-left text-white uppercase">
                                                     Jumlah Barang</th>
@@ -177,8 +177,8 @@
                                                 <tr>
                                                     <td class="px-4 py-2 text-xs text-purple-700">
                                                         {{ $indexWarna + 1 }}.</td>
-                                                    <td class="px-4 py-2 text-xs text-purple-700">
-                                                        {{ $rowItem?->warna }}</td>
+                                                    {{--  <td class="px-4 py-2 text-xs text-purple-700">
+                                                        {{ $rowItem?->warna }}</td>  --}}
                                                     <td class="px-4 py-2 text-xs">{{ $rowItem?->jumlah }}
                                                         ({{ $rowItem?->satuan }})
                                                     </td>

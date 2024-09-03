@@ -16,6 +16,17 @@ class KainBarangMentah extends Model
         return $this->belongsTo(BarangJadi::class);
     }
 
+
+    public function barangMentah()
+    {
+        return $this->belongsTo(BarangMentah::class);
+    }
+
+    public function warnaKain()
+    {
+        return $this->hasMany(WarnaKain::class);
+    }
+    
     static function getByBarangMentah($barangMentahId)
     {
         return static::where('barang_mentah_id', $barangMentahId)->get();

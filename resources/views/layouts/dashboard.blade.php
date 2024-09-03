@@ -353,7 +353,7 @@
     <!-- ========== END MAIN CONTENT ========== -->
 </body>
 
-{{-- <script>
+<script>
     document.addEventListener('DOMContentLoaded', function() {
         const searchInput = document.getElementById('global-search');
         const tables = document.querySelectorAll('.search-table');
@@ -377,6 +377,6 @@
             });
         });
     });
-</script> --}}
+</script>
 
 </html>

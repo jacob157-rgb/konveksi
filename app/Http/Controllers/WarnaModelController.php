@@ -18,9 +18,9 @@ class WarnaModelController extends Controller
 
     public function update(Request $request)
     {
+
         $request->validate([
             'id' => 'required',
-            'warna' => 'required|string|max:255',
             'jumlah' => 'required|string|max:255',
             'harga' => 'required|string|max:255',
             'total' => 'required|string|max:255',
@@ -28,12 +28,11 @@ class WarnaModelController extends Controller
 
         $warna = WarnaModel::find($request->id);
         $warna->update([
-            'warna' => $request->warna,
             'jumlah' => Str::of($request->jumlah)->remove('.'),
             'harga' => Str::of($request->harga)->remove('.'),
             'total' => Str::of($request->total)->remove('.'),
         ]);
-        return redirect()->back()->with('success', 'Warna Model Berhasil Diupdate.');
+        return redirect()->back()->with('success', 'Berhasil Diupdate.');
     }
 
     public function destroy($id)

@@ -11,6 +11,11 @@ class BarangJadi extends Model
     protected $table = 'barang_jadi';
     protected $guarded = ['id'];
 
+    public function modelBarangJadi()
+    {
+        return $this->hasMany(ModelBarangJadi::class);
+    }
+    
     public function supplyer() {
         return $this->belongsTo(Supplyer::class);
     }
@@ -22,5 +27,9 @@ class BarangJadi extends Model
     }
     public function model() {
         return $this->belongsTo(Models::class);
+    }
+
+    static function getUniqueId($unique) {
+        return static::where('unique_id', $unique)->get();
     }
 }

@@ -18,4 +18,14 @@ class ModelBarangJadi extends Model
     static function getByBarangJadi($barangJadiId) {
         return static::where('barang_jadi_id', $barangJadiId)->get();
     }
+
+    public function barangJadi()
+    {
+        return $this->belongsTo(BarangJadi::class);
+    }
+
+    public function warnaModel()
+    {
+        return $this->hasMany(WarnaModel::class);
+    }
 }

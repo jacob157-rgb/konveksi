@@ -67,7 +67,7 @@ class BarangController extends Controller
             foreach ($kainData['warna'] as $warnaData) {
                 WarnaKain::create([
                     'kain_mentah_id' => $kain_mentah->id,
-                    'warna' => $warnaData['warna'],
+                    'warna' => '-',
                     'jumlah' => Str::of($warnaData['jumlah_mentah'])->remove('.'),
                     'satuan' => Str::of($warnaData['satuan'])->remove('.'),
                     'harga' => Str::of($warnaData['harga'])->remove('.'),
@@ -128,9 +128,11 @@ class BarangController extends Controller
 
     public function storeJadi(Request $request)
     {
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'tanggal_kirim' => 'required',
             'supplyer_id' => 'required',
+            'unique_id' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -145,6 +147,7 @@ class BarangController extends Controller
 
         $barang_jadi = BarangJadi::create([
             'supplyer_id' => $request->supplyer_id,
+            'unique_id' => $request->unique_id,
             'tanggal_kirim' => $request->tanggal_kirim,
         ]);
 
@@ -157,7 +160,7 @@ class BarangController extends Controller
             foreach ($modelData['warna'] as $warnaData) {
                 WarnaModel::create([
                     'model_barang_jadi_id' => $model_barang_jadi->id,
-                    'warna' => $warnaData['warna'],
+                    'warna' => '-',
                     'jumlah' => Str::of($warnaData['jumlah_jadi'])->remove('.'),
                     'satuan' => Str::of($warnaData['satuan'])->remove('.'),
                     'harga' => Str::of($warnaData['harga'])->remove('.'),

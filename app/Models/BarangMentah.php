@@ -17,4 +17,11 @@ class BarangMentah extends Model
     public function kain() {
         return $this->belongsTo(Kain::class);
     }
+    
+    public function kainBarangMentah()
+    {
+        return $this->hasMany(KainBarangMentah::class);
+    }
+
+
 }
