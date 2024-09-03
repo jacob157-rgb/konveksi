@@ -18,6 +18,7 @@
                             </svg>
                         </div>
                     </form>
+                    
                 </div>
                 @if (request()?->query('date'))
                     <div class="flex items-center p-4 space-x-2">

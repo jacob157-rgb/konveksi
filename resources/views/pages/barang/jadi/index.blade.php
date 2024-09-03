@@ -153,15 +153,11 @@
                     data-hs-overlay="#tambah-modal">
                     Batal
                 </button>
-                <button type="submit"
+
+                <button type="button" id="submitFormBtn"
                     class="inline-flex items-center px-3 py-2 text-sm font-semibold text-white bg-blue-600 border border-transparent rounded-lg gap-x-2 hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50">
                     Kirim
                 </button>
-
-                {{--  <button type="button" id="submitFormBtn"
-                    class="inline-flex items-center px-3 py-2 text-sm font-semibold text-white bg-blue-600 border border-transparent rounded-lg gap-x-2 hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50">
-                    Kirim
-                </button>  --}}
             </div>
             </form>
         </div>

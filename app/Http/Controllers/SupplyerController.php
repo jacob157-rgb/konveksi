@@ -38,7 +38,8 @@ class SupplyerController extends Controller
         foreach ($totalsBarangMentah as $mentah) {
             $jadi = $totalsBarangJadi->firstWhere('unique_id', $mentah->unique_id);
 
-            $selisih = $jadi ? $mentah->total_sum - $jadi->total_sum : $mentah->total_sum;
+            // barang jadi - barnag mentah
+            $selisih = $jadi ? $jadi->total_sum -  $mentah->total_sum : $mentah->total_sum;
 
             $mergedTotals->push([
                 'unique_id' => $mentah->unique_id,
