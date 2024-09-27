@@ -22,6 +22,7 @@ class BarangMentah extends Model
     {
         return $this->hasMany(KainBarangMentah::class);
     }
+    
 
 
 }

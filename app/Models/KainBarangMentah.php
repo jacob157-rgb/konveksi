@@ -24,11 +24,13 @@ class KainBarangMentah extends Model
 
     public function warnaKain()
     {
-        return $this->hasMany(WarnaKain::class);
+        return $this->hasMany(WarnaKain::class, 'kain_mentah_id');
     }
     
     static function getByBarangMentah($barangMentahId)
     {
         return static::where('barang_mentah_id', $barangMentahId)->get();
     }
+
+    
 }

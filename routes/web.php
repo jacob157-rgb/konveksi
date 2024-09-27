@@ -47,6 +47,8 @@ Route::middleware(ValidateAuth::class)->group(function () {
         Route::get('/supplyer', 'index');
         Route::post('/supplyer', 'store');
         Route::get('supplyer/detail/{id}', 'detail');
+        Route::get('supplyer/detail/add/{unique}', 'addBarangDatang');
+        Route::get('supplyer/detail/edit/{unique}/{id}', 'editBarangDatang');
     });
 
     // Route Crud Karyawan Jahit & Cutting
@@ -123,7 +125,10 @@ Route::middleware(ValidateAuth::class)->group(function () {
             Route::post('/mentah', 'storeMentah');
             Route::get('/mentah/edit/{id}', 'editResponseMentah');
             Route::put('/mentah/update', 'updateMentah');
+            Route::put('/mentah/update/{id}', 'updateMentahById');
             Route::post('/mentah/delete/{id}', 'destroyMentah');
+
+            
 
             // barang jadi store
             Route::get('/jadi/{id}', 'getJadi');

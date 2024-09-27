@@ -39,7 +39,7 @@ class BarangController extends Controller
         $validator = Validator::make($request->all(), [
             'tanggal_datang' => 'required',
             'supplyer_id' => 'required',
-            'unique_id' => 'required|unique:barang_mentah,unique_id'
+            'unique_id' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -52,13 +52,14 @@ class BarangController extends Controller
             );
         }
 
-        $barang_mentah = BarangMentah::create([
-            'supplyer_id' => $request->supplyer_id,
-            'tanggal_datang' => $request->tanggal_datang,
-            'unique_id' => $request->unique_id,
-        ]);
-
         foreach ($request->kain as $kainData) {
+
+            $barang_mentah = BarangMentah::create([
+                'supplyer_id' => $request->supplyer_id,
+                'tanggal_datang' => $request->tanggal_datang,
+                'unique_id' => $request->unique_id,
+            ]);
+
             $kain_mentah = KainBarangMentah::create([
                 'barang_mentah_id' => $barang_mentah->id,
                 'kain' => $kainData['nama'],
@@ -84,6 +85,95 @@ class BarangController extends Controller
         );
     }
 
+    public function updateMentahById(Request $request, $id)
+    {
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'tanggal_datang' => 'required',
+            'supplyer_id' => 'required',
+            'unique_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'errors' => $validator->errors(),
+                ],
+                422,
+            );
+        }
+
+        $barang_mentah = BarangMentah::find($id);
+
+        if (!$barang_mentah) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Data barang mentah tidak ditemukan',
+                ],
+                404,
+            );
+        }
+
+        $barang_mentah->update([
+            'supplyer_id' => $request->supplyer_id,
+            'tanggal_datang' => $request->tanggal_datang,
+            'unique_id' => $request->unique_id,
+        ]);
+
+        foreach ($request->kain as $kainData) {
+            $kain_mentah = KainBarangMentah::where('barang_mentah_id', $barang_mentah->id)
+                ->where('id', $kainData['id'])
+                ->first();
+
+            if ($kain_mentah) {
+                $kain_mentah->update([
+                    'kain' => $kainData['nama'],
+                ]);
+            } else {
+                $kain_mentah = KainBarangMentah::create([
+                    'barang_mentah_id' => $barang_mentah->id,
+                    'kain' => $kainData['nama'],
+                ]);
+            }
+
+            foreach ($kainData['warna'] as $warnaData) {
+                $warna_kain = WarnaKain::where('kain_mentah_id', $kain_mentah->id)
+                    ->where('id', $warnaData['id'])
+                    ->first();
+
+                if ($warna_kain) {
+                    $warna_kain->update([
+                        'warna' => '-',
+                        'jumlah' => Str::of($warnaData['jumlah_mentah'])->remove('.'),
+                        'satuan' => Str::of($warnaData['satuan'])->remove('.'),
+                        'harga' => Str::of($warnaData['harga'])->remove('.'),
+                        'total' => Str::of($warnaData['total'])->remove('.'),
+                    ]);
+                } else {
+                    WarnaKain::create([
+                        'kain_mentah_id' => $kain_mentah->id,
+                        'warna' => '-',
+                        'jumlah' => Str::of($warnaData['jumlah_mentah'])->remove('.'),
+                        'satuan' => Str::of($warnaData['satuan'])->remove('.'),
+                        'harga' => Str::of($warnaData['harga'])->remove('.'),
+                        'total' => Str::of($warnaData['total'])->remove('.'),
+                    ]);
+                }
+            }
+        }
+
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Data berhasil diperbarui',
+            ],
+            200,
+        );
+    }
+
+
     public function editResponseMentah($id)
     {
         return response()->json([
@@ -94,7 +184,7 @@ class BarangController extends Controller
 
     public function updateMentah(Request $request)
     {
-         $request->validate([
+        $request->validate([
             'id' => 'required',
             'tanggal_datang' => 'required',
         ]);
@@ -119,7 +209,7 @@ class BarangController extends Controller
     {
         $data = [
             'supplyer' => Supplyer::find($id),
-            'unique_id' => BarangMentah::orderBy('id','desc')->take(20)->get(),
+            'unique_id' => BarangMentah::orderBy('id', 'desc')->take(20)->get(),
             'model' => Models::orderBy('id', 'desc')->get(),
             'warna' => Warna::orderBy('id', 'desc')->get(),
         ];

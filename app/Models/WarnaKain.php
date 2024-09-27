@@ -14,11 +14,12 @@ class WarnaKain extends Model
     public function kain_barang_mentah() {
         return $this->belongsTo(KainBarangMentah::class);
     }
-    public function kainBarangMentah()
-    {
-        return $this->belongsTo(KainBarangMentah::class);
-    }
+   
     static function getByWarnaKain($warnaKain) {
         return static::where('kain_mentah_id', $warnaKain)->get();
+    }
+    public function kainBarangMentah()
+    {
+        return $this->belongsTo(KainBarangMentah::class, 'kain_mentah_id');
     }
 }
