@@ -27,6 +27,7 @@ class Gaji extends Model
 
     static function getGajiCutting($karyawan, $cutting)
     {
+      
         $data = [
             'sum' => Gaji::where('cutting_ambil', $cutting)->where('id_karyawan', $karyawan)->sum('nominal'),
             'paid' => Gaji::where('cutting_ambil', $cutting)->where('id_karyawan', $karyawan)->sum('nominal_terbayarkan'),

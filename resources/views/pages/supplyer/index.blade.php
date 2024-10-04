@@ -57,7 +57,7 @@
                                                             d="M21 12.43a1.93 1.93 0 0 0 0-3.36L8.83 2.2a1.64 1.64 0 0 0-1.63 0L3 4.57a1.93 1.93 0 0 0 0 3.36l12.18 6.86a1.636 1.636 0 0 0 1.63 0z" />
                                                     </svg>
                                                 </a>
-                                                <a href="/barang/jadi/{{ $row->id }}"
+                                                {{-- <a href="/barang/jadi/{{ $row->id }}"
                                                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-full text-nowrap kirim-barang gap-x-2 hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
                                                     Kirim
                                                     Barang Jadi
@@ -72,11 +72,20 @@
                                                         <polyline points="3.29 7 12 12 20.71 7" />
                                                         <line x1="12" x2="12" y1="22" y2="12" />
                                                     </svg>
-                                                </a>
+                                                </a> --}}
                                                 <a href="/supplyer/detail/{{ $row->id }}"
                                                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-full gap-x-2 hover:bg-green-700 focus:bg-green-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
                                                     Detail
                                                 </a>
+                                                <form action="/supplyer/delete/{{ $row->id }}" method="post"
+                                                    class="inline-flex delete-form"  data-id="{{ $row->id }}" style="display: inline-block;">
+                                                    @csrf
+                                                    <button  type="submit"
+                                                        class="inline-flex delete items-center p-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-full gap-x-2 hover:bg-red-700 focus:bg-red-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                                                    </button>
+                                                </form>
+                                                
                                             </td>
                                         </tr>
                                     @endforeach
@@ -149,9 +158,9 @@
                         class="flex items-center justify-center text-sm font-semibold text-gray-800 border border-transparent rounded-full size-7 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 dark:text-white dark:hover:bg-neutral-700"
                         data-hs-overlay="#edit-modal">
                         <span class="sr-only">Close</span>
-                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
                             <path d="M18 6 6 18"></path>
                             <path d="m6 6 12 12"></path>
                         </svg>

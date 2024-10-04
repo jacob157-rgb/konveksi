@@ -76,9 +76,9 @@ class JahitController extends Controller
                 $jahitWarnaModel = JahitWarnaModel::create([
                     'id_ambil_model' => $ambilModel->id,
                     'warna' => $warnaData['warna'],
-                    'jumlah_ambil' => Str::of($warnaData['jumlah_ambil'])->remove('.'),
-                    'satuan_ambil' => Str::of($warnaData['satuan_ambil'])->remove('.'),
-                    'ongkos' => Str::of($warnaData['ongkos'])->remove('.'),
+                    'jumlah_ambil' => $warnaData['jumlah_ambil'],
+                    'satuan_ambil' => $warnaData['satuan_ambil'],
+                    'ongkos' => $warnaData['ongkos'],
                 ]);
             }
         }
@@ -87,8 +87,8 @@ class JahitController extends Controller
             Bon::create([
                 'id_karyawan' => $karyawan->id,
                 'jahit_ambil' => $jahit_ambil->id,
-                'nominal' => Str::of($request->nominal_bon)->remove('.'),
-                'nominal_belum_terbayarkan' => Str::of($request->nominal_bon)->remove('.'),
+                'nominal' => $request->nominal_bon,
+                'nominal_belum_terbayarkan' => $request->nominal_bon,
                 'nominal_terbayarkan' => '0',
             ]);
         }
@@ -286,5 +286,23 @@ class JahitController extends Controller
 
         $messages[] = 'Data berhasil disimpan';
         return response()->json(['success' => $messages], 200);
+    }
+
+    public function deleteJahit($id) {
+        $jahitAmbil  = JahitAmbil::find($id);
+        $jahitAmbil->delete();
+        return redirect()->back()->with('success', 'Berhasil dihapus');
+    }
+
+    public function modelDelete($id) {
+        $jahitAmbilModel  = JahitAmbilModel::find($id);
+        $jahitAmbilModel->delete();
+        return redirect()->back()->with('success', 'Berhasil dihapus');
+    }
+
+    public function warnaDelete($id) {
+        $jahitWarnaModel  = JahitWarnaModel::find($id);
+        $jahitWarnaModel->delete();
+        return redirect()->back()->with('success', 'Berhasil dihapus');
     }
 }

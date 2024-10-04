@@ -56,7 +56,27 @@
                             {{ $loop->iteration }}
                         </span>
                         {{ \Carbon\Carbon::parse($row?->tanggal_ambil)?->setTimezone('Asia/Jakarta')->translatedFormat('l, d F Y H:i:s') }}
-
+                        <span class="ms-4 border rounded">
+                            <div class="inline-block hs-tooltip">
+                                <form action="/karyawan/jahit/ambil/delete/{{ $row->id }}" method="post"
+                                    data-id="{{ $row->id }}" style="display: inline-block;">
+                                    @csrf
+                                    <button type="submit"
+                                        class="hs-tooltip-toggle delete inline-flex items-center justify-center gap-x-2 rounded bg-white px-1.5 py-1 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="crimson" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                        </svg>
+                                        <span
+                                            class="absolute z-10 invisible inline-block px-2 py-1 text-xs font-medium text-white transition-opacity bg-gray-900 rounded shadow-sm opacity-0 delete hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 dark:bg-neutral-700"
+                                            role="tooltip">
+                                            Hapus
+                                        </span>
+                                    </button>
+                                </form>
+                            </div>
+                        </span>
                     </div>
                     @foreach ($cutingModel as $item)
                         @php
@@ -64,12 +84,33 @@
                         @endphp
                         <ul class="container mx-auto divide-y divide-gray-400 divide-dotted"
                             style="font-family: Raleway">
+                            <div
+                                class="flex m-2 truncate items-center justify-center p-2 text-xs font-semibold text-orange-800 bg-orange-100 rounded-lg w-fit justify-self-center whitespace-nowrap">
+                                Model: {{ $item?->model }}
+                                <span class="ms-4 border rounded">
+                                    <div class="inline-block hs-tooltip">
+                                        <form action="/karyawan/jahit/ambil/model/delete/{{ $item->id }}"
+                                            method="post" data-id="{{ $item->id }}" style="display: inline-block;">
+                                            @csrf
+                                            <button type="submit"
+                                                class="hs-tooltip-toggle delete inline-flex items-center justify-center gap-x-2 rounded bg-white px-1.5 py-1 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="crimson"
+                                                    class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                </svg>
+                                                <span
+                                                    class="absolute z-10 invisible inline-block px-2 py-1 text-xs font-medium text-white transition-opacity bg-gray-900 rounded shadow-sm opacity-0 delete hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 dark:bg-neutral-700"
+                                                    role="tooltip">
+                                                    Hapus
+                                                </span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </span>
+                            </div>
                             <li class="grid items-center w-full grid-cols-12 gap-2 py-2 mx-4 overflow-x-auto">
-                                <div
-                                    class="flex flex-col items-center justify-center p-2 text-xs font-semibold text-orange-800 bg-orange-100 rounded-lg w-fit justify-self-center whitespace-nowrap">
-                                    {{ $item?->model }}
-
-                                </div>
                                 <div class="col-span-11">
                                     <table class="min-w-full divide-y divide-gray-200">
                                         <thead class="bg-blue-900">
@@ -134,6 +175,30 @@
                                                                     data-bon="{{ formatNominal($BonJahitInCheck['unpaid']) }}"
                                                                     class="text-nowrap kembaliBtn inline-flex items-center gap-x-1.5 rounded-full bg-red-500 px-3 py-1.5 text-xs font-medium text-white">Belum
                                                                     Dikembalikan</button>
+                                                                    <div class="inline-block hs-tooltip ms-2">
+                                                                        <form
+                                                                            action="/karyawan/jahit/ambil/warna/delete/{{ $rowItem->id }}"
+                                                                            method="post" data-id="{{ $row->id }}"
+                                                                            style="display: inline-block;">
+                                                                            @csrf
+                                                                            <button type="submit"
+                                                                                class="hs-tooltip-toggle delete inline-flex items-center justify-center gap-x-2 rounded bg-white px-1.5 py-1 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                    fill="none" viewBox="0 0 24 24"
+                                                                                    stroke-width="1.5" stroke="crimson"
+                                                                                    class="w-4 h-4">
+                                                                                    <path stroke-linecap="round"
+                                                                                        stroke-linejoin="round"
+                                                                                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                                                </svg>
+                                                                                <span
+                                                                                    class="absolute z-10 invisible inline-block px-2 py-1 text-xs font-medium text-white transition-opacity bg-gray-900 rounded shadow-sm opacity-0 delete hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 dark:bg-neutral-700"
+                                                                                    role="tooltip">
+                                                                                    Hapus
+                                                                                </span>
+                                                                            </button>
+                                                                        </form>
+                                                                    </div>
                                                             </div>
                                                         </td>
                                                     @else

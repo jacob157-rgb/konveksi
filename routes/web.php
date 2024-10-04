@@ -16,9 +16,12 @@ use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\ModelJadiController;
 use App\Http\Controllers\OperationalController;
 use App\Http\Controllers\PengeluaranController;
+use App\Http\Controllers\ReturnBarangController;
+use App\Http\Controllers\SelisihController;
 use App\Http\Controllers\WarnaKainController;
 use App\Http\Controllers\WarnaModelController;
 use App\Http\Middleware\ValidateAuth;
+use Flasher\Laravel\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +40,11 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/logout', 'logout');
 });
 
+
+Route::controller(SupplyerController::class)->group(function () {
+    Route::get('/laporan/share', 'share');
+});
+
 Route::middleware(ValidateAuth::class)->group(function () {
     Route::controller(HomeController::class)->group(function () {
         Route::get('/home', 'index');
@@ -48,7 +56,12 @@ Route::middleware(ValidateAuth::class)->group(function () {
         Route::post('/supplyer', 'store');
         Route::get('supplyer/detail/{id}', 'detail');
         Route::get('supplyer/detail/add/{unique}', 'addBarangDatang');
-        Route::get('supplyer/detail/edit/{unique}/{id}', 'editBarangDatang');
+        Route::get('supplyer/detail/edit/datang/{unique}/{id}', 'editBarangDatang');
+        Route::get('supplyer/detail/edit/pengiriman/{unique}/{id}', 'editBarangKirim');
+        Route::post('/supplyer/delete/{id}', 'delete');
+        
+        // report
+        Route::get('cetak/{unique}', 'cetakPdf');
     });
 
     // Route Crud Karyawan Jahit & Cutting
@@ -75,7 +88,7 @@ Route::middleware(ValidateAuth::class)->group(function () {
             Route::get('/get/{id}', 'getResponseCutting');
             Route::put('/update/{id}', 'putCutting');
             Route::get('/detail/{id}', 'detailCutting');
-            Route::delete('/delete/{id}', 'deleteCutting');
+            Route::post('/delete/{id}', 'deleteCutting');
         });
         Route::prefix('karyawan/cutting/kembali')->group(function () {
             Route::get('/{id}', 'getKembaliCutting');
@@ -93,6 +106,13 @@ Route::middleware(ValidateAuth::class)->group(function () {
         Route::prefix('karyawan/cutting/bon')->group(function () {
             Route::post('/status', 'statusBon');
         });
+
+        Route::prefix('karyawan/cutting/ambil/model')->group(function () {
+            Route::post('/delete/{id}', 'modelDelete');
+        });
+        Route::prefix('karyawan/cutting/ambil/warna')->group(function () {
+            Route::post('/delete/{id}', 'warnaDelete');
+        });
     });
     Route::controller(JahitController::class)->group(function () {
         Route::prefix('karyawan/jahit/ambil')->group(function () {
@@ -101,7 +121,7 @@ Route::middleware(ValidateAuth::class)->group(function () {
             Route::get('/get/{id}', 'getResponseJahit');
             Route::put('/update/{id}', 'putJahit');
             Route::get('/detail/{id}', 'detailJahit');
-            Route::delete('/delete/{id}', 'deleteJahit');
+            Route::post('/delete/{id}', 'deleteJahit');
         });
         Route::prefix('karyawan/jahit/kembali')->group(function () {
             Route::get('/{id}', 'getKembaliJahit');
@@ -116,6 +136,13 @@ Route::middleware(ValidateAuth::class)->group(function () {
             Route::get('/{id}', 'getGajiJahit');
             Route::post('/status', 'statusGaji');
         });
+
+        Route::prefix('karyawan/jahit/ambil/model')->group(function () {
+            Route::post('/delete/{id}', 'modelDelete');
+        });
+        Route::prefix('karyawan/jahit/ambil/warna')->group(function () {
+            Route::post('/delete/{id}', 'warnaDelete');
+        });
     });
 
     Route::controller(BarangController::class)->group(function () {
@@ -128,13 +155,13 @@ Route::middleware(ValidateAuth::class)->group(function () {
             Route::put('/mentah/update/{id}', 'updateMentahById');
             Route::post('/mentah/delete/{id}', 'destroyMentah');
 
-            
-
             // barang jadi store
             Route::get('/jadi/{id}', 'getJadi');
+            Route::get('/pengiriman/{unique}', 'getPengiriman');
             Route::post('/jadi', 'storeJadi');
             Route::get('/jadi/edit/{id}', 'editResponseJadi');
             Route::put('/jadi/update', 'updateJadi');
+            Route::put('/jadi/update/{id}', 'updateJadiById');
             Route::post('/jadi/delete/{id}', 'destroyJadi');
 
             // Route::get('/barang/print/{id}', 'print');
@@ -176,9 +203,12 @@ Route::middleware(ValidateAuth::class)->group(function () {
     });
     Route::controller(ModelController::class)->group(function () {
         Route::get('/model', 'index');
+        Route::get('/model/add', 'add');
+        Route::post('/upload-image','upload');
         Route::post('/model', 'store');
         Route::get('/model/edit/{id}', 'edit');
-        Route::post('/model/update', 'update');
+        Route::get('/model/detail/{id}', 'detail');
+        Route::post('/model/update/{id}', 'update');
         Route::post('/model/delete/{id}', 'destroy');
     });
     Route::controller(WarnaController::class)->group(function () {
@@ -187,6 +217,22 @@ Route::middleware(ValidateAuth::class)->group(function () {
         Route::get('/warna/edit/{id}', 'edit');
         Route::post('/warna/update', 'update');
         Route::post('/warna/delete/{id}', 'destroy');
+    });
+
+    Route::controller(SelisihController::class)->group(function () {
+        Route::get('/selisih/add/{uniqueId}', 'index');
+        Route::post('/selisih/store', 'store');
+        Route::get('/selisih/edit/{id}', 'edit');
+        Route::post('/selisih/update/{id}', 'update');
+        Route::post('/selisih/delete/{id}', 'delete');
+    });
+
+    Route::controller(ReturnBarangController::class)->group(function () {
+        Route::get('/return/add/{uniqueId}', 'index');
+        Route::post('/return/store', 'store');
+        Route::get('/return/edit/{id}', 'edit');
+        Route::post('/return/update/{id}', 'update');
+        Route::post('/return/delete/{id}', 'delete');
     });
 
     Route::controller(OperationalController::class)->group(function () {

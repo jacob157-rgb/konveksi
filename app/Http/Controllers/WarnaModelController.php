@@ -28,9 +28,9 @@ class WarnaModelController extends Controller
 
         $warna = WarnaModel::find($request->id);
         $warna->update([
-            'jumlah' => Str::of($request->jumlah)->remove('.'),
-            'harga' => Str::of($request->harga)->remove('.'),
-            'total' => Str::of($request->total)->remove('.'),
+            'jumlah' => $request->jumlah,
+            'harga' => $request->harga,
+            'total' => $request->total,
         ]);
         return redirect()->back()->with('success', 'Berhasil Diupdate.');
     }

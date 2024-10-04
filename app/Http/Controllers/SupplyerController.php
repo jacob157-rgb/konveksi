@@ -11,6 +11,8 @@ use App\Models\BarangJadi;
 use App\Models\BarangMentah;
 use Illuminate\Http\Request;
 use App\Models\ModelBarangJadi;
+use App\Models\ReturnBarang;
+use App\Models\Selisih;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -24,70 +26,6 @@ class SupplyerController extends Controller
         $supplyer = Supplyer::orderBy('id', 'desc')->get();
         return view('pages.supplyer.index', compact('kain', 'model', 'warna', 'supplyer'));
     }
-
-    // public function detail(Request $request, $id)
-    // {
-    //     $barangJadi = BarangJadi::where('supplyer_id', $id)->latest();
-
-    //     $barangMentah = BarangMentah::with(['kainBarangMentah.warnaKain'])
-    //     ->where('supplyer_id', $id)
-    //     ->latest();
-
-
-    //     $totalsBarangJadi = BarangJadi::select('unique_id', DB::raw('SUM(warna_model.total) as total_sum'))->join('model_barang_jadi', 'barang_jadi.id', '=', 'model_barang_jadi.barang_jadi_id')->join('warna_model', 'model_barang_jadi.id', '=', 'warna_model.model_barang_jadi_id')->groupBy('unique_id')->get();
-    //     $totalsBarangMentah = BarangMentah::select('unique_id', DB::raw('SUM(warna_kain.total) as total_sum'))->join('kain_barang_mentah', 'barang_mentah.id', '=', 'kain_barang_mentah.barang_mentah_id')->join('warna_kain', 'kain_barang_mentah.id', '=', 'warna_kain.kain_mentah_id')->groupBy('unique_id')->get();
-
-    //     $mergedTotals = new Collection();
-
-    //     foreach ($totalsBarangMentah as $mentah) {
-    //         $jadi = $totalsBarangJadi->firstWhere('unique_id', $mentah->unique_id);
-
-    //         // barang jadi - barnag mentah
-    //         $selisih = $jadi ? $jadi->total_sum -  $mentah->total_sum : $mentah->total_sum;
-
-    //         $mergedTotals->push([
-    //             'unique_id' => $mentah->unique_id,
-    //             'total_harga_masuk' => $mentah->total_sum,
-    //             'total_harga_dikembalikan' => $jadi ? $jadi->total_sum : 0,
-    //             'total_selisih' => $selisih,
-    //         ]);
-    //     }
-
-    //     foreach ($totalsBarangJadi as $jadi) {
-    //         if (!$totalsBarangMentah->firstWhere('unique_id', $jadi->unique_id)) {
-    //             $mergedTotals->push([
-    //                 'unique_id' => $jadi->unique_id,
-    //                 'total_harga_masuk' => 0,
-    //                 'total_harga_dikembalikan' => $jadi->total_sum,
-    //                 'total_selisih' => -$jadi->total_sum,
-    //             ]);
-    //         }
-    //     }
-
-    //     // dd($mergedTotals);
-    //     // dd($totalsBarangMentah, $totalsBarangJadi);
-
-    //     if ($request->query('date')) {
-    //         $tanggal = $request->query('date');
-    //         $barangJadi->whereDate('tanggal_kirim', $tanggal);
-    //         $barangMentah->whereDate('tanggal_datang', $tanggal);
-    //     }
-
-    //     $data = [
-    //         'supplayer' => Supplyer::find($id),
-    //         'barangMentah' => $barangMentah->get(),
-    //         'barangJadi' => $barangJadi->get(),
-    //         'modelBarangJadi' => ModelBarangJadi::all(),
-    //         'warna' => Warna::all(),
-    //         'model' => Models::all(),
-    //         'mergedTotals' => $mergedTotals,
-    //         'kain' => Kain::orderBy('id', 'desc')->get(),
-    //     ];
-    //     // return response()->json($data);
-    //     // dd($data);
-    //     return view('pages.supplyer.detail', $data);
-    // }
-
 
     public function detail(Request $request, $id)
     {
@@ -143,7 +81,7 @@ class SupplyerController extends Controller
         return redirect()->back()->with('success', 'Supplyer Berhasil Diupdate.');
     }
 
-    public function destroy($id)
+    public function delete($id)
     {
         $supplyer = Supplyer::find($id);
         $supplyer->delete();
@@ -166,6 +104,7 @@ class SupplyerController extends Controller
         $data['supplayer'] = Supplyer::find($data['barangMentahFirst']['supplyer_id']);
         return view('pages.supplyer.addBarangMentah', $data);
     }
+
     public function editBarangDatang($unique, $id)
     {
         $barangMentah = BarangMentah::with(['kainBarangMentah.warnaKain'])
@@ -179,5 +118,67 @@ class SupplyerController extends Controller
         $data['supplayer'] = Supplyer::find($data['barangMentahFirst']['supplyer_id']);
         // dd($data);
         return view('pages.supplyer.editBarangMentah', $data);
+    }
+    public function editBarangKirim($unique, $id)
+    {
+        $barangMentah = BarangJadi::with(['modelBarangJadi.warnaModel'])
+            ->where('unique_id', $unique)
+            ->latest();
+        $data = [
+            'barangKirimGet' => $barangMentah->get()->groupBy('unique_id'),
+            'barangKirimFirst' => $barangMentah->where('id', $id)->first(),
+            'model' => Models::all()
+        ];
+        $data['supplayer'] = Supplyer::find($data['barangKirimFirst']['supplyer_id']);
+        // dd($data);
+        return view('pages.supplyer.editBarangKirim', $data);
+    }
+
+    // cetak
+    public function cetakPdf($unique)
+    {
+        $barangMentah = BarangMentah::with(['kainBarangMentah.warnaKain'])
+            ->where('unique_id', $unique)
+            ->latest();
+        $barangJadi = BarangJadi::with(['modelBarangJadi.warnaModel'])
+            ->where('unique_id', $unique)
+            ->latest();
+        $data = [
+            'barangMentahGet' => $barangMentah->get()->groupBy('unique_id'),
+            'barangMentahFirst' => $barangMentah->first(),
+            'barangKirimGet' => $barangJadi->get()->groupBy('unique_id'),
+            'barangKirimFirst' => $barangJadi->first(),
+            'url' => env('APP_URL'),
+            'selisih' => Selisih::where('unique_id', $unique)->get(),
+            'returnBarang' => ReturnBarang::where('unique_id', $unique)->get(),
+        ];
+        $data['supplayer'] = Supplyer::find($data['barangMentahFirst']['supplyer_id']);
+        return view('pages.supplyer.report', $data);
+    }
+
+    public function share(Request $request) {
+        if(!$request->query('supplyer') || !$request->query('id_barang')) {
+            return abort(404);
+        }
+        $unique = $request->query('id_barang');
+
+        $barangMentah = BarangMentah::with(['kainBarangMentah.warnaKain'])
+            ->where('unique_id', $unique)
+            ->latest();
+        $barangJadi = BarangJadi::with(['modelBarangJadi.warnaModel'])
+            ->where('unique_id', $unique)
+            ->latest();
+        $data = [
+            'barangMentahGet' => $barangMentah->get()->groupBy('unique_id'),
+            'barangMentahFirst' => $barangMentah->first(),
+            'barangKirimGet' => $barangJadi->get()->groupBy('unique_id'),
+            'barangKirimFirst' => $barangJadi->first(),
+            'url' => env('APP_URL'),
+            'selisih' => Selisih::where('unique_id', $unique)->get(),
+            'returnBarang' => ReturnBarang::where('unique_id', $unique)->get(),
+        ];
+        $data['supplayer'] = Supplyer::find($data['barangMentahFirst']['supplyer_id']);
+        return view('pages.supplyer.report', $data);
+
     }
 }

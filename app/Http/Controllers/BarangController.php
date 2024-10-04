@@ -69,10 +69,10 @@ class BarangController extends Controller
                 WarnaKain::create([
                     'kain_mentah_id' => $kain_mentah->id,
                     'warna' => '-',
-                    'jumlah' => Str::of($warnaData['jumlah_mentah'])->remove('.'),
-                    'satuan' => Str::of($warnaData['satuan'])->remove('.'),
-                    'harga' => Str::of($warnaData['harga'])->remove('.'),
-                    'total' => Str::of($warnaData['total'])->remove('.'),
+                    'jumlah' => $warnaData['jumlah_mentah'],
+                    'satuan' => $warnaData['satuan'],
+                    'harga' => $warnaData['harga'],
+                    'total' => $warnaData['total'],
                 ]);
             }
         }
@@ -146,19 +146,19 @@ class BarangController extends Controller
                 if ($warna_kain) {
                     $warna_kain->update([
                         'warna' => '-',
-                        'jumlah' => Str::of($warnaData['jumlah_mentah'])->remove('.'),
-                        'satuan' => Str::of($warnaData['satuan'])->remove('.'),
-                        'harga' => Str::of($warnaData['harga'])->remove('.'),
-                        'total' => Str::of($warnaData['total'])->remove('.'),
+                        'jumlah' => $warnaData['jumlah_mentah'],
+                        'satuan' => $warnaData['satuan'],
+                        'harga' => $warnaData['harga'],
+                        'total' => $warnaData['total'],
                     ]);
                 } else {
                     WarnaKain::create([
                         'kain_mentah_id' => $kain_mentah->id,
                         'warna' => '-',
-                        'jumlah' => Str::of($warnaData['jumlah_mentah'])->remove('.'),
-                        'satuan' => Str::of($warnaData['satuan'])->remove('.'),
-                        'harga' => Str::of($warnaData['harga'])->remove('.'),
-                        'total' => Str::of($warnaData['total'])->remove('.'),
+                        'jumlah' => $warnaData['jumlah_mentah'],
+                        'satuan' => $warnaData['satuan'],
+                        'harga' => $warnaData['harga'],
+                        'total' => $warnaData['total'],
                     ]);
                 }
             }
@@ -203,16 +203,21 @@ class BarangController extends Controller
         return redirect()->back()->with('success', 'Barang Mentah Berhasil Dihapus.');
     }
 
-    // proses Barang Jadi atau kirim
+    // proses Barang Jadi atau kirim -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    public function getJadi($id)
+    public function getPengiriman($unique)
     {
+        $barangMentah = BarangMentah::with(['kainBarangMentah.warnaKain'])
+            ->where('unique_id', $unique)
+            ->latest();
         $data = [
-            'supplyer' => Supplyer::find($id),
-            'unique_id' => BarangMentah::orderBy('id', 'desc')->take(20)->get(),
+            // 'supplyer' => Supplyer::find($id),
+            'barangMentahGet' => $barangMentah->get()->groupBy('unique_id'),
+            'barangMentahFirst' => $barangMentah->with('supplyer')->first(),
             'model' => Models::orderBy('id', 'desc')->get(),
             'warna' => Warna::orderBy('id', 'desc')->get(),
         ];
+        // dd($data);
         return view('pages.barang.jadi.index', $data);
     }
 
@@ -235,13 +240,15 @@ class BarangController extends Controller
             );
         }
 
-        $barang_jadi = BarangJadi::create([
-            'supplyer_id' => $request->supplyer_id,
-            'unique_id' => $request->unique_id,
-            'tanggal_kirim' => $request->tanggal_kirim,
-        ]);
 
         foreach ($request->model as $modelData) {
+
+            $barang_jadi = BarangJadi::create([
+                'supplyer_id' => $request->supplyer_id,
+                'unique_id' => $request->unique_id,
+                'tanggal_kirim' => $request->tanggal_kirim,
+            ]);
+
             $model_barang_jadi = ModelBarangJadi::create([
                 'barang_jadi_id' => $barang_jadi->id,
                 'model' => $modelData['nama'],
@@ -251,10 +258,10 @@ class BarangController extends Controller
                 WarnaModel::create([
                     'model_barang_jadi_id' => $model_barang_jadi->id,
                     'warna' => '-',
-                    'jumlah' => Str::of($warnaData['jumlah_jadi'])->remove('.'),
-                    'satuan' => Str::of($warnaData['satuan'])->remove('.'),
-                    'harga' => Str::of($warnaData['harga'])->remove('.'),
-                    'total' => Str::of($warnaData['total'])->remove('.'),
+                    'jumlah' => $warnaData['jumlah_jadi'],
+                    'satuan' => $warnaData['satuan'],
+                    'harga' => $warnaData['harga'],
+                    'total' => $warnaData['total'],
                 ]);
             }
         }
@@ -266,6 +273,75 @@ class BarangController extends Controller
             201,
         );
     }
+
+    public function updateJadiById(Request $request)
+    {
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'tanggal_kirim' => 'required',
+            'supplyer_id' => 'required',
+            'unique_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'errors' => $validator->errors(),
+                ],
+                422,
+            );
+        }
+
+        // Loop melalui setiap model yang diterima dari request
+        foreach ($request->model as $modelData) {
+
+            // Update atau buat data BarangJadi
+            $barang_jadi = BarangJadi::updateOrCreate(
+                [
+                    'unique_id' => $request->unique_id,
+                ],
+                [
+                    'supplyer_id' => $request->supplyer_id,
+                    'tanggal_kirim' => $request->tanggal_kirim,
+                ]
+            );
+
+            // Update atau buat data ModelBarangJadi
+            $model_barang_jadi = ModelBarangJadi::updateOrCreate(
+                [
+                    'barang_jadi_id' => $barang_jadi->id, // Berdasarkan barang_jadi_id
+                    'model' => $modelData['nama'],         // Berdasarkan nama model
+                ]
+            );
+
+            // Loop melalui setiap warna yang terkait dengan model
+            foreach ($modelData['warna'] as $warnaData) {
+                WarnaModel::updateOrCreate(
+                    [
+                        'model_barang_jadi_id' => $model_barang_jadi->id, // Berdasarkan model_barang_jadi_id
+                        'id' => $warnaData['id'], // Menggunakan ID untuk mencari data
+                    ],
+                    [
+                        'warna' => '-', // Kamu bisa mengganti '-' ini dengan nilai yang relevan
+                        'jumlah' => $warnaData['jumlah_jadi'],
+                        'satuan' => $warnaData['satuan'],
+                        'harga' => $warnaData['harga'],
+                        'total' => $warnaData['total'],
+                    ]
+                );
+            }
+        }
+
+        // Kembalikan respons sukses
+        return response()->json(
+            [
+                'success' => true,
+            ],
+            200,
+        );
+    }
+
 
     public function editResponseJadi($id)
     {

@@ -30,10 +30,10 @@ class WarnaKainController extends Controller
         $warna = WarnaKain::find($request->id);
         $warna->update([
             'warna' => $request->warna,
-            'jumlah' => Str::of($request->jumlah)->remove('.'),
+            'jumlah' => $request->jumlah,
             'satuan' => $request->satuan,
-            'harga' => Str::of($request->harga)->remove('.'),
-            'total' => Str::of($request->total)->remove('.'),
+            'harga' => $request->harga,
+            'total' => $request->total,
         ]);
         return redirect()->back()->with('success', 'Warna Kain Berhasil Diupdate.');
     }

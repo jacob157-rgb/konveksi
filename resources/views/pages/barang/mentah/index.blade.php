@@ -384,7 +384,7 @@
                             title: 'Success',
                             text: 'Barang Mentah berhasil ditambahkan.',
                         }).then(() => {
-                            window.location.href = '/supplyer';
+                            window.location.href = '/supplyer/detail/{{ $supplyer->id }}';
                         });
                     } else {
                         Swal.fire({

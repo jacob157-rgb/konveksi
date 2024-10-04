@@ -45,67 +45,60 @@ $(document).on("click", ".selesaikan-btn", function (e) {
 
 document.addEventListener("input", function (e) {
     if (e.target.classList.contains("price")) {
-        // Menghapus karakter non-numerik
-        let value = e.target.value.replace(/\D/g, "");
+        let value = e.target.value;
+        console.log(value);
 
-        // Mengupdate input tersembunyi yang terkait dengan elemen input yang berubah
+        // Izinkan angka dan titik sebagai desimal
+        value = value.replace(/[^0-9.]/g, '');
+
+        // Tampilkan nilai asli (tanpa format ribuan, titik sebagai desimal)
+        e.target.value = value;
+
+        // Simpan nilai asli ke dalam input tersembunyi (untuk perhitungan)
         e.target.nextElementSibling.value = value;
-
-        // Memformat angka dengan pemisah ribuan
-        let formattedValue = new Intl.NumberFormat("id-ID").format(value);
-
-        // Menampilkan nilai terformat
-        e.target.value = formattedValue;
     }
-});
 
-document.addEventListener("input", function (e) {
-    if (
-        e.target.classList.contains("jumlah") ||
-        e.target.classList.contains("nominal")
-    ) {
-        // Find the closest container that includes both 'jumlah' and 'nominal' inputs
+    if (e.target.classList.contains("jumlah") || e.target.classList.contains("nominal")) {
         const container = e.target.closest(".value-container");
 
         if (container) {
-            // Get the values from the inputs
-            const jumlah =
-                parseFloat(container.querySelector(".jumlah").value) || 0;
-            const nominal =
-                parseFloat(
-                    container.querySelector(".nominal").value.replace(/\D/g, "")
-                ) || 0;
+            // Ambil nilai jumlah dan nominal (anggap titik sebagai pemisah desimal)
+            const jumlah = parseFloat(container.querySelector(".jumlah").value) || 0;
+            const nominal = parseFloat(container.querySelector(".nominal").value) || 0;
 
-            console.log(nominal);
-            // Calculate the total
+            // Hitung total tanpa membulatkan hasil
             const total = jumlah * nominal;
 
-            // Update the total input field with the formatted total
-            container.querySelector(".total").value = new Intl.NumberFormat(
-                "id-ID"
-            ).format(total);
+            // Update field total tanpa membulatkan angka desimal
+            container.querySelector(".total").value = total.toString();
+
+            // Update total keseluruhan jika ada
             allTotal();
         } else {
-            console.error("Container not found");
+            console.error("Container tidak ditemukan");
         }
     }
 
     function allTotal() {
-        const totalInputs = document.querySelectorAll(
-            'input[name*="model"][name*="[total]"]'
-        );
+        const totalInputs = document.querySelectorAll('input[name*="model"][name*="[total]"]');
         let totalValue = 0;
 
         totalInputs.forEach((input) => {
-            totalValue += parseFloat(input.value.replace(/\D/g, "")) || 0;
+            totalValue += parseFloat(input.value.replace(/\./g, "").replace(/,/g, ".")) || 0;
         });
 
-        // Tampilkan total keseluruhan di elemen dengan id="est-all-total"
-        document.getElementById("est-all-total").value = new Intl.NumberFormat(
-            "id-ID"
-        ).format(totalValue);
+        // Cek apakah elemen #est-all-total ada sebelum mengaksesnya
+        const estAllTotalElement = document.getElementById("est-all-total");
+        if (estAllTotalElement) {
+            // Update total keseluruhan tanpa membulatkan desimal
+            estAllTotalElement.value = totalValue.toString();
+        } else {
+            console.error("Element with id 'est-all-total' not found.");
+        }
     }
 });
+
+
 
 // document.addEventListener("DOMContentLoaded", function () {
 //     const tambahBarangButtons = document.querySelectorAll(".tambah-barang");

@@ -372,4 +372,22 @@ class CuttingController extends Controller
             200,
         );
     }
+
+    public function deleteCutting($id) {
+        $cuttingAmbil  = CuttingAmbil::find($id);
+        $cuttingAmbil->delete();
+        return redirect()->back()->with('success', 'Berhasil dihapus');
+    }
+
+    public function modelDelete($id) {
+        $CuttingAmbilModel  = CuttingAmbilModel::find($id);
+        $CuttingAmbilModel->delete();
+        return redirect()->back()->with('success', 'Berhasil dihapus');
+    }
+
+    public function warnaDelete($id) {
+        $cuttingWarnaModel  = CuttingWarnaModel::find($id);
+        $cuttingWarnaModel->delete();
+        return redirect()->back()->with('success', 'Berhasil dihapus');
+    }
 }

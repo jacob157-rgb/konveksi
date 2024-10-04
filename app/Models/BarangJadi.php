@@ -15,21 +15,35 @@ class BarangJadi extends Model
     {
         return $this->hasMany(ModelBarangJadi::class);
     }
-    
-    public function supplyer() {
+
+    public function supplyer()
+    {
         return $this->belongsTo(Supplyer::class);
     }
-    public function warna() {
+    public function warna()
+    {
         return $this->belongsTo(Warna::class);
     }
-    public function kain() {
+    public function kain()
+    {
         return $this->belongsTo(Kain::class);
     }
-    public function model() {
+    public function model()
+    {
         return $this->belongsTo(Models::class);
     }
 
-    static function getUniqueId($unique) {
+
+    static function getUniqueId($unique)
+    {
         return static::where('unique_id', $unique)->get();
+    }
+    static function getUniqueBarangDatang($unique)
+    {
+
+        return static::with(['modelBarangJadi.warnaModel'])
+            ->where('unique_id', $unique)
+            ->latest()
+            ->get();;
     }
 }
