@@ -6,7 +6,7 @@
         <h2 class="font-bold text-center text-white uppercase">RETURN BARANG ID : {{ $unique }}</h2>
     </div>
 
-    <form action="/return/store/" method="post" id="addBarangMentahForm">
+    <form action="{{ route('return.store') }}" method="post" id="addBarangMentahForm">
         @csrf
         <div class="bg-white shadow-sm border rounded-lg start-0 top-0 z-[80] overflow-y-auto overflow-x-hidden">
             <div class="p-4 -mt-2 space-y-2 overflow-y-auto">

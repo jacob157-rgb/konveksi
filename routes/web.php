@@ -229,7 +229,7 @@ Route::middleware(ValidateAuth::class)->group(function () {
 
     Route::controller(ReturnBarangController::class)->group(function () {
         Route::get('/return/add/{uniqueId}', 'index');
-        Route::post('/return/store', 'store');
+        Route::post('/return/store', 'store')->name('return.store');
         Route::get('/return/edit/{id}', 'edit');
         Route::post('/return/update/{id}', 'update');
         Route::post('/return/delete/{id}', 'delete');
