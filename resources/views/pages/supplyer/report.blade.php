@@ -393,7 +393,7 @@
                             <td class="px-3 truncate py-5 text-left text-sm text-gray-500 sm:table-cell">
                                 {{ \Carbon\Carbon::parse($sl->tanggal)->translatedFormat('d F Y') }}
                             </td>
-                            <td class="px-3 truncate py-5 text-right text-sm text-gray-500 sm:table-cell">
+                            <td class="px-3 truncate py-5 text-left text-sm text-gray-500 sm:table-cell">
                                 {{ formatRupiah($sl->nominal) }}
                                 @php
                                     $totalNominalSelisih += $sl->nominal;
