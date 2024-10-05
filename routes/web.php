@@ -221,7 +221,7 @@ Route::middleware(ValidateAuth::class)->group(function () {
 
     Route::controller(SelisihController::class)->group(function () {
         Route::get('/selisih/add/{uniqueId}', 'index');
-        Route::post('/selisih/store', 'store');
+        Route::post('/selisih/store', 'store')->name('selisih.store');
         Route::get('/selisih/edit/{id}', 'edit');
         Route::post('/selisih/update/{id}', 'update');
         Route::post('/selisih/delete/{id}', 'delete');
@@ -229,7 +229,7 @@ Route::middleware(ValidateAuth::class)->group(function () {
 
     Route::controller(ReturnBarangController::class)->group(function () {
         Route::get('/return/add/{uniqueId}', 'index');
-        Route::post('/return/store', 'store')->name('selisih.store');
+        Route::post('/return/store', 'store');
         Route::get('/return/edit/{id}', 'edit');
         Route::post('/return/update/{id}', 'update');
         Route::post('/return/delete/{id}', 'delete');
