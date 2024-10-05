@@ -50,10 +50,10 @@
                     Laporan Barang Supplyer
                 </p>
                 <p class="text-gray-500 text-sm mt-1">
-                    +62 8132000973
+                    +6285725888333
                 </p>
                 <p class="text-gray-500 text-sm mt-1">
-                    JL. Sipelem Tegal Raya
+                    Jl. Garuda Ds. Tembok Kidul RT.02/RW.01 Kec. Adiwerna. Kab Tegal
                 </p>
             </div>
         </div>
