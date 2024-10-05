@@ -1444,7 +1444,7 @@
                                     </thead>
 
                                     @php
-                                        $return = App\Models\returnBarang::getReturnByUniqueId($uniqueId);
+                                        $return = App\Models\ReturnBarang::getReturnByUniqueId($uniqueId);
                                         $totalNominalReturn = 0; // Inisialisasi total nominal
                                     @endphp
 
